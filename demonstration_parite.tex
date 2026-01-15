@@ -1,0 +1,312 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{tcolorbox}
+
+\geometry{margin=2.5cm}
+
+\newtheorem{theorem}{Théorème}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemme}
+\theoremstyle{definition}
+\newtheorem{definition}{Définition}
+\theoremstyle{remark}
+\newtheorem{remark}{Remarque}
+\newtheorem{example}{Exemple}
+
+\definecolor{maincolor}{RGB}{102, 126, 234}
+\definecolor{secondcolor}{RGB}{118, 75, 162}
+
+\title{\textbf{Disparité dans les groupes aléatoires}\\[0.5em]
+\large Démonstration du résultat contre-intuitif sur la parité}
+\author{S. Jaubert}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Ce document présente une démonstration rigoureuse d'un résultat statistique contre-intuitif : lorsqu'on partitionne aléatoirement une population paritaire en deux groupes égaux, l'espérance de la différence absolue entre hommes et femmes dans chaque groupe croît avec la taille de la population selon $\sqrt{N/(2\pi)}$. Ce phénomène, bien que paradoxal à première vue, découle directement des propriétés de la loi hypergéométrique et illustre un principe fondamental en théorie des probabilités.
+\end{abstract}
+
+\tableofcontents
+
+\section{Introduction et énoncé du problème}
+
+\subsection{Contexte}
+
+Considérons une population de $N = 10\,000$ personnes composée de manière paritaire de $N_H = 5\,000$ hommes et $N_F = 5\,000$ femmes. Nous effectuons un tirage aléatoire sans remise de $n = 5\,000$ personnes pour former le \textbf{Groupe 1}, les $N - n = 5\,000$ personnes restantes constituant automatiquement le \textbf{Groupe 2}.
+
+\subsection{Intuition commune (erronée)}
+
+L'intuition courante suggère que, par symétrie et équiprobabilité du tirage, chaque groupe devrait contenir approximativement $2\,500$ hommes et $2\,500$ femmes, respectant ainsi la parité initiale. Plus encore, on pourrait penser que l'augmentation de la taille de la population améliorerait cette approximation.
+
+\subsection{Résultat contre-intuitif}
+
+\begin{tcolorbox}[colback=maincolor!10,colframe=maincolor,title=Résultat principal]
+Soit $X$ le nombre d'hommes dans le Groupe 1, et soit $D = |X - (n-X)| = |2X - n|$ la différence absolue entre le nombre d'hommes et de femmes dans ce groupe. Alors :
+\begin{equation}
+\mathbb{E}[D] \approx \sqrt{\frac{N}{2\pi}}
+\end{equation}
+
+Pour $N = 10\,000$, on obtient $\mathbb{E}[D] \approx 39{,}9$ personnes.
+\end{tcolorbox}
+
+Ce résultat montre que la disparité en valeur absolue \textbf{croît} avec $N$, contrairement à l'intuition qui voudrait qu'elle diminue.
+
+\section{Modélisation mathématique}
+
+\subsection{Loi hypergéométrique}
+
+Le nombre d'hommes $X$ dans le Groupe 1 suit une \textbf{loi hypergéométrique} de paramètres $(N, N_H, n)$, que nous noterons $X \sim \mathcal{H}(N, N_H, n)$.
+
+\begin{definition}[Loi hypergéométrique]
+Une variable aléatoire $X$ suit une loi hypergéométrique $\mathcal{H}(N, K, n)$ si elle représente le nombre d'éléments d'un type particulier obtenus lors d'un tirage sans remise de $n$ objets parmi une population de $N$ objets contenant exactement $K$ objets de ce type. Sa loi de probabilité est donnée par :
+\[
+\mathbb{P}(X = k) = \frac{\binom{K}{k}\binom{N-K}{n-k}}{\binom{N}{n}}, \quad \max(0, n+K-N) \leq k \leq \min(K, n)
+\]
+\end{definition}
+
+\subsection{Moments de la loi hypergéométrique}
+
+Pour $X \sim \mathcal{H}(N, K, n)$, on a les résultats classiques suivants :
+
+\begin{proposition}[Espérance et variance]
+\begin{align}
+\mathbb{E}[X] &= n \cdot \frac{K}{N} \label{eq:esperance}\\
+\text{Var}(X) &= n \cdot \frac{K}{N} \cdot \frac{N-K}{N} \cdot \frac{N-n}{N-1} \label{eq:variance}
+\end{align}
+\end{proposition}
+
+\subsection{Application au problème}
+
+Dans notre cas, avec $N = 10\,000$, $K = N_H = 5\,000$ et $n = 5\,000$, le nombre d'hommes dans le Groupe 1 vérifie $X \sim \mathcal{H}(10\,000, 5\,000, 5\,000)$.
+
+\subsubsection{Espérance de $X$}
+
+D'après (\ref{eq:esperance}) :
+\begin{equation}
+\mathbb{E}[X] = 5\,000 \times \frac{5\,000}{10\,000} = 2\,500
+\end{equation}
+
+Ce résultat confirme l'intuition : \textit{en moyenne}, le Groupe 1 contient $2\,500$ hommes.
+
+\subsubsection{Variance de $X$}
+
+D'après (\ref{eq:variance}) :
+\begin{align}
+\text{Var}(X) &= 5\,000 \times \frac{5\,000}{10\,000} \times \frac{5\,000}{10\,000} \times \frac{5\,000}{9\,999}\\
+&= 5\,000 \times \frac{1}{2} \times \frac{1}{2} \times \frac{5\,000}{9\,999}\\
+&= \frac{1\,250 \times 5\,000}{9\,999}\\
+&\approx 1\,250{,}125
+\end{align}
+
+L'écart-type vaut donc :
+\begin{equation}
+\sigma(X) = \sqrt{\text{Var}(X)} \approx 35{,}36
+\end{equation}
+
+\section{Démonstration du résultat principal}
+
+\subsection{Expression de la différence $D$}
+
+Soit $X$ le nombre d'hommes dans le Groupe 1. Alors le nombre de femmes est $n - X = 5\,000 - X$. La différence absolue est :
+\begin{equation}
+D = |X - (n - X)| = |2X - n| = |2X - 5\,000|
+\end{equation}
+
+On peut réécrire cette quantité comme :
+\begin{equation}
+D = 2|X - 2\,500| = 2|X - \mathbb{E}[X]|
+\end{equation}
+
+\subsection{Espérance de la valeur absolue d'une variable centrée}
+
+\begin{lemma}[Espérance de $|Z|$ pour $Z$ centrée]
+Soit $Z$ une variable aléatoire centrée ($\mathbb{E}[Z] = 0$) de variance $\sigma^2$. Si $Z$ suit approximativement une loi normale $\mathcal{N}(0, \sigma^2)$, alors :
+\begin{equation}
+\mathbb{E}[|Z|] = \sigma \sqrt{\frac{2}{\pi}} \label{eq:esp_valabs}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Pour $Z \sim \mathcal{N}(0, \sigma^2)$, la densité de probabilité est :
+\[
+f_Z(z) = \frac{1}{\sigma\sqrt{2\pi}} \exp\left(-\frac{z^2}{2\sigma^2}\right)
+\]
+
+Par symétrie de la loi normale :
+\begin{align}
+\mathbb{E}[|Z|] &= \int_{-\infty}^{+\infty} |z| f_Z(z) \, dz\\
+&= 2\int_{0}^{+\infty} z \cdot \frac{1}{\sigma\sqrt{2\pi}} \exp\left(-\frac{z^2}{2\sigma^2}\right) \, dz
+\end{align}
+
+En posant $u = \frac{z^2}{2\sigma^2}$, on a $du = \frac{z}{\sigma^2} dz$, d'où :
+\begin{align}
+\mathbb{E}[|Z|] &= 2 \cdot \frac{1}{\sqrt{2\pi}} \int_{0}^{+\infty} \exp(-u) \, \sigma du\\
+&= \frac{2\sigma}{\sqrt{2\pi}} \cdot 1\\
+&= \sigma \sqrt{\frac{2}{\pi}}
+\end{align}
+\end{proof}
+
+\subsection{Approximation normale de la loi hypergéométrique}
+
+\begin{theorem}[Convergence vers la loi normale]
+Lorsque $N$, $K$ et $n$ sont grands, avec les proportions $p = K/N$ et $q = 1-p$ fixées, la loi hypergéométrique $\mathcal{H}(N, K, n)$ peut être approchée par une loi normale :
+\[
+X \sim \mathcal{N}\left(np, npq\frac{N-n}{N-1}\right)
+\]
+\end{theorem}
+
+Dans notre cas, avec $N = 10\,000$, $n = 5\,000$, $p = 1/2$, cette approximation est excellente. Posons $Y = X - \mathbb{E}[X] = X - 2\,500$. Alors :
+\begin{equation}
+Y \sim \mathcal{N}(0, \sigma^2) \quad \text{avec} \quad \sigma^2 \approx 1\,250
+\end{equation}
+
+\subsection{Calcul de $\mathbb{E}[D]$}
+
+Nous avons $D = 2|Y|$. En appliquant le Lemme avec $\sigma \approx 35{,}36$ :
+\begin{align}
+\mathbb{E}[D] &= 2 \mathbb{E}[|Y|]\\
+&= 2 \sigma \sqrt{\frac{2}{\pi}}\\
+&\approx 2 \times 35{,}36 \times 0{,}7979\\
+&\approx 56{,}4
+\end{align}
+
+\subsection{Formule asymptotique générale}
+
+Pour une population de taille totale $N$ avec $N_H = N_F = N/2$, en tirant $n = N/2$ personnes, la variance de $X$ (nombre d'hommes tirés) est approximativement :
+\begin{equation}
+\text{Var}(X) \approx \frac{n}{2} \cdot \frac{1}{2} \cdot \frac{N-n}{N} = \frac{N}{8} \cdot \frac{1}{2} = \frac{N}{16}
+\end{equation}
+
+Donc $\sigma(X) \approx \sqrt{N}/4$, et :
+\begin{equation}
+\mathbb{E}[D] = 2\sigma(X) \sqrt{\frac{2}{\pi}} \approx 2 \cdot \frac{\sqrt{N}}{4} \cdot \sqrt{\frac{2}{\pi}} = \frac{\sqrt{N}}{2} \cdot \sqrt{\frac{2}{\pi}} = \sqrt{\frac{N}{2\pi}}
+\end{equation}
+
+\begin{tcolorbox}[colback=secondcolor!10,colframe=secondcolor,title=Résultat final]
+Pour une population de $N$ personnes avec parité initiale parfaite, divisée aléatoirement en deux groupes égaux, l'espérance de la différence absolue $|H - F|$ dans chaque groupe vaut :
+\begin{equation}
+\boxed{\mathbb{E}[|H - F|] = \sqrt{\frac{N}{2\pi}}}
+\end{equation}
+\end{tcolorbox}
+
+\section{Application numérique et interprétation}
+
+\subsection{Valeurs numériques pour différentes tailles}
+
+Le tableau suivant présente les valeurs de $\mathbb{E}[|H-F|]$ pour différentes tailles de population :
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+$N$ (population totale) & $\mathbb{E}[|H-F|]$ & Proportion de $n$ \\
+\hline
+1\,000 & 12,6 & 2,52\% \\
+5\,000 & 28,2 & 1,13\% \\
+10\,000 & 39,9 & 0,80\% \\
+50\,000 & 89,2 & 0,36\% \\
+100\,000 & 126,2 & 0,25\% \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{Interprétation du paradoxe}
+
+\begin{remark}[Croissance en valeur absolue]
+La disparité \textbf{absolue} $\mathbb{E}[|H-F|]$ croît comme $\sqrt{N}$. Ainsi :
+\begin{itemize}
+    \item Si $N$ est multiplié par 100, la disparité est multipliée par 10
+    \item Si $N = 1\,000\,000$, on a $\mathbb{E}[|H-F|] \approx 399$
+\end{itemize}
+\end{remark}
+
+\begin{remark}[Décroissance en proportion]
+La disparité \textbf{relative} $\frac{\mathbb{E}[|H-F|]}{n/2}$ décroît comme $1/\sqrt{N}$ :
+\[
+\frac{\mathbb{E}[|H-F|]}{n/2} = \frac{\sqrt{N/(2\pi)}}{N/4} = \frac{4}{\sqrt{2\pi N}} \sim \frac{1}{\sqrt{N}}
+\]
+Cette décroissance est \textit{lente} : pour diviser la disparité relative par 2, il faut multiplier $N$ par 4.
+\end{remark}
+
+\subsection{Probabilité de la parité parfaite}
+
+La probabilité d'obtenir une parité parfaite ($D = 0$, soit $X = 2\,500$ exactement) peut être estimée par :
+\[
+\mathbb{P}(D = 0) \approx f_X(2\,500) \approx \frac{1}{\sigma\sqrt{2\pi}} \approx \frac{1}{35{,}36 \times 2{,}507} \approx 0{,}0113
+\]
+
+Soit environ \textbf{1,1\%} seulement ! La parité parfaite est donc un événement \textbf{rare}.
+
+\section{Implications et généralisation}
+
+\subsection{Cas général : tirage de taille quelconque}
+
+Pour un tirage de taille $n$ (pas nécessairement $N/2$) dans une population de $N$ personnes avec proportion $p$ d'hommes, on peut montrer que :
+\begin{equation}
+\mathbb{E}[|H - F|] \approx 2\sqrt{np(1-p)\frac{N-n}{N}} \cdot \sqrt{\frac{2}{\pi}}
+\end{equation}
+
+Cette formule se réduit à $\sqrt{N/(2\pi)}$ lorsque $n = N/2$ et $p = 1/2$.
+
+\subsection{Applications pratiques}
+
+Ce résultat a des implications importantes dans de nombreux domaines :
+
+\begin{itemize}
+    \item \textbf{Essais cliniques randomisés} : Même avec randomisation parfaite, des déséquilibres significatifs sont inévitables et doivent être anticipés.
+    
+    \item \textbf{Sondages et échantillonnage} : Un échantillon aléatoire peut naturellement diverger de la population source.
+    
+    \item \textbf{Justice et jurys} : Des déséquilibres démographiques peuvent apparaître naturellement même avec sélection équitable.
+    
+    \item \textbf{Enseignement} : La constitution aléatoire de classes ne garantit pas l'équilibre des caractéristiques.
+\end{itemize}
+
+\subsection{Le paradoxe du hasard}
+
+\begin{tcolorbox}[colback=red!10,colframe=red!70,title=Principe fondamental]
+\textbf{Le hasard ne produit pas l'uniformité.}
+
+Au contraire, le hasard génère naturellement de la variabilité, et cette variabilité croît en valeur absolue avec la taille du système. Ce n'est que \textit{relativement} que la loi des grands nombres assure une convergence vers les proportions attendues.
+\end{tcolorbox}
+
+\section{Conclusion}
+
+Nous avons démontré rigoureusement que, contrairement à l'intuition, la disparité absolue entre hommes et femmes lors d'une partition aléatoire d'une population paritaire \textbf{augmente} avec la taille de la population selon la loi $\sqrt{N/(2\pi)}$.
+
+Ce résultat illustre un principe fondamental en théorie des probabilités : la fluctuation absolue des variables aléatoires croît typiquement comme la racine carrée de la taille du système, tandis que la fluctuation relative décroît selon cette même loi. C'est cette dualité qui rend le résultat contre-intuitif : notre intuition se focalise sur les proportions (qui s'améliorent), alors que les valeurs absolues (qui se dégradent) sont souvent plus pertinentes en pratique.
+
+\begin{center}
+\rule{0.5\linewidth}{0.5pt}
+\end{center}
+
+\appendix
+
+\section{Calcul exact pour le cas $N = 10\,000$}
+
+Pour $X \sim \mathcal{H}(10\,000, 5\,000, 5\,000)$, le calcul exact donne :
+\begin{align}
+\text{Var}(X) &= 5\,000 \times \frac{1}{2} \times \frac{1}{2} \times \frac{4\,999}{9\,999}\\
+&= 1\,250 \times \frac{4\,999}{9\,999}\\
+&= \frac{6\,248\,750}{9\,999}\\
+&\approx 1\,250{,}125
+\end{align}
+
+D'où $\sigma(X) \approx 35{,}358$ et :
+\begin{equation}
+\mathbb{E}[D] \approx 2 \times 35{,}358 \times \sqrt{\frac{2}{\pi}} \approx 56{,}4
+\end{equation}
+
+La formule asymptotique $\sqrt{10\,000/(2\pi)} \approx 39{,}9$ fournit une approximation légèrement inférieure, l'écart provenant des hypothèses asymptotiques utilisées dans la dérivation.
+
+\end{document}

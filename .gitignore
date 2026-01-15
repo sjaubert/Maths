@@ -1,0 +1,31 @@
+# Fichiers Python temporaires
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Fichiers LaTeX temporaires
+*.aux
+*.log
+*.out
+*.toc
+*.synctex.gz
+*.fdb_latexmk
+*.fls
+*.blg
+*.bbl
+
+# Fichiers temporaires système
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Scripts d'extraction temporaires
+extract_pdf.py
+
+# Fichiers IDE
+.vscode/
+.idea/
+*.code-workspace
