@@ -1,10 +1,10 @@
-# \U0001f4da Projets de Mathématiques Appliquées
+# Projets de Mathématiques Appliquées
 
 Ce dépôt regroupe différents projets de modélisation mathématique et de simulation numérique.
 
-## \U0001f30c 1. Modèles d'Évolution (Systèmes Dynamiques)
+## 1. Modèles d'Évolution (Systèmes Dynamiques)
 
-**[Accéder à l'application interactive en ligne](https://sjaubert.github.io/Maths/)**
+**[Accéder à l&#39;application interactive en ligne](https://sjaubert.github.io/Maths/)**
 
 Une application interactive R Shiny permettant de visualiser les portraits de phase de systèmes d'équations différentielles non-linéaires.
 
@@ -21,7 +21,7 @@ Une application interactive R Shiny permettant de visualiser les portraits de ph
 
 ---
 
-## \U0001f4ca 2. Disparité dans les Groupes Aléatoires (Paradoxe de la Parité)
+## 2. Disparité dans les Groupes Aléatoires (Paradoxe de la Parité)
 
 Une démonstration mathématique et statistique d'un résultat contre-intuitif sur la répartition paritaire dans des groupes aléatoires.
 
@@ -41,7 +41,7 @@ Pour $N=10 000$, l'espérance de l'écart est $E[|H-F|] \approx 40$.
 
 ---
 
-## \U0001f6e0\ufe0f Technologies utilisées
+## Technologies utilisées
 
 - **R / Shiny** : Interface web interactive, `ggplot2` pour les graphiques, intégrateur RK4 personnalisé.
 - **Python** : Simulations numériques (`numpy`, `matplotlib`).
@@ -49,4 +49,5 @@ Pour $N=10 000$, l'espérance de l'écart est $E[|H-F|] \approx 40$.
 - **GitHub Pages / Shinylive** : Déploiement de l'application R sans serveur (WebAssembly).
 
 ---
+
 *Auteur : S. Jaubert — 2026*
