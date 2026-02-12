@@ -1,4 +1,4 @@
-# Projets de Mathématiques Appliquées
+# Projets de Mathématiques Appliquées (S. Jaubert)
 
 Ce dépôt regroupe différents projets de modélisation mathématique et de simulation numérique.
 
