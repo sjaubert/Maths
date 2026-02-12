@@ -12,7 +12,7 @@ library(shiny)
 library(ggplot2)
 
 # ---------------------------------------------------------------------------
-# Définition des trois systèmes d'EDO
+# Définition des systèmes d'EDO
 # ---------------------------------------------------------------------------
 
 systeme_1 <- function(t, state, params) {
@@ -30,6 +30,15 @@ systeme_3 <- function(t, state, params) {
   list(c(y * (y - 1) * (y + 1), sin(x + y)))
 }
 
+systeme_4 <- function(t, state, params) {
+  x <- state["x"]; y <- state["y"]
+  g <- params$g
+  L <- params$L
+  # x = theta, y = theta_dot
+  # theta_dot_dot = - (g/L) * sin(theta)
+  list(c(y, - (g / L) * sin(x)))
+}
+
 # ---------------------------------------------------------------------------
 # Métadonnées des systèmes
 # ---------------------------------------------------------------------------
@@ -40,21 +49,32 @@ systemes <- list(
     label  = expression(dot(x) == sin(x^2 + y^2) * "," ~~ dot(y) == sin(xy)),
     func   = systeme_1,
     xlim   = c(-3.5, 3.5),
-    ylim   = c(-3.5, 3.5)
+    ylim   = c(-3.5, 3.5),
+    params = list()
   ),
   list(
     nom    = "Système 2",
     label  = expression(dot(x) == sin(x) * sin(y) * "," ~~ dot(y) == cos(xy)),
     func   = systeme_2,
     xlim   = c(-5, 5),
-    ylim   = c(-5, 5)
+    ylim   = c(-5, 5),
+    params = list()
   ),
   list(
     nom    = "Système 3",
     label  = expression(dot(x) == y(y - 1)(y + 1) * "," ~~ dot(y) == sin(x + y)),
     func   = systeme_3,
     xlim   = c(-5, 5),
-    ylim   = c(-3, 3)
+    ylim   = c(-3, 3),
+    params = list()
+  ),
+  list(
+    nom    = "Pendule Simple",
+    label  = expression(dot(theta) == omega * "," ~~ dot(omega) == -frac(g, L) * sin(theta)),
+    func   = systeme_4,
+    xlim   = c(-10, 10), # ~ -3pi a +3pi
+    ylim   = c(-6, 6),
+    params = list(g = 9.81, L = 1)
   )
 )
 
@@ -74,7 +94,7 @@ palette_trajectoires <- c(
 # Intégrateur Runge-Kutta 4 pur R (remplace deSolve pour compatibilité wasm)
 # ---------------------------------------------------------------------------
 
-rk4_integrate <- function(sys_func, x0, y0, tmax, dt) {
+rk4_integrate <- function(sys_func, x0, y0, tmax, dt, params = NULL) {
   n_steps <- max(1, round(abs(tmax / dt)))
   xs <- numeric(n_steps + 1)
   ys <- numeric(n_steps + 1)
@@ -84,10 +104,10 @@ rk4_integrate <- function(sys_func, x0, y0, tmax, dt) {
 
   for (i in seq_len(n_steps)) {
     state <- c(x = xs[i], y = ys[i])
-    k1 <- unlist(sys_func(ts[i], state, NULL))
-    k2 <- unlist(sys_func(ts[i] + h/2, state + h/2 * k1, NULL))
-    k3 <- unlist(sys_func(ts[i] + h/2, state + h/2 * k2, NULL))
-    k4 <- unlist(sys_func(ts[i] + h,   state + h   * k3, NULL))
+    k1 <- unlist(sys_func(ts[i], state, params))
+    k2 <- unlist(sys_func(ts[i] + h/2, state + h/2 * k1, params))
+    k3 <- unlist(sys_func(ts[i] + h/2, state + h/2 * k2, params))
+    k4 <- unlist(sys_func(ts[i] + h,   state + h   * k3, params))
     new_state <- state + h / 6 * (k1 + 2*k2 + 2*k3 + k4)
     xs[i+1] <- new_state[1]
     ys[i+1] <- new_state[2]
@@ -105,16 +125,16 @@ rk4_integrate <- function(sys_func, x0, y0, tmax, dt) {
 # Fonction d'intégration d'une trajectoire (avant + arrière)
 # ---------------------------------------------------------------------------
 
-integrer_trajectoire <- function(sys_func, x0, y0, tmax = 20, dt = 0.02) {
+integrer_trajectoire <- function(sys_func, x0, y0, tmax = 20, dt = 0.02, params = NULL) {
   # Intégration vers l'avant
   sol_fwd <- tryCatch(
-    rk4_integrate(sys_func, x0, y0, tmax, dt),
+    rk4_integrate(sys_func, x0, y0, tmax, dt, params),
     error = function(e) data.frame(time = 0, x = x0, y = y0)
   )
 
   # Intégration vers l'arrière (dt négatif)
   sol_bwd <- tryCatch(
-    rk4_integrate(sys_func, x0, y0, tmax, -dt),
+    rk4_integrate(sys_func, x0, y0, tmax, -dt, params),
     error = function(e) data.frame(time = 0, x = x0, y = y0)
   )
 
@@ -127,13 +147,13 @@ integrer_trajectoire <- function(sys_func, x0, y0, tmax = 20, dt = 0.02) {
 # Fonction pour générer la grille du champ de vecteurs
 # ---------------------------------------------------------------------------
 
-generer_champ <- function(sys_func, xlim, ylim, n = 25) {
+generer_champ <- function(sys_func, xlim, ylim, n = 25, params = NULL) {
   x_seq <- seq(xlim[1], xlim[2], length.out = n)
   y_seq <- seq(ylim[1], ylim[2], length.out = n)
   grid  <- expand.grid(x = x_seq, y = y_seq)
 
   derivees <- t(sapply(1:nrow(grid), function(i) {
-    res <- sys_func(0, c(x = grid$x[i], y = grid$y[i]), NULL)
+    res <- sys_func(0, c(x = grid$x[i], y = grid$y[i]), params)
     unlist(res)
   }))
 
@@ -155,14 +175,14 @@ generer_champ <- function(sys_func, xlim, ylim, n = 25) {
 # Générer des trajectoires de fond (grille régulière)
 # ---------------------------------------------------------------------------
 
-generer_fond <- function(sys_func, xlim, ylim, nx = 8, ny = 8, tmax = 15) {
+generer_fond <- function(sys_func, xlim, ylim, nx = 8, ny = 8, tmax = 15, params = NULL) {
   x_seq <- seq(xlim[1] * 0.9, xlim[2] * 0.9, length.out = nx)
   y_seq <- seq(ylim[1] * 0.9, ylim[2] * 0.9, length.out = ny)
   init  <- expand.grid(x0 = x_seq, y0 = y_seq)
 
   all_traj <- do.call(rbind, lapply(1:nrow(init), function(i) {
     traj <- integrer_trajectoire(sys_func, init$x0[i], init$y0[i],
-                                  tmax = tmax, dt = 0.03)
+                                  tmax = tmax, dt = 0.03, params = params)
     # Couper si sort du domaine
     in_dom <- traj$x >= xlim[1] * 1.2 & traj$x <= xlim[2] * 1.2 &
               traj$y >= ylim[1] * 1.2 & traj$y <= ylim[2] * 1.2
@@ -259,9 +279,17 @@ ui <- fluidPage(
         choices = c(
           "ẋ = sin(x²+y²), ẏ = sin(xy)"     = "1",
           "ẋ = sin(x)sin(y), ẏ = cos(xy)"    = "2",
-          "ẋ = y(y-1)(y+1), ẏ = sin(x+y)"    = "3"
+          "ẋ = y(y-1)(y+1), ẏ = sin(x+y)"    = "3",
+          "Pendule Simple"                  = "4"
         ),
         selected = "1"
+      ),
+      conditionalPanel(
+        condition = "input.systeme == '4'",
+        hr(style = "border-color: rgba(255,255,255,0.1);"),
+        h4("\u2699\ufe0f Paramètres Pendule"),
+        sliderInput("param_g", "Gravité g :", min = 1, max = 20, value = 9.81, step = 0.1),
+        sliderInput("param_L", "Longueur L :", min = 0.1, max = 5, value = 1, step = 0.1)
       ),
       hr(style = "border-color: rgba(255,255,255,0.1);"),
       h4("\U0001f3af Conditions initiales"),
@@ -288,6 +316,11 @@ ui <- fluidPage(
         HTML("<b>\U0001f4a1 Astuce :</b> Cliquez directement sur le graphique
               pour placer un point de départ. Changez de système avec le menu
               déroulant ci-dessus.")
+      ),
+      hr(style = "border-color: rgba(255,255,255,0.1);"),
+      div(style = "text-align: center; color: #a8dadc; font-size: 13px; margin-top: 20px; opacity: 0.8;",
+          tags$b("S. Jaubert"), br(),
+          "Pôle Formation UIMM - CVDL"
       )
     ),
 
@@ -322,7 +355,15 @@ server <- function(input, output, session) {
     if (!is.null(x0) && !is.null(y0)) {
       idx <- as.integer(input$systeme)
       sys <- systemes[[idx]]
-      traj <- integrer_trajectoire(sys$func, x0, y0, tmax = input$tmax)
+      
+      # Récupération des paramètres dynamiques
+      params_dyn <- sys$params
+      if (idx == 4) {
+        params_dyn$g <- input$param_g
+        params_dyn$L <- input$param_L
+      }
+      
+      traj <- integrer_trajectoire(sys$func, x0, y0, tmax = input$tmax, params = params_dyn)
 
       # Couper au domaine
       traj <- traj[traj$x >= sys$xlim[1] * 1.3 & traj$x <= sys$xlim[2] * 1.3 &
@@ -343,7 +384,14 @@ server <- function(input, output, session) {
     if (!is.null(x0) && !is.null(y0)) {
       idx <- as.integer(input$systeme)
       sys <- systemes[[idx]]
-      traj <- integrer_trajectoire(sys$func, x0, y0, tmax = input$tmax)
+      
+      params_dyn <- sys$params
+      if (idx == 4) {
+        params_dyn$g <- input$param_g
+        params_dyn$L <- input$param_L
+      }
+      
+      traj <- integrer_trajectoire(sys$func, x0, y0, tmax = input$tmax, params = params_dyn)
       traj <- traj[traj$x >= sys$xlim[1] * 1.3 & traj$x <= sys$xlim[2] * 1.3 &
                     traj$y >= sys$ylim[1] * 1.3 & traj$y <= sys$ylim[2] * 1.3, ]
 
@@ -388,7 +436,8 @@ server <- function(input, output, session) {
     titres <- c(
       expression(dot(x) == sin(x^2 + y^2) * "," ~~ dot(y) == sin(xy)),
       expression(dot(x) == sin(x) %.% sin(y) * "," ~~ dot(y) == cos(xy)),
-      expression(dot(x) == y(y - 1)(y + 1) * "," ~~ dot(y) == sin(x + y))
+      expression(dot(x) == y(y - 1)(y + 1) * "," ~~ dot(y) == sin(x + y)),
+      expression(dot(theta) == omega * "," ~~ dot(omega) == -frac(g, L) * sin(theta))
     )
 
     p <- ggplot() +
@@ -402,7 +451,12 @@ server <- function(input, output, session) {
 
     # Champ de vecteurs
     if (input$show_field) {
-      champ <- generer_champ(sys$func, sys$xlim, sys$ylim, n = 22)
+      params_dyn <- sys$params
+      if (idx == 4) {
+        params_dyn$g <- input$param_g
+        params_dyn$L <- input$param_L
+      }
+      champ <- generer_champ(sys$func, sys$xlim, sys$ylim, n = 22, params = params_dyn)
       p <- p +
         geom_segment(
           data = champ,
@@ -418,8 +472,13 @@ server <- function(input, output, session) {
 
     # Trajectoires de fond (grises)
     if (input$show_fond) {
+      params_dyn <- sys$params
+      if (idx == 4) {
+        params_dyn$g <- input$param_g
+        params_dyn$L <- input$param_L
+      }
       fond <- generer_fond(sys$func, sys$xlim, sys$ylim,
-                           nx = 10, ny = 10, tmax = input$tmax)
+                           nx = 10, ny = 10, tmax = input$tmax, params = params_dyn)
       p <- p +
         geom_path(data = fond, aes(x = x, y = y, group = id),
                    color = "#5c6b80", linewidth = 0.25, alpha = 0.5)
