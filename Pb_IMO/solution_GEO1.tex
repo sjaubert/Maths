@@ -5,26 +5,31 @@
 \usepackage{amsmath,amssymb}
 \usepackage{geometry}
 \usepackage{tikz}
+\usepackage{booktabs}
 
 \geometry{margin=2.5cm}
 \newcommand{\degmark}{{}^{\circ}}
-\title{Probl\`eme de G\'eom\'etrie -- Trouver $CD$}
+\title{Probl\`eme de G\'eom\'etrie -- Trouver $CD$\\[4pt]
+\large Analyse du probl\`eme et de ses hypoth\`eses}
 \author{S.\ Jaubert}
 \date{F\'evrier 2026}
 
 \begin{document}
 \maketitle
 
-\section*{\'Enonc\'e}
+\section*{\'Enonc\'e (tel que lu sur la figure)}
 
-$ABCD$ est un trap\`eze rectangle ($\angle B = \angle C = 90\degmark$).
-$E \in [BC]$ avec $BE = 3\;\text{cm}$ et $EC = CD = x$.
+$ABCD$ est un trap\`eze droit ($\angle B = \angle C = 90\degmark$),
+avec les c\^ot\'es parall\`eles $AB$ et $CD$ perpendiculaires \`a $BC$.
+Un point $E \in [BC]$ v\'erifie $BE = 3\;\text{cm}$.
 Les droites $(AC)$ et $(ED)$ se coupent en $F$ avec $(AC) \perp (ED)$.
 L'aire du triangle $ADF$ vaut $28\;\text{cm}^2$.
-Trouver $CD$.
+On pose $CD = x$.
+
+\textbf{Trouver $CD$.}
 
 \begin{center}
-\begin{tikzpicture}[scale=0.5]
+\begin{tikzpicture}[scale=0.45]
   \coordinate (B) at (0,0);
   \coordinate (C) at (11,0);
   \coordinate (D) at (11,8);
@@ -40,7 +45,7 @@ Trouver $CD$.
   % Angles droits
   \draw (0,0.5)--(0.5,0.5)--(0.5,0);
   \draw (10.5,0)--(10.5,0.5)--(11,0.5);
-  \draw (6.65,4.35)--(7.0,4.7)--(7.35,4.35);
+  \draw[rotate around={45:(7,4)}] (6.65,4)--(6.65,4.35)--(7,4.35);
 
   \node[above left] at (A) {$A$};
   \node[below left] at (B) {$B$};
@@ -54,83 +59,157 @@ Trouver $CD$.
 \end{tikzpicture}
 \end{center}
 
-\section*{Solution}
+%--------------------------------------------------------------------------
+\section{Mise en \'equations g\'en\'erale}
 
-\textbf{\'Etape 1 -- $F$ est le milieu de $[ED]$.}
-
-Le triangle $ECD$ est rectangle en $C$ (car $\angle BCD = 90\degmark$)
-avec $EC = CD = x$ : c'est un \textbf{triangle isoc\`ele rectangle}.
-Le pied de la hauteur issue de $C$ sur l'hypot\'enuse $[ED]$
-est donc le \textbf{milieu} $F$ de $[ED]$.
-
-On v\'erifie que $F$ est aussi sur $(AC)$ :
+On place un rep\`ere orthonorm\'e : $B = (0,0)$, l'axe $Bx$ le long de $[BC]$.
+Avec $c = BC > 3$ et $h = AB$~:
 \[
-  \overrightarrow{AC} = (BC,\; -AB) \quad\text{et}\quad
-  \overrightarrow{ED} = (EC,\; CD) = (x,\; x),
+  B = (0,0),\quad C = (c,\,0),\quad D = (c,\,x),\quad A = (0,\,h),\quad E = (3,\,0).
 \]
-d'o\`u\; $\overrightarrow{AC}\cdot\overrightarrow{ED} = x\cdot BC - AB\cdot x = x(BC - AB)$.
-Avec $AB = BC = x + 3$, ce produit scalaire vaut $0$, confirmant $(AC)\perp(ED)$.\;\checkmark
+On pose aussi $u = EC = c - 3$ pour all\'eger.
 
-\bigskip
+\subsection*{Condition de perpendicularit\'e}
 
-\textbf{\'Etape 2 -- Lien entre les aires.}
-
-Puisque $F$ est le milieu de $[ED]$, les triangles $ADF$ et $AEF$
-ont m\^eme sommet $A$ et des bases $FD = FE = \frac{ED}{2}$ port\'ees par la m\^eme droite.
-Donc~:
+$\overrightarrow{AC} = (c,\;{-h})$ et $\overrightarrow{ED} = (u,\;x)$.
 \[
-  \text{Aire}(ADF) = \text{Aire}(AEF) = \frac{1}{2}\,\text{Aire}(ADE).
-\]
-D'o\`u $\;\text{Aire}(ADE) = 2 \times 28 = 56\;\text{cm}^2$.
-
-\bigskip
-
-\textbf{\'Etape 3 -- Calcul de l'aire de $ADE$ par soustraction.}
-
-On d\'ecompose :
-\[
-  \text{Aire}(ADE) = \text{Aire}(ABCD) - \text{Aire}(ABE) - \text{Aire}(ECD).
+  (AC)\perp(ED)
+  \quad\Longleftrightarrow\quad
+  cu - hx = 0
+  \quad\Longleftrightarrow\quad
+  \boxed{h = \frac{cu}{x}}.  \tag{$\star$}
 \]
 
-\begin{itemize}
-  \item \textbf{Trap\`eze $ABCD$} (bases $AB = x{+}3$ et $CD = x$, hauteur $BC = x{+}3$)~:
-    \[
-      \text{Aire}(ABCD) = \frac{(AB + CD)\cdot BC}{2}
-      = \frac{(2x+3)(x+3)}{2}.
-    \]
-  \item \textbf{Triangle $ABE$} (rectangle en $B$, $AB = x{+}3$, $BE = 3$)~:
-    \[
-      \text{Aire}(ABE) = \frac{(x+3)\cdot 3}{2}.
-    \]
-  \item \textbf{Triangle $ECD$} (rectangle isoc\`ele en $C$, $EC = CD = x$)~:
-    \[
-      \text{Aire}(ECD) = \frac{x^2}{2}.
-    \]
-\end{itemize}
+\subsection*{Coordonn\'ees de $F$}
 
-Donc~:
+$F$ est l'intersection de $(AC)$ et $(ED)$.
+Apr\`es calcul (param\'etrisation des deux droites),
+on obtient~:
+\[
+  F = \left(3 + \frac{u^3}{x^2+u^2},\;\; \frac{u^2\,x}{x^2+u^2}\right).
+\]
+
+\subsection*{Aire du triangle $ADF$}
+
+Par la formule du d\'eterminant
+$\text{Aire} = \tfrac{1}{2}\bigl|\det\bigl(\overrightarrow{AD},\,\overrightarrow{AF}\bigr)\bigr|$,
+un calcul (d\'etaill\'e en annexe) donne~:
+\[
+  \boxed{\text{Aire}(ADF) = \frac{x\bigl(3x^2 + (u+3)\,u^2\bigr)}{2(x^2 + u^2)}}.
+  \tag{$\star\star$}
+\]
+
+%--------------------------------------------------------------------------
+\section{Le probl\`eme est sous-d\'etermin\'e}
+
+L'\'equation $\text{Aire}(ADF) = 28$ s'\'ecrit, avec $(\star\star)$~:
+\[
+  x\bigl(3x^2 + (u+3)\,u^2\bigr) = 56\,(x^2 + u^2).
+\]
+Soit, en d\'eveloppant~:
+\[
+  3x^3 - 56x^2 + u^2(u+3)\,x - 56u^2 = 0.   \tag{E}
+\]
+
+C'est \textbf{une seule \'equation \`a deux inconnues} ($x = CD$ et $u = EC$).
+Elle admet donc une \textbf{infinit\'e de solutions} :
+pour chaque valeur de $EC$, il existe en g\'en\'eral une valeur de $CD$
+qui satisfait les contraintes du probl\`eme.
+
+\medskip
+
+\begin{center}
+\begin{tabular}{@{}cccccc@{}}
+\toprule
+$EC = u$ & $BC = u{+}3$ & $CD = x$ & $AB = h$ & Aire$(ADF)$ & $EC = CD$\,? \\
+\midrule
+$5{,}00$ & $8{,}00$  & $16{,}33$  & $2{,}45$ & $28$ &  non \\
+$6{,}00$ & $9{,}00$  & $14{,}41$  & $3{,}75$ & $28$ &  non \\
+$7{,}00$ & $10{,}00$ & $11{,}38$  & $6{,}15$ & $28$ &  non \\
+$\mathbf{8{,}00}$ & $\mathbf{11{,}00}$ & $\mathbf{8{,}00}$ & $\mathbf{11{,}00}$ & $\mathbf{28}$ & \textbf{oui} \\
+$9{,}00$ & $12{,}00$ & $6{,}12$  & $17{,}66$ & $28$ &  non \\
+$10{,}00$ & $13{,}00$ & $5{,}13$ & $25{,}34$ & $28$ &  non \\
+$12{,}00$ & $15{,}00$ & $4{,}07$ & $44{,}24$ & $28$ &  non \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\medskip
+
+La table ci-dessus confirme que \textbf{$CD$ d\'epend de $EC$}.
+Le probl\`eme n'a pas de solution unique avec les seules donn\'ees
+de la figure.
+
+\medskip
+
+\textbf{Remarque.}
+La seule ligne o\`u $EC = CD$ est la ligne $u = 8$, $x = 8$.
+Si l'on ajoute l'hypoth\`ese $EC = CD = x$ (not\'ee parfois sur certaines
+versions de l'\'enonc\'e), l'\'equation~(E) se simplifie consid\'erablement
+(voir section suivante).
+
+%--------------------------------------------------------------------------
+\section{R\'esolution avec l'hypoth\`ese $EC = CD$}
+
+On pose $u = x$ (c'est-\`a-dire $EC = CD$), d'o\`u $c = x + 3$.
+L'\'equation~(E) devient~:
 \begin{align*}
-  \text{Aire}(ADE)
-  &= \frac{(2x+3)(x+3)}{2} - \frac{3(x+3)}{2} - \frac{x^2}{2} \\[6pt]
-  &= \frac{(x+3)\bigl[(2x+3)-3\bigr] - x^2}{2}
-  = \frac{2x(x+3) - x^2}{2}
-  = \frac{x^2 + 6x}{2}.
+  3x^3 - 56x^2 + x^2(x+3)\,x - 56x^2 &= 0 \\
+  x^2\bigl[3x - 56 + (x+3)x - 56\bigr] &= 0 \quad\text{(factorisation par $x^2$)}\\
+  x^2\bigl[x^2 + 6x - 112\bigr] &= 0.
 \end{align*}
 
-\bigskip
-
-\textbf{\'Etape 4 -- Conclusion.}
-
+Comme $x > 0$, on r\'esout $x^2 + 6x - 112 = 0$~:
 \[
-  \text{Aire}(ADF) = \frac{1}{2}\cdot\frac{x^2+6x}{2} = \frac{x^2+6x}{4} = 28
-\]
-\[
-  x^2 + 6x - 112 = 0
-  \qquad\Longrightarrow\qquad
   \Delta = 36 + 448 = 484 = 22^2
+  \qquad\Longrightarrow\qquad
+  x = \frac{-6 + 22}{2} = 8.
 \]
+
 \[
-  \boxed{\;CD = x = \frac{-6+22}{2} = 8\;\text{cm}\;}
+  \boxed{\;CD = 8\;\text{cm}\;}
+\]
+
+Le trap\`eze a alors pour dimensions :
+$AB = BC = 11\;\text{cm}$,\; $CD = 8\;\text{cm}$,\; $EC = 8\;\text{cm}$.
+
+\bigskip
+\textbf{V\'erification.}
+$A = (0,11)$, $D = (11,8)$, $F = (7,4)$.
+\begin{itemize}
+  \item $\overrightarrow{AC}\cdot\overrightarrow{ED}
+    = (11)(8) + (-11)(8) = 0$.\;\checkmark
+  \item $F$ milieu de $[ED]$ : $\tfrac{1}{2}(3+11, 0+8) = (7,4)$.\;\checkmark
+  \item Aire$(ADF)
+    = \tfrac{1}{2}|11(4-11) - 7(8-11)|
+    = \tfrac{1}{2}|{-77+21}| = 28$.\;\checkmark
+\end{itemize}
+
+%--------------------------------------------------------------------------
+\section*{Annexe -- D\'etail du calcul de l'aire}
+
+$A = (0,\,h)$, $D = (c,\,x)$, $F = \bigl(\frac{3x^2+cu^2}{x^2+u^2},\;\frac{u^2 x}{x^2+u^2}\bigr)$
+o\`u $h = cu/x$.
+
+\[
+  \text{Aire} = \frac{1}{2}\bigl|
+  \underbrace{(x_D - x_A)}_{c}(y_F - y_A) - (x_F - x_A)(y_D - y_A)\bigr|
+\]
+
+\begin{align*}
+  y_F - y_A &= \frac{u^2 x}{x^2+u^2} - \frac{cu}{x}
+  = \frac{u^2 x^2 - cu(x^2+u^2)}{x(x^2+u^2)}
+  = \frac{-u(3x^2 + cu^2)}{x(x^2+u^2)}
+\end{align*}
+\begin{align*}
+  x_F - x_A &= \frac{3x^2 + cu^2}{x^2+u^2},\qquad
+  y_D - y_A = x - \frac{cu}{x} = \frac{x^2 - cu}{x}
+\end{align*}
+
+Apr\`es simplification du d\'eterminant (on factorise $(3x^2+cu^2)$
+qui appara\^it dans les deux termes), on arrive \`a~:
+\[
+  \text{Aire}(ADF) = \frac{x(3x^2 + cu^2)}{2(x^2+u^2)}.
 \]
 
 \end{document}
