@@ -1,0 +1,238 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage{geometry}
+\usepackage{tikz}
+
+\geometry{margin=2.5cm}
+\newcommand{\degmark}{{}^{\circ}}
+\title{Probl\`eme de G\'eom\'etrie -- Trouver l'angle $\alpha$}
+\author{S.\ Jaubert}
+\date{F\'evrier 2026}
+
+\begin{document}
+\maketitle
+
+\section*{\'Enonc\'e}
+
+Soit $ABC$ un triangle avec $\angle ABC = 3\alpha$ et $\angle BAC = \alpha$.
+Le point $M$ est le milieu de $[AB]$ ($AM = BM$).
+La m\'ediane $[CM]$ forme un angle $\angle CMA = 4\alpha$.
+
+Trouver $\alpha$.
+
+\begin{center}
+\begin{tikzpicture}[scale=3.5]
+  % alpha = 32.594 deg
+  \pgfmathsetmacro{\adeg}{32.594}
+  \pgfmathsetmacro{\Bdeg}{3*\adeg}  % angle at B = 97.78
+  \pgfmathsetmacro{\Adeg}{\adeg}     % angle at A = 32.59
+  \pgfmathsetmacro{\Cdeg}{180 - 4*\adeg} % angle at C = 49.62
+
+  % Place B at origin, A at (1,0)
+  \coordinate (B) at (0,0);
+  \coordinate (A) at (1,0);
+  \coordinate (M) at (0.5,0);
+
+  % C : from B, direction 3*alpha from BA
+  % BC = sin(alpha)/sin(4*alpha)
+  \pgfmathsetmacro{\BC}{sin(\adeg)/sin(4*\adeg)}
+  \coordinate (C) at ({\BC*cos(\Bdeg)},{\BC*sin(\Bdeg)});
+
+  % Draw triangle
+  \draw[thick] (B)--(A)--(C)--cycle;
+  \draw[thick] (C)--(M);
+
+  % Extend base line
+  \draw[thin,gray] (-0.15,0)--(1.15,0);
+
+  % Labels
+  \node[below left] at (B) {$B$};
+  \node[below right] at (A) {$A$};
+  \node[above] at (C) {$C$};
+  \node[below] at (M) {$M$};
+
+  % Tick marks for AM = BM
+  \draw (0.22,0.03)--(0.28,-0.03);
+  \draw (0.72,0.03)--(0.78,-0.03);
+
+  % Angle at B = 3*alpha
+  \draw (0.12,0) arc[start angle=0, end angle=\Bdeg, radius=0.12];
+  \node at ({0.2*cos(\Bdeg/2)},{0.2*sin(\Bdeg/2)}) {$3\alpha$};
+
+  % Angle at A = alpha
+  \pgfmathsetmacro{\startA}{180 - \adeg}
+  \draw ({1+0.15*cos(\startA)},{0.15*sin(\startA)}) arc[start angle=\startA, end angle=180, radius=0.15];
+  \node at ({1+0.22*cos(\startA/2 + 90)},{0.22*sin(\startA/2 + 90)}) {$\alpha$};
+
+  % Angle CMA = 4*alpha at M
+  \pgfmathsetmacro{\angleCM}{atan2(\BC*sin(\Bdeg)-0, \BC*cos(\Bdeg)-0.5)}
+  \draw ({0.5+0.1*cos(0)},{0.1*sin(0)}) arc[start angle=0, end angle=\angleCM, radius=0.1];
+  \node at ({0.5+0.16*cos(\angleCM/2)},{0.16*sin(\angleCM/2)}) {$4\alpha$};
+
+  % AM = BM annotation
+  \node at (0.85,0.35) {$AM = BM$};
+\end{tikzpicture}
+\end{center}
+
+\section*{Solution}
+
+\textbf{\'Etape 1 -- Angles des sous-triangles.}
+
+Puisque $M \in (AB)$, les angles $\angle CMA$ et $\angle CMB$ sont suppl\'ementaires~:
+\[
+  \angle CMB = \pi - 4\alpha.
+\]
+
+Dans le \textbf{triangle $BCM$}~:
+\[
+  \angle MBC + \angle BMC + \angle BCM = \pi
+  \quad\Longrightarrow\quad
+  3\alpha + (\pi - 4\alpha) + \angle BCM = \pi
+  \quad\Longrightarrow\quad
+  \angle BCM = \alpha.
+\]
+
+Dans le \textbf{triangle $ACM$}~:
+\[
+  \angle MAC + \angle CMA + \angle ACM = \pi
+  \quad\Longrightarrow\quad
+  \alpha + 4\alpha + \angle ACM = \pi
+  \quad\Longrightarrow\quad
+  \angle ACM = \pi - 5\alpha.
+\]
+
+\textbf{Condition de validit\'e :} $\pi - 5\alpha > 0$, soit $\alpha < 36\degmark$.
+
+\bigskip
+
+\textbf{\'Etape 2 -- Loi des sinus dans chaque triangle.}
+
+On pose $a = BM = MA$.
+
+\medskip
+\emph{Triangle $BCM$} (angles : $3\alpha$ en $B$,\; $\pi - 4\alpha$ en $M$,\; $\alpha$ en $C$)~:
+\[
+  \frac{a}{\sin(\alpha)} = \frac{CM}{\sin(3\alpha)}
+  \qquad\Longrightarrow\qquad
+  CM = \frac{a\,\sin(3\alpha)}{\sin(\alpha)}.  \tag{1}
+\]
+
+\emph{Triangle $ACM$} (angles : $\alpha$ en $A$,\; $4\alpha$ en $M$,\; $\pi - 5\alpha$ en $C$)~:
+\[
+  \frac{a}{\sin(\pi - 5\alpha)} = \frac{CM}{\sin(\alpha)}
+  \qquad\Longrightarrow\qquad
+  CM = \frac{a\,\sin(\alpha)}{\sin(5\alpha)}.  \tag{2}
+\]
+
+\bigskip
+
+\textbf{\'Etape 3 -- \'Equation trigonom\'etrique.}
+
+En \'egalant (1) et (2)~:
+\[
+  \frac{\sin(3\alpha)}{\sin(\alpha)} = \frac{\sin(\alpha)}{\sin(5\alpha)}
+  \qquad\Longrightarrow\qquad
+  \boxed{\sin(3\alpha)\,\sin(5\alpha) = \sin^2(\alpha)}.
+\]
+
+\bigskip
+
+\textbf{\'Etape 4 -- Lin\'earisation (formules de produit).}
+
+\begin{itemize}
+  \item \`A gauche~: $\displaystyle \sin(3\alpha)\sin(5\alpha)
+    = \tfrac{1}{2}\bigl[\cos(2\alpha) - \cos(8\alpha)\bigr]$.
+  \item \`A droite~: $\displaystyle \sin^2(\alpha)
+    = \tfrac{1}{2}\bigl[1 - \cos(2\alpha)\bigr]$.
+\end{itemize}
+
+L'\'equation devient~:
+\[
+  \cos(2\alpha) - \cos(8\alpha) = 1 - \cos(2\alpha)
+\]
+\[
+  \boxed{\cos(8\alpha) = 2\cos(2\alpha) - 1}.
+\]
+
+\bigskip
+
+\textbf{\'Etape 5 -- R\'eduction polynomiale.}
+
+On pose $t = \cos(2\alpha)$. Le polyn\^ome de Tchebychev donne
+$\cos(8\alpha) = T_4(t) = 8t^4 - 8t^2 + 1$. Donc~:
+\[
+  8t^4 - 8t^2 + 1 = 2t - 1
+  \qquad\Longrightarrow\qquad
+  4t^4 - 4t^2 - t + 1 = 0.
+\]
+
+$t = 1$ est racine \'evidente (correspondant \`a $\alpha = 0$, trivial). On factorise~:
+\[
+  (t - 1)\underbrace{(4t^3 + 4t^2 - 1)}_{Q(t)} = 0.
+\]
+
+\emph{V\'erification~:} $(t-1)(4t^3+4t^2-1) = 4t^4 + 4t^3 - t - 4t^3 - 4t^2 + 1 = 4t^4 - 4t^2 - t + 1$.\;\checkmark
+
+\bigskip
+
+\textbf{\'Etape 6 -- R\'esolution du cubique.}
+
+Le polyn\^ome $Q(t) = 4t^3 + 4t^2 - 1$ n'a qu'une seule racine r\'eelle dans $[-1,\;1]$.
+
+Son discriminant vaut $\Delta = -4(4)^3(-1) - 27(4)^2(-1)^2 = 256 - 432 = -176 < 0$,
+ce qui confirme une seule racine r\'eelle (les deux autres sont complexes conjugu\'ees).
+
+Par la m\'ethode de Cardan ou par r\'esolution num\'erique~:
+\[
+  t_0 = \cos(2\alpha) \approx 0{,}4196
+  \qquad\Longrightarrow\qquad
+  2\alpha \approx 65{,}19\degmark
+\]
+\[
+  \boxed{\alpha \approx 32{,}59\degmark}
+\]
+
+\bigskip
+
+\textbf{\'Etape 7 -- V\'erification.}
+
+\begin{center}
+\begin{tabular}{ll}
+\hline
+Angle & Valeur \\
+\hline
+$\angle BAC = \alpha$ & $32{,}59\degmark$ \\
+$\angle ABC = 3\alpha$ & $97{,}78\degmark$ \\
+$\angle BCA = \pi - 4\alpha$ & $49{,}62\degmark$ \\
+$\angle CMA = 4\alpha$ & $130{,}38\degmark$ \\
+$\angle ACM = \pi - 5\alpha$ & $17{,}03\degmark$ \\
+$\angle BCM = \alpha$ & $32{,}59\degmark$ \\
+\hline
+Somme dans $\triangle ABC$ & $180\degmark$ \;\checkmark \\
+\hline
+\end{tabular}
+\end{center}
+
+V\'erification num\'erique de l'\'equation trigonom\'etrique~:
+\[
+  \sin(3\times 32{,}59\degmark)\,\sin(5\times 32{,}59\degmark)
+  \approx 0{,}2899
+  = \sin^2(32{,}59\degmark) \approx 0{,}2899.
+  \quad\checkmark
+\]
+
+\bigskip
+
+\textbf{Remarque.}
+La valeur exacte de $\alpha$ est donn\'ee par
+\[
+  \alpha = \frac{1}{2}\arccos(t_0)
+\]
+o\`u $t_0$ est l'unique racine r\'eelle du cubique $4t^3 + 4t^2 - 1 = 0$.
+Cette valeur n'est pas un multiple rationnel de $\pi$, ni un angle
+remarquable en degr\'es.
+
+\end{document}
