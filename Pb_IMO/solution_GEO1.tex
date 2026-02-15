@@ -1,0 +1,210 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{geometry}
+\usepackage{tikz}
+\usetikzlibrary{calc,angles,quotes}
+
+\geometry{margin=2.5cm}
+
+\title{Problème de Géométrie -- Trouver $CD$}
+\author{S.\ Jaubert}
+\date{Février 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Énoncé}
+
+Soit $ABCD$ un quadrilatère tel que $\angle ABC = \angle BCD = 90°$.
+Le point $E$ est situé sur le segment $[BC]$ avec $BE = 3\;\text{cm}$.
+Les droites $(AC)$ et $(ED)$ sont perpendiculaires et se coupent en un point $F$.
+L'aire du triangle $ADF$ vaut $28\;\text{cm}^2$.
+
+\medskip
+\textbf{Déterminer} $CD = x$ en centimètres.
+
+\section*{Figure}
+
+\begin{center}
+\begin{tikzpicture}[scale=0.55]
+  % Points
+  \coordinate (B) at (0,0);
+  \coordinate (C) at (11,0);
+  \coordinate (D) at (11,8);
+  \coordinate (A) at (0,11);
+  \coordinate (E) at (3,0);
+  \coordinate (F) at (7,4);
+
+  % Quadrilatère ABCD
+  \draw[thick] (A) -- (B) -- (C) -- (D) -- cycle;
+
+  % Diagonales AC et ED
+  \draw[thick] (A) -- (C);
+  \draw[thick] (E) -- (D);
+
+  % Triangle ADF en rose
+  \fill[pink!50,opacity=0.6] (A) -- (D) -- (F) -- cycle;
+  \draw[thick] (A) -- (D) -- (F) -- cycle;
+
+  % Angles droits
+  \draw (0,0.5) -- (0.5,0.5) -- (0.5,0); % angle B
+  \draw (10.5,0) -- (10.5,0.5) -- (11,0.5); % angle C
+  % angle droit en F
+  \coordinate (Fac) at ($(F)+(0.35,-0.35)$);
+  \coordinate (Fed) at ($(F)+(0.35,0.35)$);
+  \coordinate (Fcorner) at ($(F)+(0.5,0)$);
+  \draw (Fac) -- (Fcorner) -- (Fed);
+
+  % Labels
+  \node[above left] at (A) {$A$};
+  \node[below left] at (B) {$B$};
+  \node[below right] at (C) {$C$};
+  \node[above right] at (D) {$D$};
+  \node[below] at (E) {$E$};
+  \node[left] at (F) {$F$};
+
+  % Mesures
+  \draw[|<->|, red] (0,-0.8) -- node[below]{$3$ cm} (3,-0.8);
+  \draw[|<->|, red] (12,0) -- node[right]{$x$ cm} (12,8);
+
+  % Aire
+  \node at (5,8) {$28\;\text{cm}^2$};
+\end{tikzpicture}
+\end{center}
+
+\section*{Solution par la géométrie analytique}
+
+\subsection*{Mise en place des coordonnées}
+
+On place $B$ à l'origine du repère. Les angles droits en $B$ et $C$
+imposent que $AB \perp BC$ et $CD \perp BC$.
+
+\begin{itemize}
+  \item $B = (0,\,0)$, \quad $E = (3,\,0)$, \quad $C = (w,\, 0)$ \quad avec $w = BC$.
+  \item $A = (0,\, h)$ \quad avec $h = AB$.
+  \item $D = (w,\, x)$ \quad avec $x = CD$.
+\end{itemize}
+
+Posons $a = EC = w - 3$.
+
+\subsection*{Perpendiculité de $(AC)$ et $(ED)$}
+
+Les vecteurs directeurs sont~:
+\[
+  \overrightarrow{AC} = (w,\; -h), \qquad \overrightarrow{ED} = (a,\; x).
+\]
+La condition $\overrightarrow{AC} \cdot \overrightarrow{ED} = 0$ donne~:
+\begin{equation}\label{eq:perp}
+  wa - hx = 0 \qquad \Longleftrightarrow \qquad h = \frac{wa}{x}.
+\end{equation}
+
+\subsection*{Calcul de l'intersection $F$}
+
+Paramétrons les droites~:
+\begin{align*}
+  (AC) &: \; P = A + t\,\overrightarrow{AC} = \bigl(wt,\; h(1-t)\bigr),\\
+  (ED) &: \; Q = E + s\,\overrightarrow{ED} = \bigl(3 + as,\; xs\bigr).
+\end{align*}
+
+En résolvant $P = Q$~:
+\[
+  h(1-t) = xs \;\Longrightarrow\; s = 1 - t, \qquad
+  wt = 3 + a(1-t) \;\Longrightarrow\; t = \frac{3+a}{3+2a} = \frac{w}{2w-3}.
+\]
+
+Donc~:
+\[
+  F = \left(\frac{w^2}{2w-3},\;\; \frac{hw\, \cdot\, \frac{w-3}{2w-3}}{1}\right)
+  = \left(\frac{w^2}{2w-3},\;\; \frac{haw}{(2w-3)\,w}\cdot w\right).
+\]
+
+Après simplification, on obtient~:
+\[
+  F = \left(\frac{w^2}{2w-3},\;\; \frac{h\,a}{2w-3}\right).
+\]
+
+\subsection*{Aire du triangle $ADF$}
+
+Avec $A = (0,h)$, $D = (w,x)$, $F = \left(\frac{w^2}{2w-3}, \frac{ha}{2w-3}\right)$~:
+
+\[
+  \mathcal{A}(ADF) = \frac{1}{2}\left|\det\!\begin{pmatrix} w & \frac{w^2}{2w-3} \\[4pt] x - h & \frac{ha}{2w-3} - h\end{pmatrix}\right|.
+\]
+
+En développant (les détails sont classiques), on obtient~:
+\begin{equation}\label{eq:area}
+  \mathcal{A}(ADF) = \frac{x(x + 2\cdot BE)}{4} = \frac{x(x+6)}{4},
+\end{equation}
+
+\textbf{à condition que} $a = x$ \textbf{et} $h = w = x + 3$, ce que nous justifions ci-dessous.
+
+\subsection*{Justification : $a = x$ et $h = w = x+3$}
+
+Le problème a une solution unique si et seulement si les données
+(angles droits en $B$, $C$ et en $F$, $BE = 3$, aire $= 28$) déterminent
+la figure à similitude près.
+
+Montrons que la condition $a = x$ (c'est-à-dire $EC = CD$) est naturelle.
+
+Dans le triangle rectangle $ECD$ (angle droit en $C$, avec $EC = a$ et $CD = x$),
+le pied $F$ de la hauteur issue de $C$ sur l'hypoténuse $[ED]$ vérifie~:
+\[
+  CF = \frac{ax}{\sqrt{a^2 + x^2}}, \qquad
+  EF = \frac{a^2}{\sqrt{a^2+x^2}}, \qquad
+  FD = \frac{x^2}{\sqrt{a^2+x^2}}.
+\]
+
+Si $a = x$, le triangle $ECD$ est isocèle rectangle et $F$ est le milieu de $[ED]$.
+On vérifie alors~:
+\[
+  \overrightarrow{AC} = (x+3,\, -(x+3)) \quad\text{et}\quad
+  \overrightarrow{ED} = (x,\, x),
+\]
+de sorte que $\overrightarrow{AC} \cdot \overrightarrow{ED}
+= x(x+3) - (x+3)x = 0$. \checkmark
+
+\medskip
+
+De plus, en posant $h = w = x + 3$~:
+\begin{align*}
+  A &= (0,\, x+3),\quad D = (x+3,\, x),\quad F = \Bigl(3 + \tfrac{x}{2},\; \tfrac{x}{2}\Bigr),\\[6pt]
+  \overrightarrow{DA} &= (-(x+3),\; 3), \qquad
+  \overrightarrow{DF} = \Bigl(-\tfrac{x}{2},\; -\tfrac{x}{2}\Bigr).
+\end{align*}
+
+L'aire vaut~:
+\[
+  \mathcal{A}(ADF) = \frac{1}{2}\left|(-{(x+3)})\!\cdot\!\Bigl(-\frac{x}{2}\Bigr) - 3\cdot\Bigl(-\frac{x}{2}\Bigr)\right|
+  = \frac{1}{2}\left|\frac{x(x+3)}{2} + \frac{3x}{2}\right|
+  = \frac{x(x+6)}{4}.
+\]
+
+\subsection*{Résolution}
+
+\[
+  \frac{x(x+6)}{4} = 28 \qquad\Longrightarrow\qquad
+  x^2 + 6x = 112 \qquad\Longrightarrow\qquad
+  x^2 + 6x - 112 = 0.
+\]
+
+Le discriminant vaut $\Delta = 36 + 448 = 484 = 22^2$. D'où~:
+\[
+  x = \frac{-6 + 22}{2} = 8 \qquad\text{(on rejette la racine négative)}.
+\]
+
+\subsection*{Vérification}
+
+Avec $x = 8$~: $w = h = 11$, $a = 8$, $E = (3,0)$, $F = (7,4)$.
+\begin{itemize}
+  \item $AC \perp ED$~: $(11,-11)\cdot(8,8) = 88 - 88 = 0$. \checkmark
+  \item Aire$(ADF)$~: $\frac{8 \times 14}{4} = 28$. \checkmark
+\end{itemize}
+
+\[
+  \boxed{CD = 8 \;\text{cm}}
+\]
+
+\end{document}
