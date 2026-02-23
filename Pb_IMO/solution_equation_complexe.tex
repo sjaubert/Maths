@@ -1,0 +1,110 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage{geometry}
+
+\geometry{margin=2.5cm}
+\title{R\'esolution dans $\mathbb{C}$ d'une \'equation irrationnelle}
+\author{S.\ Jaubert}
+\date{F\'evrier 2026}
+
+\begin{document}
+\maketitle
+
+\section*{\'Enonc\'e}
+
+R\'esoudre dans $\mathbb{C}$ :
+\[
+  \frac{1}{1+\sqrt{x^2-x+1}} + \frac{x}{1+\sqrt{x^2+x+1}} = 1
+\]
+
+\section*{Solution}
+
+On pose $u = \sqrt{x^2-x+1}$ et $v = \sqrt{x^2+x+1}$.
+
+\bigskip
+
+\textbf{\'Etape 1 -- R\'eduction alg\'ebrique.}
+
+En r\'eduisant au m\^eme d\'enominateur, l'\'equation devient :
+\[
+  (1+v) + x(1+u) = (1+u)(1+v)
+\]
+Apr\`es d\'eveloppement et simplification :
+\[
+  x(1+u) = u(1+v) \qquad (\star)
+\]
+
+\bigskip
+
+\textbf{\'Etape 2 -- \'Elimination des radicaux.}
+
+De $(\star)$ on tire $uv = x + u(x-1)$, soit $v = \dfrac{x}{u} + (x-1)$. En \'elevant au carr\'e et en utilisant $u^2 = x^2-x+1$ et $v^2 = x^2+x+1$, apr\`es calcul on obtient (pour $x \neq 0$, $x \neq 1$) :
+\[
+  3x^2 - 4x + 3 = 2(x-1)\,u
+\]
+En \'elevant \`a nouveau au carr\'e, on aboutit au polyn\^ome :
+\[
+  5x^4 - 12x^3 + 18x^2 - 12x + 5 = 0
+\]
+
+\bigskip
+
+\textbf{\'Etape 3 -- Polyn\^ome palindromique.}
+
+Les coefficients $(5,\, -12,\, 18,\, -12,\, 5)$ sont sym\'etriques. En divisant par $x^2$ et en posant $t = x + \dfrac{1}{x}$ :
+\[
+  5\!\left(t^2 - 2\right) - 12t + 18 = 0 \quad \Longrightarrow \quad 5t^2 - 12t + 8 = 0
+\]
+Le discriminant vaut $\Delta_t = 144 - 160 = -16 < 0$, d'o\`u :
+\[
+  t = \frac{6 \pm 2i}{5}
+\]
+
+\textbf{Cons\'equence :} l'\'equation n'admet \textbf{aucune solution r\'eelle}.
+
+\bigskip
+
+\textbf{\'Etape 4 -- R\'esolution des \'equations quadratiques.}
+
+Pour chaque valeur de $t$, on r\'esout $x^2 - tx + 1 = 0$.
+
+\medskip
+
+\noindent\textit{Cas $t = \dfrac{6+2i}{5}$ :}
+L'\'equation $5x^2 - (6+2i)\,x + 5 = 0$ a pour discriminant :
+\[
+  \Delta = (6+2i)^2 - 100 = -68 + 24i
+\]
+On v\'erifie que $\sqrt{\Delta} = \alpha + i\beta$, o\`u
+\[
+  \alpha = \sqrt{10\sqrt{13} - 34}, \qquad \beta = \sqrt{10\sqrt{13} + 34}, \qquad \alpha\,\beta = 12.
+\]
+Les deux racines sont :
+\[
+  x = \frac{6 + 2i \pm (\alpha + i\beta)}{10}
+\]
+
+\medskip
+
+\noindent\textit{Cas $t = \dfrac{6-2i}{5}$ :} par conjugaison, les racines sont $\overline{x}$.
+
+\bigskip
+
+\textbf{\'Etape 5 -- \'Elimination des solutions parasites.}
+
+La mise au carr\'e a pu introduire des racines \'etrang\`eres. La v\'erification num\'erique montre que seules les racines correspondant au signe $+$ dans chaque cas satisfont l'\'equation originale. On obtient le couple de solutions conjugu\'ees :
+
+\[
+\boxed{x = \frac{6 + \alpha}{10} \pm \, i\;\frac{2 + \beta}{10}}
+\]
+
+o\`u $\alpha = \sqrt{10\sqrt{13} - 34}$ et $\beta = \sqrt{10\sqrt{13} + 34}$.
+
+\bigskip
+
+Num\'eriquement : $\;x \approx 0{,}743 \pm 1{,}037\,i$.
+
+\end{document}
