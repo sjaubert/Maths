@@ -1,0 +1,95 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage{geometry}
+
+\geometry{margin=2.5cm}
+\title{Probl\`eme de l'Olympiade -- Divisibilit\'e par 2027}
+\author{S.\ Jaubert}
+\date{F\'evrier 2026}
+
+\begin{document}
+\maketitle
+
+\section*{\'Enonc\'e}
+
+Existe-t-il un entier positif $n$ tel que le nombre
+\[
+  N = \underbrace{2026\,2026\,2026\,\dots\,2026}_{2026 \text{ r\'ep\'et\'e } n \text{ fois}}
+\]
+soit divisible par $2027$ ?
+
+\section*{Solution}
+
+La r\'eponse est \textbf{oui}. Montrons-le.
+
+\bigskip
+
+\textbf{\'Etape 1 -- \'Ecriture math\'ematique du nombre $N$.}
+
+Le nombre $N$ est constitu\'e du bloc ``$2026$'' r\'ep\'et\'e $n$ fois. Le bloc $2026$ a $4$ chiffres, nous pouvons donc l'exprimer comme une somme g\'eom\'etrique en base $10$ :
+\begin{align*}
+N &= 2026 \times 10^{4(n-1)} + 2026 \times 10^{4(n-2)} + \dots + 2026 \times 10^{4} + 2026 \\
+  &= 2026 \left( 10^{4(n-1)} + 10^{4(n-2)} + \dots + 10^4 + 1 \right) \\
+  &= 2026 \sum_{k=0}^{n-1} \left(10^4\right)^k
+\end{align*}
+En utilisant la formule de la somme des termes d'une suite g\'eom\'etrique de raison $10^4$, on obtient :
+\[
+  N = 2026 \, \frac{10^{4n} - 1}{10^4 - 1} = 2026 \, \frac{10^{4n} - 1}{9999}
+\]
+
+\bigskip
+
+\textbf{\'Etape 2 -- Condition de divisibilit\'e par $2027$.}
+
+Nous cherchons si $N \equiv 0 \pmod{2027}$.
+Remarquons tout d'abord que $2026 \equiv -1 \pmod{2027}$. En particulier, $2026$ n'est pas un multiple de $2027$ (ils sont premiers entre eux).
+Ainsi, $2027$ doit diviser le facteur $\frac{10^{4n} - 1}{9999}$.
+
+V\'erifions si $2027$ est un nombre premier. La racine carr\'ee de $2027$ est comprise entre $45$ et $46$ ($45^2 = 2025$). Il suffit de tester sa divisibilit\'e par les nombres premiers jusqu'\`a $43$ :
+$2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43$.
+Aucun de ces nombres ne divise $2027$. Par cons\'equent, \textbf{$2027$ est un nombre premier}.
+
+Puisque $2027$ est premier et qu'il est sup\'erieur \`a $101$, il ne divise par aucun des facteurs premiers de $9999$ (qui sont $3$, $11$ et $101$). Ainsi, $\operatorname{pgcd}(9999, 2027) = 1$.
+Il en r\'esulte que :
+\[
+  2027 \mid \frac{10^{4n} - 1}{9999} \iff 2027 \mid \left(10^{4n} - 1\right)
+\]
+Nous cherchons donc un entier positif $n$ tel que :
+\[
+  10^{4n} \equiv 1 \pmod{2027}
+\]
+
+\bigskip
+
+\textbf{\'Etape 3 -- Application du Petit Th\'eor\`eme de Fermat.}
+
+Comme $2027$ est un nombre premier et ne divise pas $10$, nous pouvons appliquer le \textbf{Petit Th\'eor\`eme de Fermat} :
+\[
+  10^{2026} \equiv 1 \pmod{2027}
+\]
+Pour que notre condition $10^{4n} \equiv 1 \pmod{2027}$ soit satisfaite, il suffit de choisir un entier $n$ tel que l'exposant $4n$ soit un multiple de $2026$.
+Posons $4n = 2026 \times k$ pour un entier $k$.
+Afin de minimiser $n$, choisissons $k = 2$ :
+\[
+  4n = 2026 \times 2 = 4052 \implies n = 1013
+\]
+V\'erifions :
+Si $n = 1013$, alors $10^{4n} = 10^{4052} = \left(10^{2026}\right)^2$.
+Sachant que $10^{2026} \equiv 1 \pmod{2027}$, on a bien :
+\[
+  10^{4052} \equiv 1^2 \equiv 1 \pmod{2027}
+\]
+
+Ainsi, $10^{4052} - 1$ est un multiple de $2027$. Puisque $2027$ est premier avec $9999$, le nombre $\frac{10^{4052} - 1}{9999}$ est \'egalement un multiple de $2027$.
+Enfin, par cons\'equent, $N$ est donc bien un multiple de $2027$.
+
+\bigskip
+
+\textbf{Conclusion :}
+
+Oui, il existe un tel entier. Par exemple, \textbf{$n = 1013$} est une solution valide. (En fait, tout entier $n$ de la forme $1013 \times m$ avec $m \in \mathbb{N}^*$ est \'egalement solution).
+
+\end{document}

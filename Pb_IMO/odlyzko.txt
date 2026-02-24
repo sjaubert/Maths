@@ -1,0 +1,567 @@
+mathematics of computation
+volume 61,number 203
+
+july
+
+1993,pages 373-380
+
+ITERATED ABSOLUTE VALUES OF DIFFERENCES OF
+
+CONSECUTIVE PRIMES
+ANDREW M. ODLYZKO
+Dedicated to the memory of D. H. Lehmer
+
+Abstract. Let dç,(n) = p„ , the nth prime, for n > 1 , and let dk+x(n) =
+\dk(n) - dk(n + 1)| for k > 0, n > 1 . A well-known conjecture, usually
+ascribed to Gilbreath but actually due to Proth in the 19th century, says that
+dk(\) = 1 for all k > 1 . This paper reports on a computation that verified
+this conjecture for k < tt(1013) » 3 x 10" . It also discusses the evidence and
+the heuristics about this conjecture. It is very likely that similar conjectures are
+also valid for many other integer sequences.
+
+1. Introduction
+Let pi =2,
+
+p2 = 3, ...
+
+be the primes in their natural ordering, and set
+do(n) =pn,
+
+n>\,
+
+dk+x(n) = \dk(n)-dk(n+l)\,
+
+k>0,n>
+
+1.
+
+Table 1 (next page) shows dk(n) for 0 < k < 20, 1 < n < 20. Note that
+dk(l) = 1 for 1 < k < 20. As was pointed out by H. C. Williams, Proth [15]
+claimed to prove that dk(l) = 1 for all k > 1, but his proof was faulty. More
+recently, Gilbreath (unpublished) independently conjectured that dk(l) — 1 for
+all k > 1 . (See Problem A10 in [7], and also [8].) This is usually referred to as
+Gilbreath's conjecture.
+Gilbreath's conjecture was verified for k < 63,419, that is for all primes
+< 792,731 , by Killgrove and Ralston [8], who were fellow students of Gilbreath
+at UCLA in the late 1950s. This paper reports on a verification of this conjecture
+for all primes < 1013, so that dk(l) = 1 for 1 < k < 3.4 x 1011. The
+computational results are presented in §3, and the algorithms that were used
+are described in §4.
+For a general sequence do(n), to compute dk(l) it is necessary to compute
+dj(i) for all i + j < k + 1, so that for k ~ 3.4 x 10" approximately 5 x 1022
+numbers have to be computed, far too many for the technology of today or the
+near future. The computations for d0(n) - pn were possible because of special
+properties of the primes. Note that dk(l) is odd and dk(2), dk(3), ... , are
+even for all k > 1 . If for some A^ we find a K such that dfc(l) - 1 while
+dn(n) = 0 or 2 for all 1 < n < N, then we can conclude that dk(l) = 1 for
+
+K<k<N
++ K-l.
+Let C7(7V)denote the minimal k (if it exists) such that
+dj(l) =1 for 1 < j < k and dk(n) = 0 or 2 for 1 < n < N. Computations
+Received by the editor July 15, 1992.
+
+1991 MathematicsSubject Classification.Primary 11N05, 11Y99;Secondary 11K36, 11Y16,
+68Q25.
+373
+
+©1993 American Mathematical Society
+0025-5718/93 $1.00+ $.25 per page
+
+A. M. ODLYZKO
+
+374
+
+Table 1. Iterated differences dk(n) for 0 < k < 20, 1 < n < 20
+k\n
+0
+
+13
+
+17
+
+19
+
+23
+
+10
+
+11
+
+12
+
+13
+
+14
+
+15
+
+16
+
+17
+
+18
+
+19
+
+20
+
+29
+
+31
+
+37
+
+41
+
+43
+
+47
+
+53
+
+59
+
+61
+
+67
+
+71
+
+1
+
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+
+20
+
+show that G(N) does exist for all N that have been checked and is small.
+Table 2 presents some values. (Similar observations have been made before,
+
+cf. pp. 34-35 in [17].)
+A rigorous proof of Gilbreath's conjecture appears out of reach, given our
+knowledge of primes. Maximal gaps between consecutive primes around x are
+thought to be not much larger than (logx)2. (There is a conjecture of Cramer
+[5] that these gaps are 0((logx)2), and numerical evidence [3, 4, 20] supports
+this conjecture as well as a slightly stronger one of Shanks [16]. There are
+heuristic arguments, based on work of Maier [9], that suggest the true order
+of magnitude might be slightly larger, but at most by some fractional power
+of log log x.) However, the best published result is that of Mozzochi [10],
+namely that these gaps are < x0-548 for large x , and even on the assumption
+of the Riemann Hypothesis the bound for gaps can currently be lowered only to
+
+Table 2. Smallest k such that dk(n) —0, 1 , or 2 for all n < n(x)
+x
+
+n(x)
+
+25
+168
+1,229
+9,592
+78,498
+664,579
+5,761,455
+50,847,534
+455,052,511
+1010
+10"
+4,118,054,813
+1012 37,607,912,018
+1013 346,065,536,839
+102
+103
+104
+105
+106
+107
+108
+109
+
+G(n(x))
+
+5
+15
+35
+65
+
+95
+135
+175
+248
+329
+417
+481
+
+635
+
+ITERATED DIFFERENCES OF PRIMES
+
+375
+
+x i/2+o(i) as x —>oo . Further, gaps are thought to behave randomly, but nothing
+has been proved in this direction. Thus, it is conceivable that for some n , dx(n)
+is huge, while dx (j) for 1 < j < n - 1 are small and evenly distributed, so that
+d2(n - I), d}(n-2),...
+, dn(l) are all large.
+Section 2 discusses some heuristics which indicate that Gilbreath's conjecture
+is likely to be true. They also indicate what results might suffice to prove this
+conjecture, and support the suggestion that corresponding conjectures are likely
+to hold for many other sequences.
+
+2. Heuristics
+The Gilbreath conjecture appears difficult because there are few tools for
+studying absolute values of differences of a sequence. We will argue that this
+difficulty is not serious, and that a proof of Gilbreath's conjecture could probably
+be obtained if we could prove results about primes that appear much simpler.
+Unfortunately, those results are also unreachable with known tools.
+The dk(n) fork>l,
+n > 2, are even, and so dk(n) = 0 or 2 (mod 4) in
+that range. We note that the definition (1.1) then implies that
+
+(2.2)
+
+dk+x(n) = dk(n) + dk(n + 1) (mod 4)
+
+for k > 1, n > 2. This converts a problem defined by absolute values into
+one involving linear congruences modulo 4. Further, these congruences are
+of the simplest possible type, those that occur in Pascal's triangle modulo 2.
+(Modulus 4 arises only because of the factor 2 that is present in the dk(n).)
+If the primes are truly as random as they appear, the dx(n) modulo 4 behave randomly, and then the linear congruence (2.2) suggests that the dk(n)
+(mod 4) are random. It seems likely, therefore, that about half of the dk(n)
+
+will be 0 (mod 4) and half will be 2 (mod 4), with neighboring values almost
+independent. Numerical evidence supports the conjecture that the dx(n)/2,
+reduced modulo 2, are asymptotically independent for large n. (This is true
+only asymptotically, though, and among the dx(n)/2 for small n , there is an
+excess of odd ones, so that 2956 of the dx(n)/2 for 2 < n < 5001 are odd, for
+example. Such dependencies among small primes were apparently first noted by
+F. Roesler and his students in unpublished work about six years ago.) This independence follows also from the Cramer probabilistic model [5], which predicts
+that gaps between consecutive primes follow the Poisson law. There is a proof
+by Gallagher [6] that a form of the Poisson law for prime gaps follows from a
+quantitative form of the Hardy-Littlewood prime /r-tuple conjecture, and one
+can apply Gallagher's arguments directly to conclude that the dx (n)/2 reduced
+modulo 2 are independent for nearby values of n. At present, no method is
+available for proving anything rigorously. If one could prove that the dx(n)
+modulo 4 are asymptotically independent, the proof might provide enough machinery to show that along any path through which a large dx(n) (which would,
+after all, have to be < n°-55 for n large) could possibly produce a large dk(l),
+there would be enough collisions with nonzero values of dj(m) to reduce the
+influence of this large difference. (What complicates a possible analysis of this
+kind is that a large dx (n) would not necessarily produce d„( 1) > 1 , but possibly
+only dm( 1) > 1 for some m > n .)
+
+A. M. ODLYZKO
+
+376
+
+The arguments above apply to many other sequences in which the first element is a 1, the others even, and where the gaps between consecutive elements
+are not too large and are sufficiently random. Therefore, as has been observed
+before (cf. Problem A10 of [7]), there is probably not too much special about
+the primes in Gilbreath's conjecture.
+
+3. Computational
+
+results
+
+Table 2 shows the value of G(N) for various yV up to N = 7r(1013). The
+function G(N) describes the extreme behavior that is observed. To consider the
+average behavior, let g(n) for n > 2 be the least k such that dj(n) = 0 or 2 for
+k < J < k + 1000. (It is likely that for all n that were computed, dj(n) = 0 or
+2 for all j > g(n), but we cannot prove that. If true, it would imply Gilbreath's
+conjecture.) The average value of g(n) (derived from sampling over intervals
+of length 8 x 107) is presented in Table 3 for several values of n . The values
+of g(n) are considerably smaller than G(N), and this was used to increase the
+
+speed of the algorithm, as is noted in §4.
+Table 3. Average values of g(n) for n near A^
+
+N
+
+Average of g(n)
+
+108
+
+22.1
+27.0
+32.8
+
+1010
+1012
+
+Table 4. Average values of dk(n) for various k , averaged over
+289182 values of n near tt(1012)
+
+k average of dk(n)
+
+5
+
+27.66
+25.51
+19.63
+19.69
+13.50
+
+10
+20
+50
+100
+150
+
+8.33
+4.93
+1.76
+1.15
+1.01
+
+1
+2
+
+3
+4
+
+Figures 1-3 show graphs of dk(n) for ?r(1012) + 1 < n < n(lOi2) + 104
+for k = 1, 50, and 100. This interval appears to be typical, and the graphs
+show that the process quickly reduces almost all entries to 0 and 2 (the two
+heavy lines in Figures 2 and 3), with only a few large values that require many
+additional iterations to reduce. Table 4 shows average values of dk(n) for
+tt(1012) + 1 < n < tt(1012) + tt(8 x 106) = ti(1012)) + 289182 and various
+
+377
+
+ITERATED DIFFERENCES OF PRIMES
+
+iterated absolute values of primes near 10A12
+
+- SA
+
+2000
+
+4000
+
+6000
+
+8000
+
+10000
+
+n-pi(10A12)
+
+Figure
+
+1. Differences dx(n) for 104 primes near 1012
+
+iterated absolute values of primes near 10A12
+
+2000
+
+4000
+
+6000
+
+8000
+
+10000
+
+n-pi(10"12)
+
+Figure
+
+2. Differences d¡o(n) for 104 primes near 1012
+
+A. M. ODLYZKO
+
+378
+
+iterated absolute values of primes near 10A12
+
+s SJ
+
+§ 8
+
+2000
+
+4000
+
+6000
+
+8000
+
+10000
+
+n-pi(10A12)
+
+Figure 3. Differences dXOo(n)for 104 primes near 1012
+
+values of k. In this set, dk(n) is reduced to 0 and 2 for k = 213. We note
+that the average values of dk(n) are not monotone decreasing with k .
+At the end of the Introduction, we noted that if huge gaps between consecutive primes existed, then Gilbreath's conjecture might be false. Large values
+of g(n) (and therefore of G(N)) do appear to be associated with large prime
+gaps. Every large value of g(n) that was looked at carefully (a very small selection, it should be stressed) was due to a large prime gap. There were some
+large prime gaps that did not lead to large values of g(n), since other prime
+gaps nearby served to reduce it. Statistically, though, the association between
+large prime gaps and large values of g(n) is noticeable. Over 104 blocks of
+length 8 x 106 each around 5.25 x 1012 (see §4 for a definition), the correlation between maximal values of g(n) and maximal prime gaps in a block was
+0.52. The largest value of g(n) that was found, g(n) = 635 for n close to
+7r(7.17716 x 1012), is due to the prime gap 674, which is the largest one up to
+that height ([3, 20]). The second largest value of g(n), g(n) = 589 for n close
+to 7r(2.61494 x 1012), is due to the prime gap 652, which is also the largest one
+
+up to its height.
+To provide some information about large primes, computations were also
+done with a set of primes near 1050 that had been computed by the author
+earlier for a different purpose. Let w0(l) < u0(2) < ••• < w0(8737) be the
+primes in the interval [1050, 1050+ 106], and let uk+x(n) = \uk(n) - uk(n + \)\
+for k > 0, n + k < 8737. It was found that max|<„<8736 ux(n) = 920, and
+
+iterated differences of primes
+
+379
+
+«436(i) = 0 or 2 for all 1 < n < 8301 , so that 436 iterations sufficed to reduce
+this finite sequence.
+The interval [10100, 10100+ 107] was also tested. Deterministic primality
+tests would have required too much time, so this interval was first sieved by
+small primes, and then the remaining elements were tested using the probable
+prime tests in the Maple symbolic manipulation system. Thus, although the
+43271 integers that were found to be all the probable primes are likely to be
+prime, this has not been rigorously established. The largest gaps between any
+two consecutive probable primes was 2592, and 1417 iterations were required
+to reduce the iterated differences to 0's and 2's.
+4. Algorithms
+
+Computation was performed in blocks B = [bx, b2] of integers from bx
+(which was always even) to b2 (which was odd), with the length of the block
+varying between 5 x 105 and 8 x 106. The first step was to compute the
+1 /?
+primes in B using a previously computed table of primes < b2 . There is
+an extensive literature on prime number sieves (for example [1, 2, 11, 12, 13,
+14, 18, 19]) and there are some theoretically extremely fast algorithms, such
+as the Pritchard method [11] that finds all primes < x in 0(x(loglogx)_1)
+arithmetic operations. However, for numbers of the sizes considered here, the
+conventional versions of the sieve of Eratosthenes are both faster and simpler
+to implement (cf. [19]), and so an algorithm similar to the "segmented sieve" of
+Bays and Hudson [1] and of Brent [3] was used. Since on the processor that was
+used access to memory was more of a bottleneck than processor speed, some of
+the operations were segmented further so as to fit into the cache memory.
+Once the primes in a block B were determined, they were used together with
+the last 1000 primes from the preceding block to carry out the second phase, the
+absolute value of difference iterations. (The number 1000 was chosen to exceed
+anticipated values of G(N).) Between 50 and 75 iterations were performed on
+the whole array, and this sufficed to reduce most entries to 0's and 2's. This
+procedure took most of the computing time of the second phase. Finally, the
+remaining values of dk(n) > 2 were grouped into sets that were isolated from
+each other, and further iterations were performed on those sets. The block
+B = [1012, 1012+ 8 x 106 - 1], which appears to be rather typical, contained
+289,182 primes. After 75 iterations, there were 4640 values of n with djs(n) >
+2, and they were grouped into 516 sets which together with the 0 and 2 entries
+that were associated covered 18,698 values of n . (Enough of the adjoining
+0 and 2 entries were included to ensure validity of the computation.)
+This
+procedure substantially improved the performance of the algorithm. Further
+speedups can be obtained by more sophisticated versions of this strategy.
+Programs were written in Fortran. They were run on a Silicon Graphics 4D220 computer that has 4 R3000 MIPS Computers 25 MHz processors, each
+rated at about 18 mips, and 128 Mbytes of main memory. (The memory that
+was required for the programs varied between 5 and 20 megabytes, so was not a
+constraint.) Programs were run at a low priority so as to use only spare cycles.
+The code was not carefully optimized, and a speedup by a factor of 2 can probably be achieved. Total run time (for a single processor) was several months,
+with about 2 seconds necessary to process an interval of length 106. About half
+
+A. M. ODLYZKO
+
+380
+
+the machine time was spent in sieving for primes, and half in computing the
+iterated absolute values of the differences.
+There is some question about the reliability of a computation as long as this
+one, especially since there are no easy methods for checking the results. The
+results stated in the text and in the tables are thought to be correct, but cannot
+be fully guaranteed. All instances where a value of g(n) > 500 was found were
+checked, and one error was discovered that way. The block B — [M, M + 8 x
+106) for M = 8.972168 x 1012 had been processed in two separate runs which
+gave maximal values of g(n) for nefi of 914 and 261, respectively, with the
+higher value supposedly due to a prime gap of 1158. There is no such gap at
+this height, and 261 is the correct value, as additional computations showed. It
+was not possible to find out what caused the error.
+Bibliography
+1. C. Bays and R. H. Hudson, The segmented sieve of Eratosthenes and primes in arithmetic
+
+progressions to 1012,BIT 17 (1977), 121-127.
+2. S. A. Bengelloun, An incremental primal sieve, Acta Inform. 23 (1986), 119-125.
+3. R. P. Brent, The first occurrence of large gaps between successive primes, Math. Comp. 27
+
+(1973), 959-963.
+4. _,
+The first occurrence of certain large prime gaps, Math. Comp. 35 (1980), 1435-1436.
+5. H. Cramer, On the order of magnitude of the difference between consecutive prime numbers,
+
+Acta Arith. 2(1937), 23-46.
+6. P. X. Gallagher, On the distribution of primes in short intervals, Mathematika
+
+23 (1976),
+
+4-9.
+7. R. K. Guy, Unsolved problems in number theory, Springer-Verlag, Berlin and New York,
+
+1981.
+8. R. B. Killgrove and K. E. Ralston, On a conjecture concerning the primes, Math. Comp.
+
+(Math. Tables Aids Comp.) 13 (1959), 121-122.
+9. H. Maier, Primes in short intervals, Michigan Math. J. 32 (1985), 221-225.
+10. C. J. Mozzochi, On the difference between consecutive primes, J. Number Theory 24 (1986),
+
+181-187.
+11. P. Pritchard, A sublinear additive sieve for finding prime numbers, Comm. ACM 24 (1981),
+
+18-23.
+12. _,
+Explaining the wheel sieve, Acta Inform. 17 (1982), 477-485.
+13. _,
+
+Fast compact prime number sieves (among others), J. Algorithms 4 (1983), 332-344.
+
+14. _,
+
+Linear prime-number sieves; A family tree, Sei. Comput. Programming 9 (1987),
+
+17-35.
+15. F. Proth, Sur la série des nombres premiers, Nouvelle Correspondance
+
+Mathématique
+
+4
+
+(1878), 236-240.
+16. D. Shanks, On maximal gaps between successive primes, Math. Comp. 18 (1964), 646-651.
+
+17. W. Sierpinski, A selection of problems in the theory of numbers, Pergamon Press, Oxford,
+
+1964.
+18. J. Sorenson, An introduction to prime number sieves, Computer Science Technical Report
+
+#909, Univ. of Wisconsin-Madison, Jan. 1990.
+19. _,
+An analysis of two prime number sieves, Computer Science Technical Report #1028,
+Univ. of Wisconsin-Madison, June 1991.
+20. J. Young and A. Potier, First occurrence prime gaps, Math. Comp. 52 (1989), 221-224.
+
+AT&T Bell Laboratories,
+Murray Hill, New Jersey 07974
+E-mail address : amo@research.att.com
+
+
