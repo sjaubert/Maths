@@ -1,0 +1,86 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\geometry{a4paper, margin=2.5cm}
+
+\title{Probabilité que deux entiers soient premiers entre eux : L'apparition surprenante de $\pi$}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+L'apparition de $\pi$ (un nombre géométrique) dans un pur problème de dénombrement d'entiers (le PGCD de deux nombres) est l'un des résultats les plus spectaculaires des mathématiques.
+
+Un résultat classique de théorie des nombres affirme que la probabilité asymptotique que deux entiers pris au hasard soient premiers entre eux vaut $\frac{6}{\pi^2}$. Autrement dit :
+\[
+\mathbb{P}(\text{pgcd}(a,b) = 1) = \frac{6}{\pi^2}
+\]
+
+Mais d'où vient vraiment ce $\pi$ ? Comment passe-t-on de la notion d'entiers sans diviseurs communs au rapport de la circonférence d'un cercle à son diamètre ? L'explication tient en deux étapes magistrales qui relient les probabilités, les nombres premiers, et les séries infinies.
+
+\section{Des probabilités aux nombres premiers (Le produit d'Euler)}
+
+Pour que deux nombres $a$ et $b$ soient premiers entre eux, il faut qu'ils n'aient \textbf{aucun diviseur premier en commun}.
+Analysons cela pour chaque nombre premier $p$ :
+\begin{itemize}
+    \item La probabilité asymptotique qu'un entier $a$ soit divisible par un certain nombre premier $p$ est de $\frac{1}{p}$ (ex : 1 chance sur 2 d'être pair, 1 chance sur 3 d'être divisible par 3, etc.).
+    \item La probabilité que $b$ le soit aussi est également $\frac{1}{p}$.
+    \item Si l'on suppose les choix indépendants, la probabilité que $a$ ET $b$ soient tous les deux divisibles par $p$ est leur intersection : $\frac{1}{p} \times \frac{1}{p} = \frac{1}{p^2}$.
+    \item Donc, la probabilité qu'ils ne soient \textbf{pas} simultanément divisibles par $p$ est : $1 - \frac{1}{p^2}$.
+\end{itemize}
+
+Pour que $a$ et $b$ soient premiers entre eux (soit $\text{pgcd}(a,b) = 1$), cette condition d'exclusion doit être vraie pour \textbf{tous} les nombres premiers $p \in \{2, 3, 5, 7, \dots\}$. Les conditions de divisibilité par différents nombres premiers étant asymptotiquement indépendantes (par le théorème des restes chinois), la probabilité totale s'obtient en multipliant ces probabilités individuelles :
+\[
+\mathbb{P}(\text{pgcd}(a,b)=1) = \prod_{p \text{ premier}} \left( 1 - \frac{1}{p^2} \right)
+\]
+
+C'est ici que le lien avec l'analyse se tisse. Par une manipulation algébrique issue de l'identité d'Euler (le développement du produit eulérien), on sait que l'inverse de ce produit infini donne la somme des inverses des carrés de tous les entiers naturels non nuls :
+\[
+\prod_{p \text{ premier}} \left( 1 - \frac{1}{p^2} \right)^{-1} = \sum_{n=1}^{\infty} \frac{1}{n^2} = 1 + \frac{1}{4} + \frac{1}{9} + \frac{1}{16} + \dots
+\]
+
+Ainsi, notre probabilité correspond exactement à l'inverse de cette somme infinie :
+\[
+\mathbb{P}(\text{pgcd}(a,b)=1) = \left( \sum_{n=1}^\infty \frac{1}{n^2} \right)^{-1}
+\]
+
+\section{De la somme infinie à $\pi$ (Le problème de Bâle)}
+
+Il restait alors à déterminer la valeur exacte de cette somme $S = \sum_{n=1}^\infty \frac{1}{n^2}$.
+Ce problème, connu historiquement sous le nom de \textbf{Problème de Bâle}, fut résolu brillamment par Leonhard Euler en 1735.
+
+L'irruption de $\pi$ se produit ici par le biais de la fonction sinus. Le sinus est intrinsèquement lié à la géométrie du cercle et ses racines (les valeurs où $\sin(x) = 0$) sont exactement les multiples entiers de $\pi$ : $x = 0, \pm \pi, \pm 2\pi, \pm 3\pi \dots$
+
+Euler eut l'idée de considérer la fonction $\frac{\sin(x)}{x}$ comme un "polynôme" de degré infini. Ses racines étant les valeurs $k\pi$ avec $k \in \mathbb{Z}^*$, il a formellement factorisé la fonction à partir de celles-ci :
+\[
+\frac{\sin(x)}{x} = \prod_{k=1}^\infty \left(1 - \frac{x}{k\pi}\right)\left(1 + \frac{x}{k\pi}\right) = \prod_{k=1}^\infty \left(1 - \frac{x^2}{k^2\pi^2}\right)
+\]
+
+En développant ce produit infini pour identifier le coefficient du terme en $x^2$, on obtient :
+\[
+\frac{\sin(x)}{x} = 1 - \left( \sum_{k=1}^\infty \frac{1}{k^2\pi^2} \right) x^2 + \dots = 1 - \frac{1}{\pi^2} \left( \sum_{k=1}^\infty \frac{1}{k^2} \right) x^2 + \dots
+\]
+
+Or, le développement de Taylor usuel de la fonction au voisinage de 0 est :
+\[
+\frac{\sin(x)}{x} = \frac{1}{x} \left( x - \frac{x^3}{3!} + \dots \right) = 1 - \frac{1}{6} x^2 + \dots
+\]
+
+En identifiant les coefficients de $x^2$ dans ces deux expressions, Euler en déduisit :
+\[
+-\frac{1}{\pi^2} \sum_{k=1}^\infty \frac{1}{k^2} = -\frac{1}{6} \implies \sum_{n=1}^{\infty} \frac{1}{n^2} = \frac{\pi^2}{6}
+\]
+
+Par conséquent, en reprenant l'expression de notre probabilité (qui est l'inverse de cette somme), nous obtenons le résultat final :
+\[
+\mathbb{P}(\text{pgcd}(a,b)=1) = \left( \frac{\pi^2}{6} \right)^{-1} = \frac{6}{\pi^2}
+\]
+
+\section*{Conclusion}
+L'apparition de $\pi$ provient de la convergence inattendue entre l'arithmétique pure (le théorème fondamental de l'arithmétique et la répartition des nombres premiers) et l'analyse complexe (la factorisation de la fonction sinus, directement issue du cercle géométrique).
+
+\end{document}
