@@ -1,0 +1,93 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{amsmath, amssymb, amsfonts}
+
+\begin{document}
+
+\title{Une application de la formule sommatoire de Poisson utilisant des séries divergentes}
+\date{}
+\maketitle
+
+\section*{Introduction}
+Existe-il une connexion simple entre les nombres apparaissant dans l'évaluation de la fonction zêta de Riemann aux entiers naturels pairs et les nombres apparaissant dans son évaluation aux entiers naturels impairs négatifs, reliés aux séries divergentes correspondantes ? Par exemple, la série divergente (désormais tristement célèbre)
+\[ 1+2+3+4\cdots \]
+a pour valeur régularisée $-1/12$, qui correspond à la valeur de $\zeta(-1)$. Si nous la multiplions par le facteur $-2\pi^2$, nous obtenons $\pi^2/6 = \zeta(2) = 1+1/2^2+1/3^2+\cdots$. Nous trouvons également que la valeur de la série divergente
+\[ 1^3+2^3+3^3+4^3\cdots \]
+est $1/120 = \zeta(-3)$. Si nous multiplions cela par $4\pi^4/3$, nous obtenons exactement $\zeta(4) = 1+1/2^4+1/3^4+\cdots$.
+
+Bien sûr, nous savons exactement quels sont ces facteurs de conversion car nous connaissons les formules, et certains diront qu'il s'agit de l'équation fonctionnelle de la fonction zêta déguisée, ce qui est vrai dans une certaine mesure. Cependant, évaluer ces valeurs à partir de l'équation fonctionnelle implique de calculer la limite complexe
+\[ \lim_{s\to 2n} \sin\left(\frac{\pi s}{2}\right)\Gamma(1-s) \]
+et à moins d'être un parent de John Von Neumann, connaître ces valeurs par cœur n'est pas normal.
+
+L'objectif est de trouver une relation claire qui relie ces deux mondes. La question est donc : Existe-t-il une raison pour laquelle les nombres de Bernoulli apparaissent dans les deux formules, et si oui, pouvons-nous trouver une relation permettant de convertir entre les séries convergentes et divergentes sans connaître les formules explicites au préalable ? Une preuve mathématique irréfutable liant exactement ces deux mondes ? La réponse est oui, pour une raison d'une beauté époustouflante. Ce lien secret est révélé par un résultat fondamental de l'analyse : la sommation de Poisson. Si vous ne savez pas ce que c'est, vous allez vous régaler.
+
+\section*{La transformation de Fourier et la sommation de Poisson}
+
+Pour commencer, il faut rappeler la transformation de Fourier. Les détails sur les fonctions transformables ou l'interprétation physique seront omis. La transformation de Fourier est un opérateur prenant en entrée une fonction (définie sur la droite réelle) et retournant une autre fonction, similairement à l'opérateur différentiel ou à la transformée de Laplace. La transformation de Fourier possède des propriétés remarquables. Dans ce document, l'opérateur $\mathcal{F}$ est défini tel que $\mathcal{F}(f)$ soit la fonction
+\[ \hat{f}(\omega) = \mathcal{F}(f)(\omega) = \int_{-\infty}^{\infty} f(t)e^{-2\pi i\omega t} dt. \]
+Cette définition nécessite des conditions de croissance strictes sur la fonction $f$ pour assurer la convergence de l'intégrale, car le terme exponentiel parcourt le cercle unité du plan complexe. Les problèmes de convergence seront négligés pour le moment.
+
+Le théorème de la formule sommatoire de Poisson stipule que
+\[ \sum_{n\in\mathbb{Z}} f(n) = \sum_{k\in\mathbb{Z}} \hat{f}(k) \]
+où les termes de la somme sont une fonction et sa transformée de Fourier, les deux séries s'étendant sur les entiers. Ce théorème se démontre en périodisant la fonction $f$ et en calculant sa série de Fourier. Voici un exemple de l'application de cette sommation.
+
+Calculons la série
+\[ \sum_{n=1}^{\infty} \frac{\sin^3(n)}{n} \]
+qui est une tâche complexe. La fonction réelle correspondante est
+\[ f(t) = \frac{\sin^3(t)}{t} \]
+dont le graphique présente une forme d'onde amortie. La transformée de Fourier de $f(t)$ donne une fonction discontinue en escalier. Cette fonction transformée vaut $0$ pour $|\omega|\ge 3/(2\pi)$. Pour la sommation de Poisson, il suffit d'évaluer cette transformée de Fourier en $0$, qui est le seul entier où la fonction est non nulle, et qui vaut $\pi/2$. Selon le théorème, nous avons
+\[ \sum_{n=-\infty}^{\infty} \frac{\sin^3(n)}{n} = \frac{\pi}{2} \]
+Pour obtenir la somme sur les entiers naturels commençant à $n=1$, on utilise la parité de $f$ ($f(-t) = f(t)$). En sachant que $f$ s'évalue à $0$ en $t=0$ par calcul de limite, le côté gauche compte chaque terme deux fois, ce qui donne
+\[ \sum_{n=1}^{\infty} \frac{\sin^3(n)}{n} = \frac{\pi}{4} \]
+
+\section*{Séries divergentes et sommation de Poisson}
+
+Bien qu'une fonction comme $f(t) = 1/t^2$ n'ait pas de transformée de Fourier classique en raison de la divergence de l'intégrale, il est possible de lui en attribuer une via les propriétés de l'opérateur. La transformée de Fourier de $f(t) = 1/t^2$ est
+\[ \hat{f}(\omega) = \mathcal{F}\left(\frac{1}{t^2}\right)(\omega) = -2\pi^2|\omega| \]
+L'application de la sommation de Poisson donne la formule
+\[ \sum_{n\in\mathbb{Z}} \frac{1}{n^2} = -2\pi^2\sum_{k\in\mathbb{Z}} |k|. \]
+Les deux côtés divergent différemment : division par zéro à gauche, croissance sans borne à droite. Si l'on suppose que les infinis s'annulent et que l'on utilise la régularisation de Ramanujan ($1+2+3+\cdots = -1/12$) sur le côté droit, on obtient
+\[ 2\sum_{n=1}^{\infty} \frac{1}{n^2} = -2\pi^2\sum_{k\in\mathbb{Z}} |k| = -4\pi^2\sum_{k=1}^{\infty} k = \frac{\pi^2}{3} \]
+ce qui implique que
+\[ \sum_{n=1}^{\infty} \frac{1}{n^2} = \frac{\pi^2}{6}. \]
+Cette identité est correcte. Pour justifier cette annulation des infinis sans la théorie des distributions, introduisons un nombre réel $\epsilon$ et calculons la transformée de Fourier de la fonction plus générale
+\[ \mathcal{F}\left(\frac{1}{t^2+\epsilon^2}\right)(\omega) = \frac{\pi}{\epsilon}e^{-2\pi\epsilon|\omega|}. \]
+valable pour $\epsilon > 0$. Pour la transformée distributionnelle de $f(t) = 1/t^2$, il faut trouver la valeur principale en $\epsilon = 0$. Cela se fait en calculant la limite de la moyenne des approches par la gauche et par la droite :
+\[ \mathcal{F}\left(\frac{1}{t^2}\right)(\omega) = \lim_{\epsilon\to 0} \frac{\pi}{\epsilon}\left(\frac{e^{-2\pi\epsilon|\omega|} - e^{2\pi\epsilon|\omega|}}{2}\right) = \lim_{\epsilon\to 0} -\frac{\pi}{\epsilon}\sinh(2\pi\epsilon|\omega|) = -2\pi^2|\omega| \]
+Cela valide le résultat précédent. Sachant que
+\[ \mathcal{F}\left(\frac{1}{t^2+\epsilon^2}\right)(\omega) = \frac{\pi}{\epsilon}e^{-2\pi\epsilon|\omega|}. \]
+est vrai pour $\epsilon > 0$, la sommation de Poisson s'applique :
+\[ \sum_{n\in\mathbb{Z}} \frac{1}{n^2+\epsilon^2} = \frac{\pi}{\epsilon}\sum_{k\in\mathbb{Z}} e^{-2\pi\epsilon|k|} = \frac{\pi}{\epsilon}\coth(\pi\epsilon) \]
+Les deux côtés divergent lorsque $\epsilon\to 0$. En séparant le terme $n=0$, le côté gauche s'écrit
+\[ \frac{1}{\epsilon^2} + 2\zeta(2) + o(1) \]
+où $o(1)$ tend vers zéro. Le développement en série de Taylor du côté droit donne
+\[ \frac{1}{\epsilon^2} + \frac{\pi^2}{3} + o(1) \]
+Les infinis s'annulent à la limite, justifiant le raccourci précédent. L'équation
+\[ \sum_{n\in\mathbb{Z}} \frac{1}{n^2} = -2\pi^2\sum_{k\in\mathbb{Z}} |k|. \]
+fonctionnait car la prise de limite anticipée agissait comme un raccourci valable pour ces fonctions.
+
+En appliquant ce raccourci à $f(t) = 1/|t|^3$, la transformée de Fourier est
+\[ \hat{f}(\omega) = 2\pi^2\omega^2(2\log(2\pi|\omega|) + 2\gamma - 3) \]
+La formule sommatoire de Poisson donne
+\[ \sum_{n\in\mathbb{Z}} \frac{1}{|n|^3} = \sum_{k\in\mathbb{Z}} 2\pi^2k^2(2\log(2\pi|k|) + 2\gamma - 3) \]
+Après régularisation, on obtient
+\[ 2\zeta(3) = \sum_{k\in\mathbb{Z}} 2\pi^2k^2(2\log(2\pi|k|) + 2\gamma - 3) = 8\pi^2\sum_{k=1}^{\infty} k^2\log(k) = -8\pi^2\zeta'(-2) \]
+Ce qui est exact. Pour $f(t) = 1/t^4$, la sommation de Poisson donne
+\[ \sum_{n\in\mathbb{Z}} \frac{1}{n^4} = \frac{4}{3}\pi^4\sum_{k\in\mathbb{Z}} |k|^3 \]
+En annulant les infinis, les séries sur les entiers naturels deviennent
+\[ 2\sum_{n\in\mathbb{N}} \frac{1}{n^4} = \frac{8\pi^4}{3}\sum_{k\in\mathbb{N}} k^3 \]
+Sachant que $1+2^3+3^3+\cdots = 1/120$, le résultat est
+\[ \sum_{n\in\mathbb{N}} \frac{1}{n^4} = \frac{\pi^4}{90}. \]
+Les facteurs rationnels de $\pi^{2n}$ proviennent d'une transformée de Fourier.
+
+\section*{Preuve en une phrase de l'équation fonctionnelle de Riemann}
+
+La transformée de Fourier de la fonction $f(t) = 1/|t|^s$ est
+\[ \mathcal{F}\left(\frac{1}{|t|^s}\right)(\omega) = 2^s\pi^{s-1}\sin\left(\frac{\pi s}{2}\right)\Gamma(1-s)|\omega|^{s-1} \]
+pour $0 < \mathrm{Re}(s) < 1$. Par l'annulation des infinis et la sommation de Poisson des séries divergentes, on obtient
+\[ \zeta(s) = 2^s\pi^{s-1}\sin\left(\frac{\pi s}{2}\right)\Gamma(1-s)\zeta(1-s) \]
+Il s'agit de l'équation fonctionnelle de Riemann pour la fonction zêta, valable pour tout $s$ dans le plan complexe par prolongement analytique. Cette preuve se substitue aux manipulations complexes d'intégrales et aux fonctions thêta de Jacobi. Elle relie les puissances paires de $\pi$ dans les facteurs gamma aux exponentielles des transformées de Fourier. D'autres relations peuvent être découvertes par cette méthode.
+
+\end{document}
