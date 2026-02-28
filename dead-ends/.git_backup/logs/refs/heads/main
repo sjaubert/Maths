@@ -1,0 +1,2 @@
+0000000000000000000000000000000000000000 3b00bde9fdd6c9e45648a0b02f36fe28f512937a Stephane JAUBERT <s.jaubert@poleformation-uimmcvdl.fr> 1770705292 +0100	clone: from https://github.com/AxiomMath/dead-ends
+3b00bde9fdd6c9e45648a0b02f36fe28f512937a 249765fa7b37b46b557c8ce49a4843e0f69b866a Stephane JAUBERT <s.jaubert@poleformation-uimmcvdl.fr> 1770727973 +0100	commit: feat: Introduce Lean 4 setup with a basic test file and introductory documentation.
