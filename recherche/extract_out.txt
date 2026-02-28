@@ -1,0 +1,90 @@
+An application of the Poisson summation formula using divergent series
+Introduction
+Is there a simple connection between numbers that appear in the evaluation of the Riemann zeta function at even natural numbers and the numbers that appear in the evaluation of the Riemann zeta function at the negative odd natural numbers connected to the corresponding divergent series?
+For example, the (now infamous) divergent series
+Press enter or click to view image in full size
+has the regularized value of -1/12, which is the value of ζ(-1), and if we multiply this by the factor -2π², we get π²/6 = ζ(2) = 1+1/2²+1/3²+⋅⋅⋅ .We also find the “value” of the divergent series
+Press enter or click to view image in full size
+to be 1/120 = ζ(-3), and if we multiply that by 4π⁴/3, we get exactly ζ(4) = 1+1/2⁴+1/3⁴+⋅⋅⋅.
+Of course, we know exactly what these conversion factors are because we know the formulas, and many of you will probably say that this is just the functional equation of the zeta function in disguise, which I agree with to some extent; however, evaluating these values from the functional equation involves taking the nasty limit
+Press enter or click to view image in full size
+and unless you are a relative of John Von Neuman, knowing these values by heart is… not normal.
+I want to find a clear relationship that ties together these two worlds. In other words, the question is:
+Is there a reason the Bernoulli numbers occur in both formulas, and if so, can we find a relation that shows how to convert between these two worlds of convergent series and divergent series, even if we didn’t know the closed-form formulas in the first place? A mathematical smoking gun that tells us exactly how these two worlds are linked?
+The answer to this question is yes, and the reason is breathtakingly beautiful. In this story, we will uncover this secret link through one of the most fantastic results of analysis called Poisson summation.
+If you don’t know what that is, you’re in for a treat.
+The Fourier transform and Poisson summation
+To get started, we need to recall the Fourier transform. We won’t go into the details about which functions can be transformed, or the physical interpretations of the Fourier transform. For those of you who have not seen this before, you should think of the Fourier transform as an operator that takes as input a function (defined on the entire real number line) and returns another function, just like the differential operator or the Laplace transform (if you know about that).
+The Fourier transform has a treasure trove of amazing properties that we won’t go through here, and if you don’t know about them, you should definitely go and read about them when you are finished reading this story. There are many conventions when it comes to the Fourier transform, but in this article, we will define it to be the operator ℱ such that ℱ(f) is the function
+Press enter or click to view image in full size
+From this definition, you can already see that we need some relatively strict growth requirements on the input function f to make the integral converge because the exponential term is just “running around” the unit circle in the complex plane; however, we will neglect any convergence issues for now.
+The last theoretical piece we need is a theorem known as the Poisson summation formula. This amazing fact says that
+Press enter or click to view image in full size
+where the summands are a function and its Fourier transform, respectively, and the series are both running over the integers.
+This theorem is surprising to most people when they see it for the first time, but actually surprisingly easy to prove by a neat trick involving periodifying the function f and calculating its Fourier series, but you don’t need to know about this to follow along here.
+We are about to push this result to its limits and beyond… But first, let’s see a small example of the magic of Poisson summation. Let’s say that we are asked to calculate the series
+Press enter or click to view image in full size
+which is by no means an easy task. In fact, I am not sure how I would do that without knowing about this technique. The corresponding real function is, of course, given by
+which has the following weird-looking graph:
+Press enter or click to view image in full size
+Figure created by the author
+To me, this looks like an infinitely wide Mexican hat that has been hit by a sledgehammer and electrified. Let’s calculate the Fourier transform of f(t), which turns out to be the function with the following (discontinuous) graph (which I’d better not comment on).
+Press enter or click to view image in full size
+Figure created by the author
+This transformed function is 0 for |w| ≥ 3/(2π). I haven’t shown you the function definition for this, as that is not important for the example.
+But this is great news for the Poisson summation formula because that means that instead of battling with the monstrous infinite series, we can just evaluate this Fourier transform at 0. Afterall, this is the only integer for which the function is non-zero, and so the sum over the integers of the Fourier transform just collapses down to its value at w = 0, which turns out to be π/2.
+According to the theorem above, we now know that
+Press enter or click to view image in full size
+but of course, we want the sum over the natural numbers starting with n=1; however, this is not so hard to find in this case because f is an even function, meaning that f(-t) = f(t). This, together with the fact that f evaluates to 0 at t=0 by taking a limit (and using e.g. L’Hôpital’s rule), implies that the left-hand side is just counting every term doubly, and we have
+Press enter or click to view image in full size
+which I think is pretty neat.
+Divergent series and Poisson summation
+Even though a function like f(t) = 1/t² doesn’t have a Fourier transform according to the definition (because the integral diverges), there is a way to assign meaning to such a Fourier transform from the general properties of the operator itself.
+The Fourier transform of f(t) = 1/t² turns out to be
+Press enter or click to view image in full size
+which if we blindly use Poisson summation on this pair of functions, will give us the suspicious-looking formula
+Press enter or click to view image in full size
+There are many issues with this expression, notably that both sides diverge in two different ways. On the left-hand side, we divide by zero, and on the right-hand side, the series grows without bound as k increases. But here comes the miracle: if we assume that the two “infinities” cancel each other out somehow, and use regularization on the right-hand side i.e. Ramanujan’s famous result that 1+2+3+⋅⋅⋅ = -1/12, then we get
+Press enter or click to view image in full size
+which implies that
+Press enter or click to view image in full size
+This last identity is actually correct, even though we did a lot of illegal calculations to get there. So what is going on? Can we justify this infinity cancellation somehow?
+To calculate the Fourier transform of 1/t², one way is to use a field of mathematics called Distribution theory, but I don’t assume that the reader has had this, so let’s try to approach this another way. Let ε be a real number, and let’s calculate the Fourier transform of a more general function
+Press enter or click to view image in full size
+which is justified as long as ε > 0. To find the distributional Fourier transform of f(t) = 1/t², it is enough to find the principal value of the above at ε = 0. The way to do this is to calculate the limit of the average of the function as ε approaches 0 from the left and as ε approaches 0 from the right. In other words, we have
+Press enter or click to view image in full size
+which recovers the result above. But here’s the beautiful thing: recall from above that
+Press enter or click to view image in full size
+Now, since this is a true statement (as long as ε > 0) without having to go into regularization techniques or distribution theory, the Poisson summation formula also applies to these two Fourier transform pairs. That means that
+Press enter or click to view image in full size
+and of course both sides still diverge as we let ε → 0. However, note that by separating the case n=0 from the rest of the sum, the left-hand side can be written
+Press enter or click to view image in full size
+where by o(1) I mean a term that goes to zero as ε → 0. If we Taylor expand the right-hand side, we get
+Press enter or click to view image in full size
+and lo and behold, we see that the two infinities actually do cancel in a limiting sense in the two transform pairs under Poisson summation. We can literally just cancel the 1/ε²´s on both sides of the equation, and we get the right result. Recall our illegal formula
+Press enter or click to view image in full size
+That worked because the infinities would have cancelled out if we had worked with this more carefully, using limits. In the above equation, we had already taken the limit (a bit too early), and therefore, it seemed illegal to cancel the infinities, but it is really more like a shortcut. This also works for other such functions.
+Now that we have that out of the way, we can use this shortcut on, for instance, f(t) = 1/|t|³. We can calculate the Fourier transform to be
+Press enter or click to view image in full size
+and the Poisson summation formula gives us
+Press enter or click to view image in full size
+which if we use our shortcut and regularize, we get
+Press enter or click to view image in full size
+which again is correct. We have used several regularizations and log rules to get here, but in the end, the relation holds. Let’s apply this to one last specific case before generalizing a bit.
+Let f(t) = 1/t⁴. Then, after taking the Fourier transform and Poisson summation, we get
+Press enter or click to view image in full size
+which, after cancelling the infinities, yields the two series over natural numbers
+Press enter or click to view image in full size
+and since we all know that 1 + 2³ + 3³ + ⋅⋅⋅ = 1/120, we get the usual result
+Press enter or click to view image in full size
+The really interesting bit about this to me (besides calculating true statements using divergent series) is the realization that the factors that are all rational multiples of π²ⁿ can be viewed as coming from a Fourier transform…
+A one-sentence proof of the Riemann functional equation
+It just so happens that the Fourier transform of the function f(t) = 1/|t|ˢ is
+Press enter or click to view image in full size
+whenever 0 < Re(s) < 1, and by the “cancellation of infinities trick”, we then have, (by Poisson summation of divergent series), that
+Press enter or click to view image in full size
+which is the famous Riemann functional equation for the zeta function, valid for all s in the complex plane, which can be argued by using analytic continuation.
+I don’t know about you, but normally when proving this, one has to go through another functional equation involving a classical Jacobi theta function and a lot of massaging of a very nasty integral, split it up into two integrals, calculate part of one of the integrals using the aforementioned theta functional equation, and stare it in the eye until you realize it is reflexive symmetric.
+The above argument is literally one sentence, even though you can argue that finding the Fourier transform in the first place is not easy.
+The functional equation yields the relation between the Riemann zeta function of positive even arguments and the Riemann zeta function of negative odd arguements but again, knowing that the even powers of π hidden in the “gamma factors” come from the π`s in the exponential factor of the corresponding Fourier transforms makes me smile.
+Can we uncover other interesting relations and evaluations using divergent Poisson summation?

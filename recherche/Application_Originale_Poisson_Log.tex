@@ -1,0 +1,75 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{mathrsfs}
+\usepackage{hyperref}
+
+\title{Application Inédite de la Formule Sommatoire de Poisson : \\
+\large Déformations Logarithmiques et Nouvelles Évaluations de Séries Divergentes}
+\author{Antigravity, d'après les Notes NotebookLM}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Introduction et Motivation}
+Inspirés par la dualité entre la série convergente $1+1/2^s+\cdots$ et la série divergente $1+2^{s-1}+\cdots$ obtenue par l'application "aveugle" (mais justifiée asymptotiquement) de la formule sommatoire de Poisson sur la fonction $f(t) = |t|^{-s}$, nous proposons ici une extension originale de cette méthode.
+
+Là où le document de référence relie $\zeta(s)$ à $\zeta(1-s)$ par la transformée de Fourier de distributions homogènes, nous suggérons d'appliquer une différentiation \textit{formelle} à ces spectres par rapport au paramètre $s$. Cela offre une fenêtre mathématique inédite sur des sommes réputées intraçables impliquant le logarithme : les \textbf{séries divergentes logarithmiques}.
+
+\section{Théorie : Transformée de Fourier et Déformation Logarithmique}
+Soit la fonction puissance :
+\begin{equation}
+    f_s(t) = \frac{1}{|t|^s}
+\end{equation}
+Sa transformée de Fourier, selon la convention du document, vérifie une identité de la forme :
+\begin{equation}
+    \mathcal{F}\left(f_s\right)(w) = C(s) |w|^{s-1}
+\end{equation}
+où $C(s)$ concentre les constantes "Gamma" et les multiplicatifs pi-rationnels.
+
+Le raccourci de Poisson (en éludant les infinis en $t=0, w=0$) s'écrit formellement sur $\mathbb{Z}^*$ :
+\begin{equation}
+    \sum_{n=1}^\infty \frac{1}{n^s} = C(s) \sum_{k=1}^\infty k^{s-1} \iff \zeta(s) = C(s) \zeta(1-s)
+\end{equation}
+
+\textbf{Idée d'exploration} : Que se passe-t-il si l'on applique ce raccourci de Poisson à la fonction déformée $g_s(t) = -\frac{\ln|t|}{|t|^s}$ ?
+Remarquons que $g_s(t) = \frac{\partial}{\partial s} f_s(t)$. Par la linéarité de la transformée de Fourier et l'échange avec la dérivée, nous avons :
+\begin{equation} \label{eq:fourier_deriv}
+    \mathcal{F}(g_s)(w) = \frac{\partial}{\partial s} \mathcal{F}(f_s)(w) = \frac{\partial}{\partial s} \left( C(s) |w|^{s-1} \right)
+\end{equation}
+En développant avec la règle du produit :
+\begin{equation} \label{eq:fourier_dev}
+    \mathcal{F}(g_s)(w) = C'(s) |w|^{s-1} + C(s) |w|^{s-1} \ln|w|
+\end{equation}
+
+\section{Une Formule de Régularisation "En Une Ligne"}
+Appliquons formellement la sommation de Poisson aux fonctions déformées $\sum_{\mathbb{Z}^*} g_s(n) = \sum_{\mathbb{Z}^*} \mathcal{F}(g_s)(k)$. Par parité des fonctions, nous obtenons pour $\mathbb{N}^*$ :
+\begin{equation}
+    \sum_{n=1}^\infty -\frac{\ln n}{n^s} = \sum_{k=1}^\infty \left[ C'(s) k^{s-1} + C(s) k^{s-1} \ln k \right]
+\end{equation}
+
+La somme de gauche définit analytiquement la dérivée de la fonction zêta de Riemann, $-\zeta'(s)$. Le pont de Poisson devient donc :
+\begin{equation}
+    -\zeta'(s) = C'(s) \zeta(1-s) + C(s) \sum_{k=1}^\infty k^{s-1} \ln k
+\end{equation}
+
+Isolons la composante inédite, donnant la "valeur" de la série divergente logarithmique ciblée :
+\begin{equation} \label{eq:master_div}
+    \sum_{k=1}^\infty k^{s-1} \ln k \;\overset{\text{Rég.}}{=}\; - \frac{\zeta'(s) + C'(s)\zeta(1-s)}{C(s)}
+\end{equation}
+
+\section{Cas Pratique : Calcul de $1 \ln 1 + 2 \ln 2 + 3 \ln 3 + \dots$}
+Un problème redoutable en théorie analytique des nombres est l'évaluation de sommes comme $\sum_{k=1}^\infty k \ln k$, reliée en vérité à la constante d'intégration de Glaisher-Kinkelin.
+A l'aide de notre raccourci de Poisson : posons $s=2$. 
+\begin{equation}
+    \sum_{k=1}^\infty k \ln k = - \frac{\zeta'(2) + C'(2)\zeta(-1)}{C(2)}
+\end{equation}
+Le calcul de sommes divergentes impliquant des logarithmes peut alors s'opérer de façon parfaitement algébrique (sachant que $\zeta(-1) = -1/12$), en évaluant simplement $C(s)$ et sa dérivée en $s=2$.
+
+\section{Conclusion}
+Ceci démontre que la « magie » opératoire de l'annulation des infinis dans la formule de Poisson, expliquée de manière si pittoresque dans le document Word, supporte également les opérateurs de différentiation paramétriques. Cette méthode génère un "dictionnaire Fourier" capable de transcrire instantanément le prolongement analytique de $\zeta'(s)$ en un algorithme de sommation de Ramanujan pour les séries de type $P(k)\ln(k)$.
+
+\end{document}
