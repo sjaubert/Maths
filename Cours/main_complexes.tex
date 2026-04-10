@@ -1,0 +1,398 @@
+\documentclass[11pt,a4paper]{article}
+
+% ----- Packages standards -----
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{amsmath, amssymb, mathrsfs}
+\usepackage{graphicx}
+\usepackage{geometry}
+\geometry{top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm, headheight=45pt}
+\usepackage{fancyhdr}
+\usepackage{tikz}
+\usetikzlibrary{decorations.pathmorphing, patterns, arrows.meta}
+\usepackage{siunitx}
+\sisetup{locale = FR, output-decimal-marker={,}, detect-all}
+\usepackage{tcolorbox}
+\usepackage{tabularx}
+\usepackage{colortbl}
+\usepackage{hyperref}
+
+% ----- Couleurs et design UIMM -----
+\definecolor{uimmblue}{RGB}{0,84,153}
+\definecolor{uimmgrey}{RGB}{128,128,128}
+
+\tcbuselibrary{skins,breakable}
+\newtcolorbox{vocabulaire}[1][]{
+    colback=uimmblue!5!white,
+    colframe=uimmblue,
+    title=\textbf{Point Clé : #1},
+    fonttitle=\bfseries,
+    arc=3mm
+}
+\newtcolorbox{exemple}[1][]{
+    colback=green!5!white,
+    colframe=green!60!black,
+    title=\textbf{Exemple / Application Industrielle : #1},
+    arc=3mm
+}
+\newtcolorbox{attention}[1][]{
+    colback=red!5!white,
+    colframe=red!70!black,
+    title=\textbf{Attention : #1},
+    arc=3mm
+}
+
+% ----- Notations spécifiques -----
+\newcommand{\jc}{\mathrm{j}} % Le j complexe (droit)
+\newcommand{\cpx}[1]{\underline{#1}} % Grandeur complexe soulignée (norme électrotechnique)
+\newcommand{\deriv}[2]{\frac{\mathrm{d}#1}{\mathrm{d}#2}} % Dérivée
+
+% ----- En-têtes et Pieds de page -----
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\includegraphics[height=1.2cm]{logo_uimm_placeholder.jpg}}
+\fancyhead[C]{\textbf{\textcolor{uimmblue}{POLE FORMATION CVDL}} \\ \small LA FABRIQUE DE L'AVENIR}
+\fancyhead[R]{\textbf{Nombres Complexes} \\ \small Mathématiques appliquées}
+\fancyfoot[L]{\small S. Jaubert / MAJ: \today}
+\fancyfoot[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\begin{document}
+
+% ----- Grille de compétences (Modèle PR3-PR6) -----
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|}
+\hline
+\rowcolor{uimmblue!20}
+\textbf{C1 S'informer} & \textbf{C2 Chercher / Modéliser} & \textbf{C3 Raisonner / Argumenter} & \textbf{C4 Calculer / Illustrer (Numérique)} & \textbf{C5 Calculer / Illustrer (Manuel)} & \textbf{C6 Communiquer} \\
+\hline
+\scriptsize Rechercher, extraire et organiser l'info & \scriptsize Traduire un problème industriel en maths & \scriptsize Déduire, justifier, démontrer & \scriptsize Utiliser les outils informatiques & \scriptsize Calculer et illustrer à la main & \scriptsize Rendre compte d'une démarche \\
+\hline
+\end{tabularx}
+\end{center}
+\vspace{0.5cm}
+
+\begin{center}
+    \LARGE \textbf{\textcolor{uimmblue}{COURS : LES NOMBRES COMPLEXES}} \\
+    \large \textit{De la théorie mathématique à l'application industrielle}
+\end{center}
+\vspace{0.5cm}
+
+% ==========================================
+\section{Introduction : Pourquoi les nombres complexes en ingénierie ?}
+% ==========================================
+
+Dans l'ensemble des nombres réels ($\mathbb{R}$), le carré d'un nombre est toujours positif ou nul. Par conséquent, une équation simple comme $x^2 + 1 = 0$ (soit $x^2 = -1$) n'a \textbf{aucune solution}.
+Pour dépasser cette limite, les mathématiciens ont imaginé un nombre dont le carré serait égal à $-1$. En mathématiques pures, ces nombres complexes ont été créés pour résoudre des équations polynomiales.
+
+Cependant, dans le milieu industriel, leur utilité est redoutable pour une tout autre raison : \textbf{la résolution d'équations différentielles en régime sinusoïdal}. Que ce soit le courant électrique dans un moteur asynchrone, ou les vibrations mécaniques d'une ligne d'usinage, la majorité des phénomènes industriels impliquent des ondes de forme sinusoïdale.
+
+\begin{attention}[La convention industrielle du ``j'']
+En mathématiques pures, le nombre imaginaire fondamental est noté $i$ (tel que $i^2 = -1$). Cependant, en \textbf{électrotechnique et en électronique}, la lettre $i$ désigne déjà l'intensité du courant variable $i(t)$. Pour éviter toute confusion tragique dans vos calculs, \textbf{nous utiliserons systématiquement la lettre $\jc$} (j comme "jmaginaire") dans ce cours.
+\end{attention}
+
+On définit donc le nombre complexe $\jc$ tel que :
+\begin{center}
+    \Large $\jc^2 = -1$
+\end{center}
+L'ensemble de tous les nombres complexes est noté $\mathbb{C}$.
+
+% ==========================================
+\section{Fondations Mathématiques : Algèbre et Géométrie}
+% ==========================================
+
+Un nombre complexe $\cpx{z}$ peut être perçu comme un "vecteur" dans un plan à deux dimensions composé d'un axe réel et d'un axe imaginaire.
+
+\subsection{La forme algébrique : Composantes cartésiennes}
+\begin{vocabulaire}[Définition de la forme algébrique]
+Tout nombre complexe $\cpx{z}$ s'écrit de manière unique sous la forme algébrique :
+$$\cpx{z} = a + \jc b$$
+Où $a$ et $b$ sont des nombres réels.
+\begin{itemize}
+    \item $a$ est la \textbf{partie réelle} de $\cpx{z}$, notée $\text{Re}(\cpx{z})$. (Par ex. la "Résistance" pure).
+    \item $b$ est la \textbf{partie imaginaire} de $\cpx{z}$, notée $\text{Im}(\cpx{z})$. (Par ex. la "Réactance").
+\end{itemize}
+\end{vocabulaire}
+
+\textbf{Opérations de base :} Les règles de calcul (addition, multiplication) sont les mêmes que pour les réels, en se rappelant toujours que $\jc^2 = -1$.
+\begin{itemize}
+    \item \textbf{Addition :} on additionne les réels entre eux, et les imaginaires entre eux. \\
+    $(2 + 3\jc) + (4 - \jc) = (2+4) + (3-1)\jc = 6 + 2\jc$
+    \item \textbf{Multiplication :} on développe de façon classique. \\
+    $(2 + \jc)(3 - 2\jc) = 6 - 4\jc + 3\jc - 2\jc^2 = 6 - \jc - 2(-1) = 8 - \jc$
+\end{itemize}
+
+\textbf{Le conjugué et la division :}
+Pour diviser, on utilise le \textbf{conjugué}. Le conjugué d'un nombre $\cpx{z} = a + \jc b$ est noté $\bar{z} = a - \jc b$.
+Propriété : $\cpx{z} \times \bar{z} = (a + \jc b)(a - \jc b) = a^2 - (\jc b)^2 = a^2 + b^2$. Le résultat devient un réel pur !
+
+\begin{exemple}[Calcul d'une admittance]
+En électricité, l'admittance $\cpx{Y}$ est l'inverse de l'impédance $\cpx{Z}$. Si $\cpx{Z} = 3 + 4\jc\ \Omega$ :
+$$\cpx{Y} = \frac{1}{\cpx{Z}} = \frac{1}{3 + 4\jc}$$
+Pour écrire ce résultat sous forme algébrique, on multiplie en haut et en bas par le conjugué du dénominateur ($3 - 4\jc$) :
+$$\cpx{Y} = \frac{1 \times (3 - 4\jc)}{(3 + 4\jc)(3 - 4\jc)} = \frac{3 - 4\jc}{3^2 + 4^2} = \frac{3 - 4\jc}{25} = 0,12 - \jc 0,16 \text{ Siemens}$$
+\end{exemple}
+
+\subsection{Représentation géométrique : Le plan complexe}
+Tout comme un réel représente un point sur une droite, un nombre complexe $\cpx{z} = a + \jc b$ représente un point $M$ de coordonnées $(a, b)$ dans un plan muni d'un repère orthonormé. C'est la base de la représentation de \textbf{Fresnel} en électrotechnique.
+
+\begin{center}
+\begin{tikzpicture}[scale=1.2]
+    \draw[->, thick] (-1,0) -- (4,0) node[right] {Axe Réel ($\Re$)};
+    \draw[->, thick] (0,-1) -- (0,3) node[above] {Axe Imaginaire ($\Im$)};
+    \draw[dashed, blue] (3,0) node[below, black]{$a$} -- (3,2) -- (0,2) node[left, black]{$b$};
+    \fill[red] (3,2) circle (2pt) node[above right] {$M(\cpx{z} = a + \jc b)$};
+    \draw[->, thick, red] (0,0) -- (3,2);
+    \node[below left] at (0,0) {$O$};
+\end{tikzpicture}
+\end{center}
+
+\subsection{Formes trigonométrique et exponentielle}
+Plutôt que des coordonnées (x,y), il est souvent plus pertinent de décrire le vecteur par sa distance et son angle.
+
+\begin{vocabulaire}[Module et Argument]
+Pour un nombre complexe $\cpx{z} = a + \jc b$ associé au point $M$ :
+\begin{itemize}
+    \item Le \textbf{module} (noté $|\cpx{z}|$ ou $\rho$) est la distance $OM$ : $\rho = \sqrt{a^2 + b^2}$. (En industrie : l'amplitude ou la valeur efficace).
+    \item L'\textbf{argument} (noté $\theta$ ou $\arg(\cpx{z})$) est l'angle orienté : $\cos(\theta) = \frac{a}{\rho}$ et $\sin(\theta) = \frac{b}{\rho}$. (En industrie : le déphasage).
+\end{itemize}
+\end{vocabulaire}
+
+On aboutit alors à la forme la plus utilisée en calcul de phaseurs grâce à Euler :
+\begin{center}
+    \Large $\cpx{z} = \rho \left( \cos\theta + \jc \sin\theta \right) = \rho e^{\jc \theta}$
+\end{center}
+
+\textbf{Rappels des opérations sur la forme exponentielle :}
+\begin{itemize}
+    \item \textbf{Multiplication :} Les amplitudes se multiplient, les phases s'additionnent. \\ $\rho_1 e^{\jc \theta_1} \times \rho_2 e^{\jc \theta_2} = (\rho_1 \rho_2) e^{\jc (\theta_1 + \theta_2)}$
+    \item \textbf{Dérivation temporelle :} Pour un signal $\cpx{z}(t) = Z e^{\jc \omega t}$, sa dérivée est $\deriv{\cpx{z}}{t} = \jc \omega \cpx{z}(t)$. \textit{Dériver revient simplement à multiplier par $\jc\omega$ !}
+\end{itemize}
+
+\begin{exemple}[Conversion pour un signal électrique]
+Soit une tension modélisée par le complexe $\cpx{U} = 100 + \jc 100\sqrt{3}$.
+\begin{itemize}
+    \item Valeur efficace (Module) : $U = \sqrt{100^2 + (100\sqrt{3})^2} = \sqrt{10000 + 30000} = \sqrt{40000} = 200\text{ V}$.
+    \item Déphasage (Argument) : $\cos(\theta) = \frac{100}{200} = 0,5$ et $\sin(\theta) = \frac{100\sqrt{3}}{200} = \frac{\sqrt{3}}{2}$. Donc $\theta = \frac{\pi}{3}\text{ rad}$ ($60^\circ$).
+\end{itemize}
+La forme exponentielle est donc : $\cpx{U} = 200 e^{\jc \frac{\pi}{3}}$.
+\end{exemple}
+
+% ==========================================
+\section{Application I : L'Électrotechnique et l'Électronique}
+% ==========================================
+
+Travailler avec des fonctions sinusoïdales du temps $i(t) = I_{max} \cos(\omega t + \varphi)$ est mathématiquement lourd. L'astuce des ingénieurs est d'associer à chaque signal son \textbf{complexe associé} (le phaseur) $\cpx{I} = I e^{\jc\varphi}$.
+
+\subsection{Diagrammes de Fresnel}
+Le diagramme de Fresnel permet de visualiser les déphasages sous forme vectorielle, ce qui est très utile pour anticiper le comportement des moteurs et des compensateurs de charge.
+
+\begin{center}
+\begin{tikzpicture}[>=stealth, scale=1.5]
+    % Axes
+    \draw[->, thick, gray] (-0.5,0) -- (3,0) node[right] {$+ \Re$};
+    \draw[->, thick, gray] (0,-0.5) -- (0,3) node[above] {$+ \Im$};
+    % Tension U (référence)
+    \draw[->, very thick, blue] (0,0) -- (2.5,0) node[above left] {$\cpx{U} = U e^{\jc 0}$};
+    % Courant I (déphasé en arrière, cas inductif)
+    \draw[->, very thick, red] (0,0) -- (1.5,-1) node[below right] {$\cpx{I} = I e^{-\jc \varphi}$};
+    % Angle phi
+    \draw[->, thick] (1,0) arc (0:-33.69:1) node[midway, right] {$-\varphi$ (Retard)};
+\end{tikzpicture}
+\end{center}
+
+\subsection{L'Impédance Complexe ($\cpx{Z}$)}
+La loi d'Ohm $U=RI$ se généralise au régime alternatif temporel en introduisant l'impédance complexe :
+\begin{center}
+    \Large $\cpx{U} = \cpx{Z} \times \cpx{I}$
+\end{center}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabularx}{0.8\textwidth}{|>{\hsize=1.2\hsize}X|>{\hsize=0.8\hsize}X|>{\hsize=1\hsize}X|}
+\hline
+\rowcolor{uimmblue!20}
+\textbf{Composant} & \textbf{Équation diff.} & \textbf{Impédance complexe $\cpx{Z}$} \\
+\hline
+Résistance $R$ & $u(t) = R \cdot i(t)$ & $\cpx{Z}_R = R$ \\
+Inductance (Bobine) $L$ & $u(t) = L \deriv{i}{t}$ & $\cpx{Z}_L = \jc L\omega$ \\
+Capacité (Condensateur) $C$ & $i(t) = C \deriv{u}{t}$ & $\cpx{Z}_C = \frac{1}{\jc C\omega} = -\jc \frac{1}{C\omega}$ \\
+\hline
+\end{tabularx}
+\end{center}
+
+\subsection{Loi de Kirchhoff complexes et Câblage Série}
+Considérons un circuit RLC série basique qu'on trouve dans les filtrages industriels.
+\begin{center}
+\begin{tikzpicture}[thick]
+    % Source
+    \draw (0,1.5) circle (0.4) node {$\sim$};
+    \node[left] at (-0.5,1.5) {$\cpx{E}$};
+    \draw (0,1.9) -- (0,3) -- (1,3);
+    % R
+    \draw (1,2.7) rectangle (2.5,3.3) node[midway] {$R$};
+    \draw (2.5,3) -- (3.5,3);
+    % L
+    \draw[decorate, decoration={coil, aspect=0.4, segment length=3mm, amplitude=3mm}] (3.5,3) -- (5,3);
+    \node[above] at (4.25,3.5) {$L$};
+    \draw (5,3) -- (6,3);
+    % C
+    \draw (6,2.5) -- (6,3.5);
+    \draw (6.4,2.5) -- (6.4,3.5);
+    \node[above] at (6.2,3.6) {$C$};
+    \draw (6.4,3) -- (7.5,3) -- (7.5,0) -- (0,0) -- (0,1.1);
+\end{tikzpicture}
+\end{center}
+L'impédance totale équivalente en série s'additionne simplement :
+\[ \cpx{Z}_{eq} = R + \jc L\omega - \jc \frac{1}{C\omega} = R + \jc\left(L\omega - \frac{1}{C\omega}\right) \]
+
+\subsection{Problématique Industrielle : La Puissance Complexe $\cpx{S}$}
+Enedis ou votre fournisseur d'électricité facture en partie l'énergie réactive. Le bilan de puissance est calculé en complexes !
+\[ \cpx{S} = \cpx{U} \cdot \bar{I} = P + \jc Q \]
+\begin{itemize}
+    \item $P$ est la \textbf{Puissance Active} (en Watts, utile pour générer un mouvement).
+    \item $Q$ est la \textbf{Puissance Réactive} (en VAR, nécessaire pour magnétiser les bobines).
+    \item $|\cpx{S}|$ est la \textbf{Puissance Apparente} (en VA, déterminant la taille du câble et du transformateur).
+\end{itemize}
+
+% ==========================================
+\section{Application II : Analyse Vibratoire et Modélisation}
+% ==========================================
+
+La mécanique vibratoire s'appuie totalement sur les nombres complexes pour analyser le comportement d'une machine tournante mal équilibrée ou la suspension d'un moteur et résoudre les oscillations contraintes.
+
+\begin{center}
+\begin{tikzpicture}
+    % Mur et fixation
+    \fill [pattern = north east lines] (0,3) rectangle (3,3.3);
+    \draw[thick] (0,3) -- (3,3);
+    % Ligne de suspension
+    \draw[thick] (0.8,3) -- (0.8,2.5);
+    \draw[thick] (2.2,3) -- (2.2,2.5);
+    % Ressort (k) - gauche
+    \draw[decoration={aspect=0.3, segment length=3mm, amplitude=3mm,coil},decorate] (0.8,2.5) -- (0.8,1);
+    \node at (0.3, 1.7) {$k$};
+    % Amortisseur (c) - droite
+    \draw (2.0,2.5) -- (2.0,1.75);
+    \draw[thick] (1.8,1.75) -- (2.2,1.75);
+    \draw[thick] (1.8,1.75) -- (1.8,1.25);
+    \draw[thick] (2.2,1.75) -- (2.2,1.25);
+    \draw (2.0,1) -- (2.0,1.5);
+    \draw[thick] (1.9,1.5) -- (2.1,1.5);
+    \node at (3.2, 1.7) {Amortisseur $c$};
+    % Masse (m)
+    \draw[fill=blue!20, thick] (0.5,0) rectangle (2.5,1);
+    \node at (1.5,0.5) {Masse $m$};
+    % Force d'excitation
+    \draw[->, thick, red] (1.5,0) -- (1.5,-1) node[right] {Force $F(t) = F_0 \cos(\omega t)$};
+\end{tikzpicture}
+\end{center}
+
+L'équation du mouvement d'une suspension industrielle donne :
+\[ m \frac{d^2x}{dt^2} + c \frac{dx}{dt} + k x = F(t) \]
+En passant en notation complexe, où la position devient $x(t) \Rightarrow \cpx{X}e^{\jc\omega t}$ :
+\[ (-m\omega^2 + \jc c\omega + k)\cpx{X} = F_0 \]
+On extrait directement l'\textbf{amplitude complexe de vibration} : $\cpx{X} = \frac{F_0}{(k - m\omega^2) + \jc c\omega}$.
+
+On y voit le problème phare de l'ingénierie mécanique : le point de résonance ! Si $\omega^2 = \frac{k}{m}$, la partie réelle s'annule, et seule la partie imaginaire (l'amortisseur) limite la casse de la machine.
+
+\newpage
+% ==========================================
+\section{Exercices d'entraînement type BTS}
+% ==========================================
+
+\textbf{Exercice 1 : Gymnastique algébrique} \\
+Soit $z_1 = 3 - 2\jc$ et $z_2 = 1 + 4\jc$. Calculer sous forme algébrique :
+\begin{enumerate}
+    \item $A = z_1 + z_2$
+    \item $B = z_1 \times z_2$
+    \item $C = \frac{z_1}{z_2}$
+\end{enumerate}
+
+\vspace{0.5cm}
+\textbf{Exercice 2 : Formes exponentielles} \\
+Écrire les nombres complexes suivants sous la forme exponentielle $\rho e^{\jc\theta}$ :
+\begin{enumerate}
+    \item $z_3 = 1 + \jc$
+    \item $z_4 = \sqrt{3} - \jc$
+\end{enumerate}
+
+\vspace{0.5cm}
+\textbf{Exercice 3 : Équation caractéristique (Mécanique / Électronique)} \\
+Lors de l'étude d'un système oscillant, on obtient l'équation caractéristique suivante. Résoudre dans $\mathbb{C}$ :
+$$r^2 + 2r + 5 = 0$$
+
+\vspace{0.5cm}
+\begin{tcolorbox}[colback=yellow!5!white, colframe=orange, title=\textbf{Exercice 4 : Bilan sur un circuit RL et diagramme de Fresnel}]
+On considère un moteur électrique modélisé par une charge industrielle inductive comportant une résistance $R = \SI{15}{\ohm}$ en série avec une bobine $L = \SI{47.7}{\milli\henry}$. Le réseau fournit une tension efficace $U = \SI{230}{\volt}$ à la fréquence $f = \SI{50}{\hertz}$. ($\omega = 2\pi f \approx 314 \text{ rad/s}$).
+\begin{enumerate}
+    \item Calculer l'impédance complexe de la résistance $\cpx{Z_R}$ et de l'inductance $\cpx{Z_L}$.
+    \item En déduire l'impédance totale complexe $\cpx{Z} = \cpx{Z_R} + \cpx{Z_L}$.
+    \item Déduire le module $|\cpx{Z}|$ (en Ohms) et le déphasage $\varphi$ du courant par rapport à la tension.
+    \item Calculer le courant efficace $I$ absorbé par le montage.
+    \item Si la tension est la référence de phase ($\cpx{U} = 230 e^{\jc 0}$), quelle est l'expression complexe de $\cpx{I}$ ? Tracez rapidement l'allure du diagramme de Fresnel.
+\end{enumerate}
+\end{tcolorbox}
+
+\vspace{0.5cm}
+\begin{tcolorbox}[colback=green!5!white, colframe=green!60!black, title=\textbf{Exercice 5 : Analyse Vibratoire Simple}]
+Un moteur d'une masse $m=\SI{100}{\kilo\gram}$ est monté sur des plots élastiques provoquant une raideur totale $k=\SI{100000}{\newton\per\meter}$ et un amortissement visqueux $c=\SI{500}{\newton\second\per\meter}$. Il subit un balourd tel que la force vaut $F(t) = F_0 e^{\jc \omega t}$ avec $F_0 = \SI{500}{\newton}$ et la machine tourne à $150 \text{ rad/s}$ ($\omega$).
+\begin{enumerate}
+    \item Calculez la raideur complexe dynamique de ce système : $\cpx{K_{dyn}} = k - m\omega^2 + \jc c\omega$.
+    \item Calculez l'amplitude du déplacement vibratoire $|X| = \frac{F_0}{|\cpx{K_{dyn}}|}$.
+\end{enumerate}
+\end{tcolorbox}
+
+\newpage
+% ==========================================
+\section{Corrigés}
+% ==========================================
+
+\textbf{Correction - Exercice 1}
+\begin{enumerate}
+    \item $A = (3 - 2\jc) + (1 + 4\jc) = 4 + 2\jc$
+    \item $B = (3 - 2\jc)(1 + 4\jc) = 3 + 12\jc - 2\jc - 8\jc^2 = 3 + 10\jc + 8 = 11 + 10\jc$
+    \item $C = \frac{3 - 2\jc}{1 + 4\jc} = \frac{(3 - 2\jc)(1 - 4\jc)}{(1 + 4\jc)(1 - 4\jc)} = \frac{3 - 12\jc - 2\jc + 8\jc^2}{1^2 + 4^2} = \frac{3 - 14\jc - 8}{17} = -\frac{5}{17} - \jc \frac{14}{17}$
+\end{enumerate}
+
+\vspace{0.5cm}
+\textbf{Correction - Exercice 2}
+\begin{enumerate}
+    \item Pour $z_3 = 1 + \jc$ : $\rho = \sqrt{1^2 + 1^2} = \sqrt{2}$. $\arg(z_3) = \theta$ tel que $\cos\theta = 1/\sqrt{2}$ et $\sin\theta = 1/\sqrt{2}$, d'où $\theta = \frac{\pi}{4}$. Résultat : $z_3 = \sqrt{2} e^{\jc \pi/4}$.
+    \item Pour $z_4 = \sqrt{3} - \jc$ : $\rho = \sqrt{3 + (-1)^2} = \sqrt{4} = 2$. $\arg(z_4) = \theta$ tel que $\cos\theta = \sqrt{3}/2$ et $\sin\theta = -1/2$, d'où $\theta = -\frac{\pi}{6}$. Résultat : $z_4 = 2 e^{-\jc \pi/6}$.
+\end{enumerate}
+
+\vspace{0.5cm}
+\textbf{Correction - Exercice 3}
+L'équation est $r^2 + 2r + 5 = 0$. Le discriminant est $\Delta = 2^2 - 4(1)(5) = 4 - 20 = -16$.
+Puisque $\Delta < 0$, il y a deux racines complexes conjuguées. On peut écrire $-16 = (4\jc)^2$.
+Les racines sont $r_1 = \frac{-2 - 4\jc}{2} = -1 - 2\jc$ et $r_2 = \frac{-2 + 4\jc}{2} = -1 + 2\jc$.
+
+\vspace{0.5cm}
+\textbf{Correction - Exercice 4}
+\begin{enumerate}
+    \item $\cpx{Z_R} = 15\ \Omega$ et $\cpx{Z_L} = \jc L\omega = \jc \times 0,0477 \times 314 \approx 15\jc\ \Omega$.
+    \item En série, on additionne : $\cpx{Z} = 15 + 15\jc\ \Omega$.
+    \item Module : $Z = \sqrt{15^2 + 15^2} = \sqrt{450} = 15\sqrt{2} \approx 21,21\ \Omega$. Déphasage $\varphi = \arctan(\frac{15}{15}) = 45^\circ$ ou $\frac{\pi}{4}\ \text{rad}$.
+    \item Loi d'Ohm en module : $I = \frac{U}{Z} = \frac{230}{21,21} \approx 10,84\ \text{A}$.
+    \item Courant complexe : $\cpx{I} = \frac{\cpx{U}}{\cpx{Z}} = \frac{230 e^{\jc 0}}{21,21 e^{\jc \pi/4}} = 10,84 e^{-\jc \pi/4}$. Dans le graphe, $\cpx{U}$ est horizontal et $\cpx{I}$ pointe vers le bas à un angle de $-45^\circ$ (courant en retard en raison de l'inductance).
+\end{enumerate}
+
+\vspace{0.5cm}
+\textbf{Correction - Exercice 5}
+\begin{enumerate}
+    \item Masse $m=100$, raideur $k=100000$, amortissement $c=500$, pulsation $\omega = 150$.
+    \begin{align*}
+        \cpx{K_{dyn}} &= 100000 - 100(150)^2 + \jc(500 \times 150) \\
+                      &= 100000 - 100(22500) + \jc 75000 \\
+                      &= 100000 - 2250000 + \jc 75000 \\
+                      &= -2150000 + \jc 75000 \ \text{N/m}
+    \end{align*}
+    \item Le module de cette "raideur dynamique" est : $|\cpx{K_{dyn}}| = \sqrt{(-2150000)^2 + (75000)^2} \approx 2151307\ \text{N/m}$. \\
+    L'amplitude de vibration est donc : $|X| = \frac{500}{2151307} \approx 0,23 \times 10^{-3}\ \text{m} = \SI{0.23}{\milli\meter}$.
+\end{enumerate}
+
+\end{document}
