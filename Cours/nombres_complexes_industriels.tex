@@ -1,0 +1,332 @@
+\documentclass[11pt,a4paper]{article}
+
+% ----- Packages standards -----
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{amsmath, amssymb, mathrsfs}
+\usepackage{graphicx}
+\usepackage{geometry}
+\geometry{top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm}
+\usepackage{fancyhdr}
+\setlength{\headheight}{14pt}
+\usepackage{tikz}
+\usetikzlibrary{decorations.pathmorphing, patterns}
+\usepackage{siunitx}
+\sisetup{locale = FR, output-decimal-marker={,}, detect-all}
+\usepackage{tcolorbox}
+\usepackage{hyperref}
+
+% ----- Couleurs et design -----
+\definecolor{uimmblue}{RGB}{0,84,153}
+\definecolor{uimmgrey}{RGB}{128,128,128}
+
+\tcbuselibrary{skins,breakable}
+\newtcolorbox{vocabulaire}[1][]{
+    colback=blue!5!white,
+    colframe=uimmblue,
+    title=\textbf{Point Clé : #1},
+    fonttitle=\bfseries,
+    arc=3mm
+}
+\newtcolorbox{exemple}[1][]{
+    colback=green!5!white,
+    colframe=green!60!black,
+    title=\textbf{Exemple Industriel : #1},
+    arc=3mm
+}
+
+% ----- En-têtes et Pieds de page -----
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textbf{Pôle Formation UIMM CVDL}}
+\fancyhead[R]{Mathématiques Appliquées - Bachelors}
+\fancyfoot[L]{S. Jaubert}
+\fancyfoot[C]{\thepage}
+\fancyfoot[R]{Nombres Complexes dans l'Industrie}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% ----- Raccourcis pratiques -----
+\newcommand{\jc}{\mathrm{j}} % Utilisation du 'j' industriel (non i) droit
+\newcommand{\cpx}[1]{\underline{#1}} % Grandeur complexe soulignée
+\newcommand{\deriv}[2]{\frac{\mathrm{d}#1}{\mathrm{d}#2}}
+
+\begin{document}
+
+% ----- Page de Titre -----
+\begin{titlepage}
+    \centering
+    \vspace*{1cm}
+    
+    % Insertion du logo demandé. Si l'image n'est pas trouvée à la compilation, un cadre [draft] devrait a minima marquer l'emplacement
+    \includegraphics[width=6cm]{../logo_uimm_placeholder.jpg}\\[2cm]
+    
+    {\Large \textbf{Pôle Formation UIMM CVDL}}\\[1.5cm]
+    
+    {\Huge \textbf{\color{uimmblue} Les Nombres Complexes en Milieu Industriel}}\\[1cm]
+    
+    {\Large \textit{De l'Outil Mathématique à l'Électrotechnique et l'Analyse Vibratoire}}\\[2.5cm]
+    
+    \begin{tcolorbox}[colback=white, colframe=uimmgrey, width=10cm, center]
+        \centering
+        \textbf{Niveau :} Bachelors Industriels\\
+        \textbf{Formateur :} S. Jaubert
+    \end{tcolorbox}
+    
+    \vfill
+    {\large \today}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+% ==========================================
+% SECTION 1
+% ==========================================
+\section{Introduction : Pourquoi les nombres complexes en ingénierie ?}
+
+En mathématiques pures, les nombres complexes ont été créés pour résoudre des équations polynomiales (ex: $x^2 + 1 = 0$). Cependant, dans le milieu industriel, leur utilité est redoutable pour une tout autre raison : \textbf{la résolution d'équations différentielles en régime sinusoïdal}.
+
+Que ce soit le courant électrique dans un moteur asynchrone, ou les vibrations mécaniques d'une ligne d'usinage, la majorité des phénomènes industriels impliquent des ondes de forme sinusoïdale.
+
+\begin{vocabulaire}[La convention industrielle du ``j'']
+    En mathématiques de base, le nombre imaginaire est noté $i$ ou $\mathrm{i}$. 
+    En électrotechnique et dans l'industrie, nous utilisons \textbf{exclusivement} la lettre $\mathbf{j}$ afin d'éviter toute confusion avec l'intensité du courant électrique notée $i(t)$. 
+    Ainsi, la base de ce cours repose sur la relation fondamentale : 
+    \[ \jc^2 = -1 \]
+\end{vocabulaire}
+
+% ==========================================
+% SECTION 2
+% ==========================================
+\section{Fondations Mathématiques des Nombres Complexes}
+
+Un nombre complexe $\cpx{z}$ peut être perçu comme un "vecteur" dans un plan à deux dimensions composé d'un axe réel et d'un axe imaginaire (Plan Complexe).
+
+\subsection{Forme Algébrique : Les composantes cartésiennes}
+Tout nombre complexe $\cpx{z}$ s'écrit sous la forme algébrique :
+\[ \cpx{z} = a + \jc b \]
+\begin{itemize}
+    \item $a$ est la \textbf{Partie Réelle}, notée $\Re(\cpx{z})$. (Par ex. la "Résistance" pure).
+    \item $b$ est la \textbf{Partie Imaginaire}, notée $\Im(\cpx{z})$. (Par ex. la "Réactance").
+\end{itemize}
+
+\subsection{Forme Trigonométrique et Exponentielle : Les composantes polaires}
+Plutôt que des coordonnées (x,y), il est souvent plus pertinent de décrire le vecteur par :
+\begin{itemize}
+    \item Sa longueur (ou \textbf{Module}) : $\rho = |\cpx{z}| = \sqrt{a^2 + b^2}$. (En industrie : l'amplitude ou la valeur efficace).
+    \item Son angle (ou \textbf{Argument}) : $\theta = \arg(\cpx{z}) = \arctan(\frac{b}{a})$. (En industrie : le déphasage).
+\end{itemize}
+
+On aboutit alors à la forme la plus utilisée en calcul de phaseurs :
+\begin{equation}
+    \cpx{z} = \rho \left( \cos\theta + \jc \sin\theta \right) = \rho e^{\jc \theta}
+\end{equation}
+
+\noindent \textbf{Rappels des opérations sur la forme exponentielle :}
+\begin{itemize}
+    \item Multiplication : $Z_1 e^{\jc \theta_1} \times Z_2 e^{\jc \theta_2} = (Z_1 Z_2) e^{\jc (\theta_1 + \theta_2)}$ (Les amplitudes se multiplient, les phases s'additionnent)
+    \item Dérivation temporelle de $\cpx{z}(t) = Z e^{\jc \omega t}$ : $\deriv{\cpx{z}}{t} = \jc \omega \cpx{z}(t)$. \textit{Remarquez que dériver revient simplement à multiplier par $\jc\omega$ !}
+\end{itemize}
+
+% ==========================================
+% SECTION 3
+% ==========================================
+\section{Application I : L'Électrotechnique et l'Électronique}
+
+L'industrie électrique fonctionne quasi-exclusivement en courant alternatif (CA). Pour un courant sinusoïdal $i(t) = I_m \cos(\omega t + \varphi_i)$, la notation complexe (le phaseur) associe un module (la valeur efficace $I$) et une phase ($\varphi_i$) : $\cpx{I} = I e^{\jc \varphi_i}$.
+
+\subsection{Les Diagrammes de Fresnel}
+Le diagramme de Fresnel permet de visualiser les déphasages sous forme vectorielle, très utile pour anticiper le comportement des moteurs et compensateurs de charge.
+
+\begin{center}
+\begin{tikzpicture}[>=stealth, scale=1.5]
+    % Axes
+    \draw[->, thick, gray] (-0.5,0) -- (3,0) node[right] {$+ \Re$};
+    \draw[->, thick, gray] (0,-0.5) -- (0,3) node[above] {$+ \Im$};
+    
+    % Tension U (référence)
+    \draw[->, very thick, blue] (0,0) -- (2.5,0) node[above left] {$\cpx{U} = U e^{\jc 0}$};
+    
+    % Courant I (déphasé en arrière, cas inductif)
+    \draw[->, very thick, red] (0,0) -- (1.5,-1) node[below right] {$\cpx{I} = I e^{-\jc \varphi}$};
+    
+    % Angle phi
+    \draw[->, thick] (1,0) arc (0:-33.69:1) node[midway, right] {$-\varphi$ (Retard)};
+\end{tikzpicture}
+\end{center}
+
+\subsection{L'Impédance Complexe ($\cpx{Z}$)}
+Pour généraliser la loi d'Ohm ($U=RI$) au régime alternatif temporel, on introduit l'impédance complexe telle que $\cpx{U} = \cpx{Z} \cdot \cpx{I}$.
+
+\begin{exemple}[Modèles d'impédances standards]
+\centering
+\begin{tabular}{|l|c|c|}
+\hline
+\textbf{Composant} & \textbf{Équation diff.} & \textbf{Impédance complexe $\cpx{Z}$} \\
+\hline
+Résistance $R$ & $u(t) = R \cdot i(t)$ & $\cpx{Z}_R = R$ \\
+Inductance (Bobine) $L$ & $u(t) = L \frac{di}{dt}$ & $\cpx{Z}_L = \jc L\omega$ \\
+Capacité (Condensateur) $C$ & $i(t) = C \frac{du}{dt}$ & $\cpx{Z}_C = \frac{1}{\jc C\omega} = -\jc \frac{1}{C\omega}$ \\
+\hline
+\end{tabular}
+\end{exemple}
+
+\subsection{Loi de Kirchhoff complexes}
+
+Considérons un circuit RLC série basique qu'on trouve dans les filtrages industriels.
+
+\begin{center}
+\begin{tikzpicture}[thick]
+    % Source
+    \draw (0,1.5) circle (0.4) node {$\sim$};
+    \node[left] at (-0.5,1.5) {$\underline{E}$};
+    \draw (0,1.9) -- (0,3) -- (1,3);
+    
+    % R
+    \draw (1,2.7) rectangle (2.5,3.3) node[midway] {$R$};
+    \draw (2.5,3) -- (3.5,3);
+    
+    % L
+    \draw[decorate, decoration={coil, aspect=0.4, segment length=3mm, amplitude=3mm}] (3.5,3) -- (5,3);
+    \node[above] at (4.25,3.5) {$L$};
+    \draw (5,3) -- (6,3);
+    
+    % C
+    \draw (6,2.5) -- (6,3.5);
+    \draw (6.4,2.5) -- (6.4,3.5);
+    \node[above] at (6.2,3.6) {$C$};
+    \draw (6.4,3) -- (7.5,3) -- (7.5,0) -- (0,0) -- (0,1.1);
+\end{tikzpicture}
+\end{center}
+
+L'impédance totale équivalente est simplement la somme (en série) :
+\[ \cpx{Z}_{eq} = R + \jc L\omega - \jc \frac{1}{C\omega} = R + \jc\left(L\omega - \frac{1}{C\omega}\right) \]
+De là, extraire le module de l'impédance et le déphasage est trivial. La partie imaginaire globale conditionne la nature (réactive) du montage.
+
+\subsection{Problématique Industrielle : La Puissance Complexe $\cpx{S}$}
+Enedis ou votre fournisseur d'électricité facture en partie l'énergie réactive. Le bilan de puissance est calculé en complexes !
+\[ \cpx{S} = \cpx{U} \cdot \cpx{I}^* = P + \jc Q \]
+\begin{itemize}
+    \item $P$ est la **Puissance Active** (en Watts, utile pour un moteur).
+    \item $Q$ est la **Puissance Réactive** (en VAR, nécessaire pour magnétiser la bobine, mais ne crée pas de mouvement utile).
+    \item $|\cpx{S}|$ est la **Puissance Apparente** (en VA, déterminant la taille du câble et du transformateur).
+\end{itemize}
+
+% ==========================================
+% SECTION 4
+% ==========================================
+\section{Application II : Analyse Vibratoire et Modélisation}
+
+La mécanique vibratoire, pour analyser le comportement d'une machine tournante mal équilibrée ou la suspension d'un moteur, s'appuie totalement sur les nombres complexes pour résoudre les oscillations contraintes.
+
+\begin{center}
+\begin{tikzpicture}
+    % Mur et fixation
+    \fill [pattern = north east lines] (0,3) rectangle (3,3.3);
+    \draw[thick] (0,3) -- (3,3);
+    
+    % Ligne de suspension
+    \draw[thick] (0.8,3) -- (0.8,2.5);
+    \draw[thick] (2.2,3) -- (2.2,2.5);
+    
+    % Ressort (k) - gauche
+    \draw[decoration={aspect=0.3, segment length=3mm, amplitude=3mm,coil},decorate] (0.8,2.5) -- (0.8,1);
+    \node at (0.3, 1.7) {Ressort $k$};
+    
+    % Amortisseur (c) - droite
+    \draw (2.0,2.5) -- (2.0,1.75);
+    \draw[thick] (1.8,1.75) -- (2.2,1.75);
+    \draw[thick] (1.8,1.75) -- (1.8,1.25);
+    \draw[thick] (2.2,1.75) -- (2.2,1.25);
+    \draw (2.0,1) -- (2.0,1.5);
+    \draw[thick] (1.9,1.5) -- (2.1,1.5);
+    \node at (3.2, 1.7) {Amortisseur $c$};
+    
+    % Masse (m)
+    \draw[fill=blue!20, thick] (0.5,0) rectangle (2.5,1);
+    \node at (1.5,0.5) {Masse $m$};
+    
+    % Force d'excitation
+    \draw[->, thick, red] (1.5,0) -- (1.5,-1) node[right] {Force $F(t) = F_0 \cos(\omega t)$};
+\end{tikzpicture}
+\end{center}
+
+L'équation du mouvement d'une suspension industrielle donne :
+\[ m \frac{d^2x}{dt^2} + c \frac{dx}{dt} + k x = F(t) \]
+En passant en notation complexe, où la position devient $x(t) \Rightarrow \cpx{X}e^{\jc\omega t}$ :
+\[ (-m\omega^2 + \jc c\omega + k)\cpx{X} = F_0 \]
+On extrait directement l'\textbf{amplitude complexe de vibration} : $\cpx{X} = \frac{F_0}{(k - m\omega^2) + \jc c\omega}$.
+
+On y voit le problème phare de l'ingénierie mécanique : le point de résonance ! Si $\omega^2 = \frac{k}{m}$, la partie réelle s'annule, et seule la partie imaginaire (l'amortisseur) limite la casse de la machine.
+
+\newpage
+% ==========================================
+% SECTION 5
+% ==========================================
+\section{Exercices Appliqués}
+
+\begin{exemple}[Exercice 1 : Échauffement - Outils Mathématiques]
+Soit deux grandeurs complexes $\cpx{Z_1} = 4 + \jc 3$ et $\cpx{Z_2} = 5 e^{-\jc \pi/4}$.
+\begin{enumerate}
+    \item Calculez le module et l'argument de $\cpx{Z_1}$.
+    \item Exprimez $\cpx{Z_2}$ sous format algébrique $a + \jc b$.
+    \item Calculez $\cpx{Z_{eq}} = \cpx{Z_1} \cdot \cpx{Z_2}$ en utilisant le format de votre choix.
+\end{enumerate}
+\end{exemple}
+
+\begin{exemple}[Exercice 2 : Bilan sur un circuit RL et diagramme de Fresnel]
+On considère une charge industrielle inductive modélisée par une résistance $R = \SI{10}{\ohm}$ en série avec une bobine $L = \SI{31.8}{\milli\henry}$. Le réseau fournit une tension efficace $U = \SI{230}{\volt}$ à la fréquence $f = \SI{50}{\hertz}$. ($\omega = 2\pi f$).
+\begin{enumerate}
+    \item Calculez l'impédance complexe globale $\cpx{Z}$.
+    \item Déduisez le module $Z$ (en $\Omega$) et le déphasage $\varphi$ du courant par rapport à la tension.
+    \item Calculez le courant efficace $I$ absorbé par le montage.
+    \item Si la tension est la référence de phase ($\cpx{U} = 230 e^{\jc 0}$), quelle est l'expression complexe de $\cpx{I}$ ? Tracez l'allure du diagramme de Fresnel.
+\end{enumerate}
+\end{exemple}
+
+\begin{exemple}[Exercice 3 : Analyse Vibratoire Simple]
+Un moteur d'une masse $m=\SI{100}{\kilo\gram}$ est monté sur des plots élastiques provoquant une raideur totale $k=\SI{100000}{\newton\per\meter}$ et un amortissement visqueux $c=\SI{500}{\newton\second\per\meter}$. Il subit un balourd (une force déséquilibrée) tel que $F(t) = F_0 e^{\jc \omega t}$ avec $F_0 = \SI{500}{\newton}$ et la machine tourne à $150$ rad/s ($\omega$).
+\begin{enumerate}
+    \item Calculez la raideur complexe dynamique de ce système : $\cpx{K_{dyn}} = k - m\omega^2 + \jc c\omega$.
+    \item Calculez l'amplitude du déplacement vibratoire $|X| = \frac{F_0}{|\cpx{K_{dyn}}|}$.
+\end{enumerate}
+\end{exemple}
+
+\newpage
+% ==========================================
+% SECTION 6
+% ==========================================
+\section{Corrigés}
+
+\textbf{Correction - Exercice 1}
+\begin{enumerate}
+    \item Module : $Z_1 = \sqrt{4^2 + 3^2} = \sqrt{16 + 9} = \sqrt{25} = 5$. Argument : $\theta_1 = \arctan(\frac{3}{4}) \approx \SI{0.64}{\radian}$ (ou $36.87^\circ$). Donc $\cpx{Z_1} = 5 e^{\jc 36.87^\circ}$.
+    \item $Z_2 = 5\left( \cos(-45^\circ) + \jc\sin(-45^\circ) \right) = 5\left( \frac{\sqrt{2}}{2} - \jc\frac{\sqrt{2}}{2} \right) \approx 3.535 - \jc 3.535$.
+    \item Pour la multiplication, la forme exponentielle est la plus simple : $\cpx{Z_{eq}} = (5 \times 5) \cdot e^{\jc(36.87^\circ - 45^\circ)} = 25 e^{-\jc 8.13^\circ}$.
+\end{enumerate}
+
+\textbf{Correction - Exercice 2}
+\begin{enumerate}
+    \item Pulsation $\omega = 2\pi(50) \approx \SI{314.16}{\radian\per\second}$. Réactance de la bobine : $X_L = L\omega = 0.0318 \times 314.16 \approx \SI{10}{\ohm}$. D'où $\cpx{Z} = 10 + \jc 10\ \Omega$.
+    \item Module $Z = \sqrt{10^2 + 10^2} = 10\sqrt{2} \approx \SI{14.14}{\ohm}$. Déphasage $\varphi = \arctan(\frac{10}{10}) = \arctan(1) = 45^\circ = \pi/4\ \text{rad}$. (Le courant est en retard de $45^\circ$).
+    \item Loi d'Ohm en module : $I = \frac{U}{Z} = \frac{230}{14.14} \approx \SI{16.26}{\ampere}$.
+    \item Courant complexe : $\cpx{I} = \frac{\cpx{U}}{\cpx{Z}} = \frac{230 e^{\jc 0}}{14.14 e^{\jc \pi/4}} = 16.26 e^{-\jc \pi/4}$. Dans un graphe, $\cpx{U}$ est horizontal et $\cpx{I}$ pointe vers le bas à un angle de $-45^\circ$.
+\end{enumerate}
+
+\textbf{Correction - Exercice 3}
+\begin{enumerate}
+    \item Masse $m=100$, raideur $k=100000$, amortissement $c=500$, pulsation d'excitation $\omega = 150$.
+    \begin{align*}
+        \cpx{K_{dyn}} &= 100000 - 100(150)^2 + \jc(500 \times 150) \\
+                      &= 100000 - 100(22500) + \jc 75000 \\
+                      &= 100000 - 2250000 + \jc 75000 \\
+                      &= -2150000 + \jc 75000 \ \text{N/m}
+    \end{align*}
+    Ici le terme d'inertie de la masse l'emporte de très loin (régime post-résonnant).
+    \item Le module de cette "raideur dynamique" est : $|\cpx{K_{dyn}}| = \sqrt{(-2150000)^2 + (75000)^2} \approx 2151307\ \text{N/m}$. \\
+    L'amplitude de vibration est donc : $|X| = \frac{500}{2151307} \approx \SI{0.23}{\milli\meter}$. L'isolation vibratoire est efficace grâce à la suspension car le déplacement est minime.
+\end{enumerate}
+
+\end{document}
