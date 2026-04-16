@@ -1,0 +1,345 @@
+% CCF de Mathématiques - BTS CRSA
+% Session 2025 - 1ère situation d'évaluation
+% Conforme au modèle CCF_modele.docx
+% Compilation : pdflatex
+
+\documentclass[a4paper,11pt]{article}
+
+% --------------------------------------------------------------------------
+% Packages essentiels
+% --------------------------------------------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{geometry}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{mathtools}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage[table]{xcolor}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{tcolorbox}
+\usepackage{courier}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{parskip}
+\usepackage{calc}
+\usepackage{ifthen}
+\usepackage{lastpage}
+
+% --------------------------------------------------------------------------
+% Marges
+% --------------------------------------------------------------------------
+\geometry{
+    top=1.5cm,
+    bottom=2cm,
+    left=2cm,
+    right=2cm,
+    headheight=1.5cm,
+    headsep=0.5cm
+}
+
+% --------------------------------------------------------------------------
+% Couleurs (charte UIMM / BTS)
+% --------------------------------------------------------------------------
+\definecolor{uimm-blue}{RGB}{0, 70, 127}
+\definecolor{uimm-gray}{RGB}{128, 128, 128}
+\definecolor{competence-blue}{RGB}{65, 105, 225}
+\definecolor{header-bg}{RGB}{0, 70, 127}
+\definecolor{light-gray}{RGB}{240, 240, 240}
+\definecolor{problem-bg}{RGB}{230, 240, 255}
+
+% --------------------------------------------------------------------------
+% En-tête et pied de page
+% --------------------------------------------------------------------------
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textcolor{uimm-blue}{\textbf{BTS CRSA} -- SESSION 2025}}
+\fancyhead[R]{\textcolor{uimm-blue}{\textbf{CCF Mathématiques}}}
+\fancyfoot[C]{\textcolor{uimm-gray}{\small Page \thepage\ sur \pageref{LastPage}}}
+\renewcommand{\headrulewidth}{0.8pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{uimm-blue}\leaders\hrule height \headrulewidth\hfill}}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% --------------------------------------------------------------------------
+% Style des compétences (boîte inline bleue)
+% --------------------------------------------------------------------------
+\tcbuselibrary{skins, breakable}
+
+\newcommand{\competence}[1]{%
+    \tcbox[%
+        on line,
+        colback=uimm-blue,
+        colframe=uimm-blue,
+        coltext=white,
+        fontupper=\bfseries\small,
+        boxsep=1pt,
+        left=3pt, right=3pt,
+        top=1pt, bottom=1pt,
+        arc=2pt,
+        boxrule=0pt
+    ]{#1}%
+    \hspace{4pt}%
+}
+
+% --------------------------------------------------------------------------
+% Environnement de question
+% --------------------------------------------------------------------------
+\newcounter{questioncnt}
+\setcounter{questioncnt}{0}
+
+\newenvironment{question}[1]{%
+    \stepcounter{questioncnt}%
+    \vspace{6pt}%
+    \noindent\competence{#1}%
+}{%
+    \vspace{8pt}%
+}
+
+% --------------------------------------------------------------------------
+% Style des problèmes
+% --------------------------------------------------------------------------
+\newcommand{\probleme}[2]{%
+    \vspace{12pt}%
+    \noindent%
+    \begin{tcolorbox}[
+        colback=problem-bg,
+        colframe=uimm-blue,
+        boxrule=1.5pt,
+        arc=4pt,
+        left=8pt, right=8pt,
+        top=6pt, bottom=6pt
+    ]
+        {\fontfamily{pcr}\selectfont\bfseries\large Problème #1}\quad #2
+    \end{tcolorbox}%
+    \vspace{6pt}%
+}
+
+% Sous-parties
+\newcommand{\partie}[2]{%
+    \vspace{10pt}%
+    \noindent\textbf{Partie #1} \hspace{6pt} \underline{#2}%
+    \vspace{6pt}\par%
+}
+
+% --------------------------------------------------------------------------
+% Espace de réponse
+% --------------------------------------------------------------------------
+\newcommand{\espace}[1][3cm]{%
+    \vspace{#1}%
+}
+
+% --------------------------------------------------------------------------
+% Tableau des compétences évaluées
+% --------------------------------------------------------------------------
+\newcommand{\tableauCompetences}{%
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{|>{\centering\arraybackslash\bfseries\color{white}\columncolor{uimm-blue}}m{1cm}|>{\bfseries\columncolor{uimm-blue!10}}m{4cm}|m{9cm}|}
+\hline
+\rowcolor{uimm-blue}
+\textcolor{white}{Code} & \textcolor{white}{Compétence} & \textcolor{white}{Définition} \\
+\hline
+C1 & S'approprier & Rechercher, extraire et organiser l'information. \\
+\hline
+C2 & Analyser / Raisonner & Énoncer une propriété, choisir un modèle, une stratégie, une méthode. \\
+\hline
+C3 & Réaliser & Effectuer un calcul, un algorithme, expérimenter, résoudre par tâtonnement. \\
+\hline
+C4 & Valider & Critiquer un résultat, contrôler la cohérence d'un résultat. \\
+\hline
+C5 & Mettre en œuvre & Utiliser une stratégie, choisir une méthode de résolution. \\
+\hline
+C6 & Communiquer & Rendre compte d'une démarche, d'un résultat, à l'oral ou à l'écrit. \\
+\hline
+\end{tabular}
+\end{center}%
+}
+
+% --------------------------------------------------------------------------
+% Commandes mathématiques
+% --------------------------------------------------------------------------
+\newcommand{\xbar}{\overline{X}}
+\newcommand{\ind}{I}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\dx}{\mathrm{d}x}
+
+% --------------------------------------------------------------------------
+\begin{document}
+% --------------------------------------------------------------------------
+
+% ==========================================================================
+% PAGE DE GARDE
+% ==========================================================================
+\thispagestyle{empty}
+
+\begin{center}
+    \vspace*{0.2cm}
+    {\Huge\bfseries\textcolor{uimm-blue}{BTS CRSA}}
+    \vspace{0.4cm}
+
+    {\large SESSION 202\underline{5}}
+    \vspace{0.2cm}
+
+    {\large 1\textsuperscript{ère} situation d'évaluation}
+    \vspace{0.6cm}
+
+    \noindent\rule{\linewidth}{1.5pt}
+    \vspace{0.3cm}
+    {\Huge\bfseries\textcolor{uimm-blue}{MATHÉMATIQUES}}
+    \vspace{0.3cm}
+    \noindent\rule{\linewidth}{1.5pt}
+
+    \vspace{0.6cm}
+    {\large Durée de l'épreuve : \textbf{55 minutes}}
+    \vspace{0.4cm}
+
+    \begin{tcolorbox}[colback=light-gray, colframe=uimm-blue, boxrule=1pt, arc=4pt, width=10cm, halign=center]
+        {\large\bfseries TOUS DOCUMENTS INTERDITS}
+    \end{tcolorbox}
+
+    \vspace{0.4cm}
+    \textbf{Les calculatrices électroniques de poche sont autorisées,}\\
+    \textbf{conformément à la réglementation en vigueur.}
+\end{center}
+
+\vspace{0.6cm}
+
+\noindent
+\begin{tabularx}{\linewidth}{|X|l|}
+\hline
+\rowcolor{light-gray}
+\textbf{Nom :} & \multirow{2}{*}{\textbf{Date de l'évaluation :}} \\
+\cline{1-1}
+\rowcolor{light-gray}
+\textbf{Prénom :} & \\
+\hline
+\end{tabularx}
+
+\vspace{0.6cm}
+
+\begin{tcolorbox}[colback=white, colframe=uimm-blue, boxrule=1pt, arc=4pt, title={\textbf{\textcolor{white}{COMPÉTENCES EVALUÉES}}}, attach boxed title to top center={yshift=-2mm}, boxed title style={colback=uimm-blue, arc=2pt}]
+    \tableauCompetences
+\end{tcolorbox}
+
+\vspace{0.4cm}
+\begin{center}
+\textit{\small L'évaluateur interviendra soit lors des \underline{appels évaluateur} pour procéder à une notation du candidat,\\ soit à sa demande pour surmonter certaines difficultés et expliciter.}
+\end{center}
+
+\newpage
+
+% ==========================================================================
+% CORPS DU SUJET
+% ==========================================================================
+
+\probleme{1}{\normalsize (On donnera pour les résultats une valeur approchée arrondie à $10^{-3}$)}
+
+Un atelier produit en grande série des disques de diamètre nominal 25~mm.
+
+On désigne par $X$ la variable aléatoire qui à chaque disque de la production, associe son diamètre en mm. On admet que $X$ suit une loi normale de moyenne $m$ et d'écart type $\sigma$.
+
+Un disque est considéré comme acceptable si son diamètre est compris entre 24,90~mm et 25,08~mm, sinon, il est considéré comme défectueux.
+
+\bigskip
+
+\begin{enumerate}
+    \item \begin{question}{C1 -- C5}
+    On suppose que $\sigma = 0{,}04$ et $m = 25$. Calculer la probabilité qu'un disque pris au hasard dans la production soit défectueux.
+    \end{question}
+    \espace[5cm]
+
+    \item \begin{question}{C2 -- C4}
+    On souhaite avoir un pourcentage de défectueux inférieur à 2\,\% tout en gardant $m = 25$, quel devrait-être la valeur maximale de l'écart-type $\sigma$~?
+    \end{question}
+    \espace[6cm]
+
+    \item On note $\xbar$ la variable aléatoire qui, à chaque échantillon de 100 disques dans la production, associe la moyenne des diamètres de ces 100 disques.
+
+    On admet que $\xbar$ \textbf{suit la loi normale de moyenne $m$ et d'écart type 0,004.} On prélève au hasard et avec remise un échantillon de 100 disques dans la production. On souhaite construire un test bilatéral de validité d'hypothèse, pour savoir si l'on peut considérer, au risque de 5\,\%, que la moyenne $m$ des diamètres des disques de la production est égale à 25.
+
+    \begin{enumerate}[label=\alph*)]
+        \item \begin{question}{C5 -- C6}
+        Sous l'hypothèse nulle $H_0$ ($m = 25$), calculer la valeur du réel $d$ tel que dans 95\,\% des cas $\xbar$ appartient à l'intervalle $[25 - d\ ;\ 25 + d]$. Conclure.
+        \end{question}
+        \espace[6cm]
+    \end{enumerate}
+\end{enumerate}
+
+\newpage
+
+\probleme{2}{}
+
+Un calcul doit être effectué un grand nombre de fois avec des données différentes. Il peut être réalisé à l'aide d'une configuration comprenant plusieurs processeurs travaillant simultanément, et d'un logiciel adéquat pilotant ces processeurs.
+
+Matériellement, on peut installer jusqu'à 256 processeurs.
+
+Le temps d'exécution $T$ d'un calcul (en secondes) est donné en fonction du nombre entier $p$ de processeurs installés par :
+\[ T(p) = \frac{60}{p} + 2\ln(p) \]
+$\ln$ désignant le logarithme népérien.
+
+Le coût (matériel + logiciel) de la configuration est proportionnel au nombre de processeurs installés. On désire choisir $p$ pour que le temps de calcul et le coût soient faibles, et pour cela, on définit l'indice $\ind$ égal au produit du nombre de processeurs par le temps de calcul :
+\[ \ind(p) = p \times T(p) \]
+\textit{\textbf{On cherchera donc à avoir une configuration pour laquelle $\ind$ est minimal.}}
+
+\bigskip
+
+\partie{A}{Étude du temps de calcul.}
+
+Soit $t$ la fonction de la variable $x$, définie sur l'intervalle $[1\,;\ +\infty[$ par :
+\[ t(x) = \frac{60}{x} + 2\ln(x) \]
+
+\begin{enumerate}
+    \item \begin{question}{C5}
+    Calculer la dérivée $t'$ de la fonction $t$. En déduire le sens de variation de la fonction $t$.
+    \end{question}
+    \espace[5cm]
+
+    \item \begin{question}{C4}
+    Calculer la limite de $t$ en $+\infty$. Interpréter ce résultat.
+    \end{question}
+    \espace[4cm]
+
+    \item \begin{question}{C5 -- C3}
+    Combien faut-il installer de processeurs pour que le temps de calcul soit inférieur à $0{,}006$ secondes~?
+    \end{question}
+    \espace[4cm]
+\end{enumerate}
+
+\newpage
+
+\partie{B}{Étude de l'indice.}
+
+Soit $f$ la fonction de la variable $x$, définie sur l'intervalle $[1\,;\ 256]$ par :
+\[ f(x) = x \cdot t(x) = 60 + 2\,x\ln(x) \]
+
+On définit l'indice moyen de $f$ par $\displaystyle m = \frac{1}{255}\int_1^{256} f(x)\,\dx$.
+
+\begin{enumerate}
+    \item \begin{question}{C5}
+    Vérifier que la fonction $G$ définie sur l'intervalle $[1\,;\ 256]$ par
+    \[ G(x) = 60x + x^2\ln(x) - \frac{x^2}{2} \]
+    est une primitive de la fonction $g$, définie sur le même intervalle, par :
+    \[ g(x) = 60 + 2\,x\ln(x) \]
+    \end{question}
+    \espace[5cm]
+
+    \item \begin{question}{C4}
+    En déduire une primitive $F$ de $f$ puis l'indice moyen $m$ à $10^{-1}$ près.
+    \end{question}
+    \espace[5cm]
+
+    \item \begin{question}{C2 -- C5}
+    En vous aidant d'une calculatrice, et en remarquant que $\ind(p) = f(p)$, déterminer précisément le nombre $p$ de processeurs à installer pour que l'indice soit minimal.
+    \end{question}
+    \espace[6cm]
+\end{enumerate}
+
+\end{document}
+
