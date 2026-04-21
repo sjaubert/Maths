@@ -1,0 +1,102 @@
+﻿[] | <sz=52>BTS </sz=52><sz=52>C</sz=52><sz=52>RSA</sz=52>
+[] | 
+[] | <sz=36>SESSION 20</sz=36><sz=36>2</sz=36><sz=36>5</sz=36>
+[] | <sz=36>1</sz=36><sz=36>├¿re</sz=36><sz=36> situation dÔÇÖ├®valuation</sz=36>
+[] | 
+[] | <sz=52>MATH├ëMATIQUES</sz=52>
+[] | 
+[] | <sz=32>Dur├®e de lÔÇÖ├®preuve : 55 minutes</sz=32>
+[] | 
+[] | <sz=32>TOUS DOCUMENTS INTERDITS</sz=32>
+[] | 
+[] | <B,sz=24>Les calculatrices ├®lectroniques de poche sont autoris├®es,</B,sz=24>
+[] | <B,sz=24>conform├®ment ├á la r├®glementation en vigueur.</B,sz=24>
+[] | 
+[] | 
+[] | <sz=32>COMP├ëTENCES EVALU├ëES</sz=32>
+[] | 
+[] | 
+[] | 
+[] | 
+[] | 
+[] | 
+
+[] | <B,sz=28,font=Courier>Probl├¿me</B,sz=28,font=Courier><B,sz=28,font=Courier> 1</B,sz=28,font=Courier><B,sz=28,font=Courier> </B,sz=28,font=Courier>(0n donnera pour les r├®sultats une valeur approch├®e arrondie ├á ) 
+[] | Un atelier produit en grande s├®rie des disques de diam├¿tre nominal 25 mm.
+[] |  On d├®signe par X la variable al├®atoire qui ├á chaque disque de la production, associe son diam├¿tre en mm. On admet que X suit une loi normale de moyenne m et dÔÇÖ├®cart type ¤â.
+[] |  Un disque est consid├®r├® comme acceptable si son diam├¿tre est compris entre 24,90 mm et 25,08 mm, sinon, il est consid├®r├® comme d├®fectueux. 
+[List Paragraph][LIST ilvl=0 numId=10] | <B,sz=24>C1-C</B,sz=24><B,sz=24>5</B,sz=24><sz=24> </sz=24>On suppose que ¤â = 0, 04 et m= 25. Calculer la probabilit├® quÔÇÖun disque pris au hasard dans la production soit d├®fectueux.
+[] | 
+[] | 
+[] | 
+[List Paragraph][LIST ilvl=0 numId=10] | <B>C2-</B><B>C4</B> On souhaite avoir un pourcentage de d├®fectueux inf├®rieur ├á 2% tout en gardant m=25, quel devrait-├¬tre la valeur maximale de lÔÇÖ├®cart-type ¤â┬á?
+[] | 
+[List Paragraph] | 
+[List Paragraph] | 
+[List Paragraph] | 
+[List Paragraph] | 
+[List Paragraph] | 
+[List Paragraph] | 
+[] | 
+[List Paragraph][LIST ilvl=0 numId=10] | On note  la variable al├®atoire qui, ├á chaque ├®chantillon de 100 disques dans la production, associe la moyenne des diam├¿tres de ces 100 disques. 
+[List Paragraph] | On admet que <B> </B><B>suit la loi normale de moyenne m et dÔÇÖ├®cart type 0,004.</B> On pr├®l├¿ve au hasard et avec remise un ├®chantillon de 100 disques dans la production. On souhaite construire un test bilat├®ral de validit├® dÔÇÖhypoth├¿se, pour savoir si lÔÇÖon peut consid├®rer, au risque de 5 %, que la moyenne m des diam├¿tres des disques de la production est ├®gale ├á 25. 
+[List Paragraph] | 
+[List Paragraph][LIST ilvl=0 numId=11] | <B>C5</B><B>-C6</B> Sous lÔÇÖhypoth├¿se nulle H0 (m = 25), calculer la valeur du r├®el d tel que dans  95% des cas   appartient ├á lÔÇÖintervalle [25-d┬á; 25 + d]. Conclure.
+[] | 
+[] | 
+[] | 
+
+[List Paragraph][indent=1080] | 
+[List Paragraph][indent=1080] | 
+[] | <B,sz=28,font=Courier>Probl├¿me </B,sz=28,font=Courier><B,sz=28,font=Courier>2 </B,sz=28,font=Courier>Un calcul doit ├¬tre effectu├® un grand nombre de fois avec des donn├®es diff├®rentes. Il peut ├¬tre r├®alis├® ├á l'aide d'une configuration comprenant plusieurs processeurs travaillant simultan├®ment, et d'un logiciel ad├®quat pilotant ces processeurs.
+[] | Mat├®riellement, on peut installer jusqu'├á 256 processeurs.
+[] | Le temps d'ex├®cution <I>T</I> d'un calcul (en secondes) est donn├® en fonction du nombre entier <I>p</I> de processeurs install├®s par :
+[] | , ln d├®signant le logarithme n├®p├®rien.
+[] | Le co├╗t (mat├®riel + logiciel) de la configuration est proportionnel au nombre de processeurs install├®s. On d├®sire choisir <I>p</I> pour que le temps de calcul et le co├╗t soient faibles, et pour cela, on d├®finit l'indice <I> </I>├®gal au produit du nombre de processeurs par le temps de calcul┬á:
+[] | .
+[] | <B,I>On cherchera donc ├á avoir une configuration pour laquelle </B,I><B,I> est minimal.</B,I>
+[] | 
+[] | <B>Partie A</B>
+[] | <U>├ëtude du temps de calcul</U>.
+[] | Soit <I>t</I> la fonction de la variable <I>x</I>, d├®finie sur l'intervalle [1 ; [ par┬á:
+[] | .
+[][LIST ilvl=0 numId=12] | <B,sz=24>C5</B,sz=24><B,sz=24> </B,sz=24>Calculer la d├®riv├®e  de la fonction <I>t</I>. En d├®duire le sens de variation de la fonction <I>t</I>. 
+[][indent=360] | 
+[][indent=360] | 
+[][indent=360] | 
+[][indent=360] | 
+[][LIST ilvl=0 numId=12] | <B,sz=24>C</B,sz=24><B>4</B> Calculer la limite de <I>t</I> en . Interpr├®ter ce r├®sultat.
+[] | 
+[] | 
+[] | 
+[] | 
+[][LIST ilvl=0 numId=12] | <B,sz=24>C5</B,sz=24><B,sz=24>-C3 </B,sz=24>Combien fautil installer de processeurs pour que le temps de calcul soit inf├®rieur ├á 0,006 secondes ?
+[] | 
+[] | 
+
+[] | 
+[] | 
+[] | <B>Partie B</B>
+[] | <U>├ëtude de l'indice.</U>
+[] | Soit <I>f la </I>fonction de la variable <I>x</I>, d├®finie sur l'intervalle [1 ; 256] par :
+[] | .
+[] | On d├®finit l'indice moyen de <I>f </I>par <I>.</I>
+[] | 1.	<B,sz=24>C5</B,sz=24><B,sz=24> </B,sz=24>V├®rifier que la fonction <I>G</I> d├®finie sur l'intervalle [1 ; 256] par
+[] | 
+[][indent=284] | est une primitive de la fonction <I>g</I>, d├®finie sur le m├¬me intervalle, par : 
+[][indent=284] | 
+[][indent=284] | 
+[][indent=284] | 
+[] | 2.	<B,sz=24>C</B,sz=24><B,sz=24>4 </B,sz=24>En d├®duire une primitive <I>F</I> de <I>f</I> puis l'indice moyen <I>m</I> ├á  pr├¿s.
+[] | 
+[] | 
+[] | 
+[] | 
+[List Paragraph][LIST ilvl=0 numId=12] | <B,sz=24>C</B,sz=24><B,sz=24>2-</B,sz=24><B,sz=24> </B,sz=24><B,sz=24>C5</B,sz=24>	En vous aidant d'une calculatrice, et en remarquant que<I> </I>(<I>p</I>) <I>= f</I>(<I>p</I>)<I>,</I> d├®terminer pr├®cis├®ment le nombre <I>p</I> de processeurs ├á installer pour que l'indice soit minimal.
+[] | 
+[] | 
+[] | 
+[] | 
+[] | 
+[] | 
+[] | 
