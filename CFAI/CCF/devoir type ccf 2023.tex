@@ -1,0 +1,97 @@
+\documentclass[12pt,a4paper,oneside,dvipsnames,table,svgnames,skins,theorems]{report}
+
+\usepackage{ProfCollege}
+%\usepackage[nominted]{ProfLycee}
+\usepackage[tp]{tmbase} %pour le moment placé dans la racine du .tex ... !
+
+
+
+
+\ordi{fixe} %pour fichier image
+\matierechap{m} %m pour maths, pc pour physique chimie, rien pour vierge
+\version{1} %1 : PROF   2: ELEVE sans corrigé  3: corrigé des exos sans le cours
+\setcounter{chapter}{0} %compteur de chapitre
+
+\ifportable
+
+\graphicspath{{C:/Users/Thomas/latex nas/images/}} %chemin du fichier image
+\fi
+\iffixe
+\graphicspath{{C:/Users/Thom/Documents/latex nas/images/}} %chemin du fichier image
+\fi
+
+%\author{TP}
+\author{Devoir type CCF} %mettre ici non pas l'auteur mais la partie en haut à gauche de l'encadré
+
+
+%\newcolumntype{C}{>{\centering\arraybackslash}X}
+%\renewcommand{\tabularxcolumn}[1]{>{\arraybackslash}m{#1}}
+\begin{document}
+
+\setcounter{chapter}{2}
+
+\chapter{ Suites  }
+
+
+
+
+
+\Opensolutionfile{mycor}[ficcorex]
+
+\vspace{-1cm}
+\section*{Évolution salariale}
+
+Le patron d'une grosse entreprise cherche une option pour réduire son salaire pour montrer à ses employés qu'il se soucie de la santé financière et de leur avis. Il leur propose deux options :
+
+\begin{itemize}
+\item A : Se verser un salaire symbolique de 1\euro{} qui doublera chaque mois.
+\item B : Se verser le même salaire que le plus bas salaire et s'augmenter de 50\euro{} par mois.
+\end{itemize}
+
+
+
+
+
+\problematique[]{Comment déterminer la meilleur proposition pour chaque parti avec une durée fixée à 15 mois ?}
+
+%\newpage
+
+\begin{enumerate}
+\item \textbf{Indiquer} le salaire de l'option A au bout de 2 mois.
+
+\Lignespointilles{1}
+
+\item \textbf{Indiquer} le salaire de l'option B au bout de 2 mois.
+
+\Lignespointilles{1}
+
+\item \textbf{Proposer} une méthode pour répondre à la problématique. 
+
+\Lignespointilles{4}
+
+\vspace{0.5cm}
+
+\item \appel[explication de votre méthode.] 
+\vspace{0.5cm}
+
+\item \textbf{Mettre en oeuvre} votre méthode.
+\Lignespointilles{8}
+
+
+
+
+\vspace{0.5cm}
+
+\item \textbf{Répondre} à la problématique  en ayant un regard critique et en adoptant les différents points de vue. 
+
+\Lignespointilles{2}
+
+\item \textbf{Déterminer} pour chaque cas le nombre de mois nécessaire pour obtenir un salaire de 100000\euro{}
+\Lignespointilles{2}
+\end{enumerate}
+
+
+
+
+
+\end{document}

@@ -1,0 +1,389 @@
+\documentclass[10pt,a4paper]{article}
+
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[francais]{babel}
+\usepackage{lmodern}
+\usepackage{amsfonts,mathrsfs}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+
+\usepackage[hmargin=2cm, vmargin=2cm]{geometry}
+
+\usepackage{tabularx}
+
+\usepackage{fancyhdr,lastpage}
+
+\usepackage{hyperref}
+\hypersetup{
+	pdfauthor={Xavier TISSERAND},     % author
+  	}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%            Intervalle             %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\inter}[4]
+{\mathchoice
+{\left#1#2\mathclose{}\mathpunct{};#3\right#4}% mode \displaystyle
+{\mathopen{#1}#2\mathclose{}\mathpunct{};#3\mathclose{#4}}% mode \textstyle
+{\mathopen{#1}#2\mathclose{}\mathpunct{};#3\mathclose{#4}}% mode \scriptstyle
+{\mathopen{#1}#2\mathclose{}\mathpunct{};#3\mathclose{#4}}% mode
+%\scriptscriptstyle
+}
+
+\newcommand{\interff }[2]{\ensuremath{\inter{[}{#1}{#2}{]}}} %ferme ferme
+\newcommand{\interof }[2]{\ensuremath{\inter{]}{#1}{#2}{]}}} %ouvert ferme
+\newcommand{\interfo }[2]{\ensuremath{\inter{[}{#1}{#2}{[}}} %ferme ouvert
+\newcommand{\interoo }[2]{\ensuremath{\inter{]}{#1}{#2}{[}}} %ouvert ouvert
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%     grands crochets      %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\cro}[1]{\left[#1\right]}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%     grandes parenthèses  %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\pa}[1]{\left(#1\right)}
+
+%e de l'exponentielle
+\newcommand{\e}{\mathrm{e}}
+
+%signe inferieur ou egal francais
+\renewcommand{\leq}{\leqslant}
+
+%signe superieur ou egal francais
+\renewcommand{\geq}{\geqslant}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Définit un environnement exercice avec un compteur%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcounter{num}
+\newcommand{\exo}%
+	{%
+	\setcounter{Partie}{0}% raz compteur partie
+	\addtocounter{num}{1}%
+	{%
+	\par % commence à une nouvelle ligne
+	\noindent\textbf{Exercice~\arabic{num}~:~}%
+	}%
+	}%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Définit un environnement partie avec un compteur%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcounter{Partie}
+\newcommand{\Partie}[1]%
+   {%
+   \goodbreak% Evite au tant que possible un titre en bas
+	%de page tout seul
+   \addtocounter{Partie}{1}
+   \noindent\textbf{Partie \Alph{Partie} : #1}%
+   \par%
+   }% 
+
+
+\newcommand{\R}{\mathbf{R}}
+
+% lettres grecques à la française
+\renewcommand{\epsilon}{\varepsilon} 
+
+
+%loi normale N
+\newcommand{\normale}[2]{\mathscr{N}\pa{#1\mathpunct{};#2}}
+
+%coefficient bonomial
+\newcommand{\coeff}[2]{\operatorname{C}_{#1}^{#2}}
+
+%d droit de dx
+\newcommand{\dd}{\mathop{}\mathopen{}\mathrm{d}}
+
+
+%courbe C
+\newcommand{\courbec}{\mathscr{C}}
+
+\newcommand{\cad}{c'est-à-dire }
+
+\providecommand{\abs}[1]{\left|#1\right|}
+
+
+\newcommand{\dl}[2]{développement limité d'ordre {$#1$} en {$#2$}}
+
+\everymath{\displaystyle}
+
+
+\setlength\parindent{0pt}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%    document tapé sous linux
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{BTS Groupement B}
+\author{Mathématiques}
+\date{Session 2012}
+
+
+\headheight 20.0 pt
+\fancyhead[L]{BTS }
+\fancyhead[C]{Groupement B}
+\fancyhead[R]{2012}
+\fancyfoot[C]{{\scriptsize\textsl{ Xavier TISSERAND, Lycée Léonce Vieljeux,
+2011-2012}}\\
+\scriptsize\thepage/\pageref{LastPage}
+}
+\pagestyle{fancy}
+
+
+\begin{document}
+\maketitle
+
+\exo \emph{12 points}
+
+\Partie{Résolution d'une équation différentielle}
+
+On considère l'équation différentielle $(E) \ : \quad y'+2y=-5\e^{-2x}$, où $y$
+est une fonction inconnue de la variable réelle $x$, définie et dérivable sur
+$\R$, et $y'$ la fonction dérivée de $y$.
+
+\begin{enumerate}
+ \item Déterminer les solutions de l'équation différentielle $(E_0)\ : y'+2y=0$
+
+\item Soit $g$ la fonction définie sur $\R$ par $g(x)=-5x\e^{-2x}$. Démontrer
+que la fonction $g$  est une solution  de $(E)$
+
+\item En déduire les solutions de l'équation différentielle $(E)$.
+
+\item Déterminer la solution $f$ de l'équation différentielle $(E)$ vérifiant
+la condition initale $f(0)=1$.
+\end{enumerate}
+
+\Partie{Étude locale d'une fonction}
+
+Soit $f$ la fonction définie sur $\R$ par $f(x)=(1-5x)\e^{-2x}$. On note
+$\courbec$ sa courbe représentative dans le plan muni d'un repère orthonormal.
+
+\begin{enumerate}
+ \item 
+
+\begin{enumerate}
+ \item On admet le résultat suivant : $\lim_{x\to +\infty} -5x\e^{-2x}=0$.
+Calculer $\lim_{x\to +\infty}f(x)=0$.
+
+\item \emph{Cette question est une question à choix multiples. Une seule
+réponse est exacte. Recopier sur la copie la réponse qui vous paraît exacte. On
+ne demande aucune justification.}
+
+\emph{La réponse juste rapporte un point. Une réponse fausse ou une absence de
+réponse ne rapporte ni n'enlève aucun point.}
+
+La courbe $\courbec$ admet une asymptote en $+\infty$ dont une équation est 
+
+\begin{center}
+ \begin{tabularx}{14cm}{|*{3}{>{\centering\arraybackslash$}X<{$}|}}
+\hline
+y=1-5x&y=0&x=0\\
+\hline
+ \end{tabularx}
+\end{center}
+\end{enumerate}
+
+\item 
+
+\begin{enumerate}
+ \item \`A l'aide du \dl{2}{0} de la fonction : $t\mapsto \e^t$, déterminer le
+\dl{2}{0} de la fonction $x\mapsto \e^{-2x}$.
+
+\item En déduire que le \dl{2}{0} de la fonction $f$ est
+\[
+f(x)=1-7x+12x^2+x^2 \epsilon (x)\quad \text{avec } \lim_{x\to
+0}\epsilon(x)=0
+\]
+
+\item En déduire une équation de la tangente $T$ à la courbe $\courbec$ au
+point d’abscisse $0$.
+
+\item \emph{Cette question est une question à choix multiples. Une seule
+réponse est exacte. Recopier sur la copie la réponse qui vous paraît exacte. On
+ne demande aucune justification.}
+
+\emph{La réponse juste rapporte un point. Une réponse fausse ou une absence de
+réponse ne rapporte ni n'enlève aucun point.}
+
+On veut justifier qu'au voisinage du point d'abscisse $0$, la courbe $\courbec$
+est au-dessus de la droite $T$. Recopier sur la copie la justification qui vous
+paraît exacte.
+
+\begin{center}
+ \begin{tabularx}{14cm}{|*{3}{>{\centering\arraybackslash}X<{}|}}
+\hline
+$12x^2$ est positif au voisinage de $0$ & $x^2 \epsilon (x)$ est positif au
+voisinage de $0$ & $1-7x$ est positif au voisinage de $0$\\
+\hline
+ \end{tabularx}
+\end{center}
+\end{enumerate}
+
+\end{enumerate}
+
+\Partie{Calcul intégral}
+
+\begin{enumerate}
+ \item On note $I=\int_1^2 f(x)\dd x$ où $f$ est la fonction définie dans la
+partie B.
+
+\begin{enumerate}
+ \item Démontrer, à l'aide d'une intégration par parties, que :
+$I=\frac{23\e^{-4}-13\e^{-2}}{4}$.
+
+\item Donner une valeur approchée de $I$, arrondie à $10^{-2}$.
+\end{enumerate}
+
+\item 
+
+\begin{enumerate}
+ \item Donner, sans justification, le signe de $f(x)$ pour $x$ dans
+l'intervalle $\interff{1}{2}$.
+
+\item Interpréter graphiquement le nombre $I$.
+
+\emph{Dans cette question, toute trace de recherche même incomplète ou non
+aboutie, sera prise en compte.}
+\end{enumerate}
+
+\end{enumerate}
+
+\newpage
+
+\exo \emph{8 points}
+
+\begin{center}
+ \textbf{Les trois parties de cet exercice peuvent être traitées de façon
+indépendante.}
+\end{center}
+
+Un particulier souhaite acheter, auprès d'un producteur, des bottes de paille
+pour l'isolation de sa maison.
+
+\begin{center}
+ \textbf{Dans cet exercice, les résultats approchés sont à arrondir à
+}$\mathbf{10^{-2}.}$
+\end{center}
+
+\Partie{Loi normale}
+
+On prélève au hasard une botte de paille dans la production du 20 juillet 2011.
+
+\begin{enumerate}
+ \item On note $X$ la variable aléatoire qui, à chaque botte ainsi prélevée,
+associe son épaisseur, exprimée en millimètres. On admet que $X$ suit la loi
+normale de moyenne $300$ et d’écart type $18$.
+
+Calculer la probabilité $p(350\leq X\leq 370)$.
+
+\item On note $Y$, la variable aléatoire qui, à chaque botte prélevée dans la
+production de cette journée, associe sa densité exprimée en kg/m$^3$. On admet
+que $Y$ suit la loi normale de moyenne $100$ et d’écart type $5$.
+
+Calculer la probabilité qu’une botte, prélevée dans la production de cette
+journée ait une densité comprise entre 90 kg/m$^3$ et 110 kg/m$^3$.
+
+\item On suppose que les variables aléatoires $X$ et $Y$ sont indépendantes.
+
+Une botte de paille est conforme aux normes d'isolation si son épaisseur,
+exprimée en millimètres, appartient à l'intervalle $\interff{350}{370}$ et si
+sa densité, exprimée en kg/m$^3$, appartient à l'intervalle $\interff{90}{110}$.
+
+Calculer la probabilité qu'une botte prélevée dans la production de cette
+journée soit conforme aux normes d'isolation.
+
+\emph{Dans cette question, toute trace de recherche même incomplète ou non
+aboutie, sera prise en compte.}
+\end{enumerate}
+
+\Partie{Loi binomiale}
+
+On considère un stock important de bottes de paille, dont une partie est
+destinée à un usage d'isolation. On note $E$ l'événement : \og une botte
+prélevée au hasard dans le stock est conforme aux normes d'isolation\fg.
+
+On suppose $p(E)=0,4$.
+
+On prélève au hasard 5 bottes de paille dans le stock pour vérification de la
+conformité aux normes d'isolation. Le stock est suffisamment important pour que
+l'on puisse assimiler ce prélèvement à un tirage avec remise de $5$ bottes.
+
+On considère la variable aléatoire $Z$ qui, à tout prélèvement de $5$ bottes
+ainsi défini, associe le nombre de bottes de paille conformes aux normes
+d'isolation.
+
+\begin{enumerate}
+ \item Justifier que la variable aléatoire $Z$ suit une loi binomiale dont on
+précisera les paramètres.
+
+\item Calculer la probabilité que, dans un tel prélèvement, toutes les bottes
+de paille soient conformes aux normes d'isolation.
+
+\item Calculer la probabilité que, dans un tel prélèvement, au moins quatre
+bottes de paille soient conformes aux normes d'isolation.
+\end{enumerate}
+
+\Partie{Intervalle de confiance}
+
+Dans cette partie, on considère les bottes de paille produites le 22 juillet
+2011. On prélève au hasard un échantillon de $50$ bottes de paille dans cette
+production. La production est assez importante pour que l'on puisse assimiler
+ce prélèvement à un tirage avec remise.
+
+On constate que $37$ bottes de paille de cet échantillon sont conformes aux
+normes d'isolation.
+
+\begin{enumerate}
+ \item Donner une estimation ponctuelle de la fréquence inconnue $p$ des
+bottes de paille de cette production  qui sont conformes aux normes d'isolation.
+
+\item Soit $F$ la variable aléatoire qui, à tout échantillon de $50$ bottes
+ainsi prélevé dans cette production, associe la fréquence des bottes de cet
+échantillon qui sont conformes aux normes d'isolation.
+
+On suppose que $F$ suit la loi normale de moyenne inconnue $p$ de d'écart type
+$\sqrt{\frac{p(1-p)}{50}}$.
+
+\begin{enumerate}
+ \item \label{q2ab_ex2} Déterminer un intervalle de confiance de la fréquence
+$p$ au niveau de confiance de $95\%$.
+
+\item On considère l’affirmation suivante : \og la fréquence $p$ est
+obligatoirement dans l'intervalle de confiance obtenu à la question
+\ref{q2ab_ex2}\fg.
+
+Cette affirmation est-elle vraie ? (Donner la réponse sans explication.)
+\end{enumerate}
+
+\end{enumerate}
+
+
+ \vspace{2cm}
+Suggestions ou remarques :
+\href{mailto:xavier.tisserand@ac-poitiers.fr}{xavier.tisserand@ac-poitiers.fr}
+
+%Xavier TISSERAND est professeur de mathématiques en cpge ATS au lycée Vieljeux
+%de La Rochelle
+% Cette classe ATS est exclusivement réservée aux étudiant(e)s titulaires
+% d'un BTS ou DUT industriel qui veut intégrer une école d'ingénieur, sur
+%concours  ou sur dossier. La durée de formation est de un an, sans possibilité
+%de  redoublement. Il existe en France 31 classes de ce type. Pour de plus
+%amples  renseignements, vous pouvez consulter le site internet du lycée
+% 
+% http://www.lycee-vieljeux.fr/cpge/ats.html
+% 
+% et/ou me contacter par mail à l'adresse ci-dessus.
+
+
+\end{document}
